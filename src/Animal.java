@@ -37,12 +37,13 @@ public class Animal {
     }
 
     /**Setters*/
-    public void setPosition(Position position){
-        this.pos = position;
-    }
 
     public void setCapture(boolean bool){
         this.bCaptured = bool;
+    }
+
+    public void setPosition(Position newPos){
+        this.pos = newPos;
     }
 
     /**Methods*/
