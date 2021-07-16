@@ -15,13 +15,28 @@ public class TestMain{
 
                 if (board.getTile(i, j).isTrap())
                     System.out.print("T");
-
+                
+                else if (board.getTile(i, j).hasAnimal()){
+                    switch (board.getTile(i, j).getAnimal().getRank()) {
+                        case 1 -> System.out.print("Mo");
+                        case 2 -> System.out.print("Ca");
+                        case 3 -> System.out.print("Wo");
+                        case 4 -> System.out.print("Do");
+                        case 5 -> System.out.print("Le");
+                        case 6 -> System.out.print("Ti");
+                        case 7 -> System.out.print("Li");
+                        case 8 -> System.out.print("El");
+                        default -> {
+                        }
+                    }
+                }
+                
                 else if (board.getTile(i, j).isRiver())
                     System.out.print("R");
 
                 else if (board.getTile(i, j).isDen())
                     System.out.print("D");
-
+                
                 else
                     System.out.print(" ");
 
@@ -30,4 +45,4 @@ public class TestMain{
             System.out.println("\n---------------");
         }
     }
-}
+ }
