@@ -1,7 +1,5 @@
 package src;
 
-import java.lang.management.ThreadInfo;
-
 public class Tile{
 
     /**Class Variables*/
@@ -57,6 +55,14 @@ public class Tile{
 
     public boolean isTrap(){
         if (this.TERRAIN == Terrain.TRAP)
+            return true;
+        //else
+        return false;
+    }
+
+    public boolean isDen(){
+        if(this.TERRAIN == Terrain.DEN1
+        || this.TERRAIN == Terrain.DEN2)
             return true;
         //else
         return false;

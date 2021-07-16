@@ -30,7 +30,7 @@ public class Player {
         numPieces--;
     }
 
-    public void addNumPieces(){
+    public void addNumCaptured(){
         numCaptured++;
     }
 
@@ -49,13 +49,15 @@ public class Player {
     /**Prototype Methods*/
     public void listPieces(){
         for(Animal animal: Pieces){
-            System.out.println(Pieces.indexOf(animal) + ": " + animal.getSpecies());
+            System.out.println
+            (Pieces.indexOf(animal) + ": " + animal.getSpecies() );
         }
     }
 
     public void listCapturedPieces(){
         for(Animal animal : capturedPieces){
-            System.out.println(capturedPieces.indexOf(animal) + ": " animal.getSpecies());
+            System.out.println
+            (capturedPieces.indexOf(animal) + ": " + animal.getSpecies() );
         }
     }
 }

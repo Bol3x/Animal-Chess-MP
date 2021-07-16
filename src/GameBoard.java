@@ -1,8 +1,8 @@
 package src;
 
 public class GameBoard {
-    private static final int ROW = 9;
-    private static final int COL = 7;
+    public static final int ROW = 9;
+    public static final int COL = 7;
     
     private int nTurn;
     private boolean bGameWin = true;
@@ -31,7 +31,7 @@ public class GameBoard {
         playBoard[8][4] = new Tile(new Position(8,4) , Terrain.TRAP);
         playBoard[7][3] = new Tile(new Position(7,3) , Terrain.TRAP);
 
-
+        //set other tiles
         for(int i = 0; i < ROW; i++){
             for(int j = 0; j < COL; j++){
                 //set rivers
@@ -42,6 +42,11 @@ public class GameBoard {
                     playBoard[i][j] = new Tile(new Position(i,j));
             }
         }
+    }
+
+    /**Constructor*/
+    public GameBoard(){
+        initPlayBoard();
     }
 
     /**Getters*/
@@ -121,7 +126,7 @@ public class GameBoard {
      * @return
      */
     public Tile searchTile(Position pos){
-        if (Position.isValidPosition(pos))
+        if (Position.isWithinBounds(pos))
             for(int i = 0; i < ROW; i++)
                 for(int j = 0; j < COL; j++)
                     if (playBoard[i][j].getLocation().equals(pos) )

@@ -20,7 +20,7 @@ public class Position {
     }
  
     public static boolean isWithinBounds (Position pos) {
-        return pos.X < ROW && pos.Y < COL;
+        return pos.X < GameBoard.ROW && pos.Y < GameBoard.COL;
     }
      
     @Override
