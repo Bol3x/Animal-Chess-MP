@@ -1,6 +1,8 @@
 package src;
 
-public class Tile {
+import java.lang.management.ThreadInfo;
+
+public class Tile{
 
     /**Class Variables*/
     private Animal animal;
@@ -59,5 +61,4 @@ public class Tile {
         //else
         return false;
     }
-
 }
