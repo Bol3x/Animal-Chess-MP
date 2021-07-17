@@ -48,27 +48,57 @@ public class Animal {
 
     /**Methods*/
 
-    /**check if animal's rank is higher than opponent's*/
+    /**
+     * check if animal's rank is higher than opponent's
+     * @param opponentAnimal - opponent to compare rank to
+     * @return boolean value
+     * 
+     * @author Carlo
+     */
     public boolean isHigherOrEqualRank(Animal opponentAnimal){
         return (this.RANK >= opponentAnimal.RANK);
     }
 
-    /**check if animal and other are in opposing teams*/
+    /**
+     * check if animal and other are in opposing teams
+     * @param otherAnimal - other animal to compare factions with
+     * @return foolean value
+     * 
+     * @author Carlo
+     */
     public boolean isOpposingFaction(Animal otherAnimal){
         return (this.PLAYER_FACTION != otherAnimal.PLAYER_FACTION);
     }
 
-    /**check if rank is 1(mouse)*/
+    /**
+     * check if rank is 1(mouse)
+     * @param animal - Animal to check
+     * @return boolean value
+     * 
+     * @author Carlo
+     */
     public static boolean isMouse(Animal animal){
         return (animal.RANK == 1);
     }
 
-    /**check if rank is 8(elephant)*/
+    /**
+     * check if rank is 8(elephant)
+     * @param animal - Animal to check
+     * @return boolean value
+     * 
+     * @author Carlo
+     */
     public static boolean isElephant(Animal animal){
         return (animal.RANK == 8);
     }
 
-    /**check if rank is 6(tiger) or 7(lion)*/
+    /**
+     * check if rank is 6(tiger) or 7(lion)
+     * @param animal - animal to check
+     * @return boolean value
+     * 
+     * @author Carlo
+     */
     public static boolean canJump(Animal animal){
         return (animal.RANK == 6 || animal.RANK == 7);
     }

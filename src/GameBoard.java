@@ -1,10 +1,11 @@
 package src;
 
+import java.util.*;
+
 public class GameBoard {
     public static final int ROW = 9;
     public static final int COL = 7;
-    
-    private int nTurn;
+
     private boolean bGameWin = true;
     private boolean bForceExit = false;
     private Tile playBoard[][] = new Tile[ROW][COL];
@@ -14,8 +15,10 @@ public class GameBoard {
     /**
      * Initializes all tiles and pieces onto the board, 
      * and provides pieces ownership to their respective player
-     * @version initial test
+     * 
+     * @version 1.2
      * @author Carlo
+     * @author Shane
      */
     public void initPlayBoard(){
         
@@ -73,28 +76,28 @@ public class GameBoard {
          playBoard[2][6].setAnimal(elephant);
          
          //set Player 2 Animals
-         Animal mouse2 = new Animal(players[1], 1, "Mouse2", new Position(6,6));
+         Animal mouse2 = new Animal(players[1], 1, "Mouse", new Position(6,6));
          playBoard[6][6].setAnimal(mouse2);
          
-         Animal cat2 = new Animal(players[1], 2, "Cat2", new Position(7,1));
+         Animal cat2 = new Animal(players[1], 2, "Cat", new Position(7,1));
          playBoard[7][1].setAnimal(cat2);
          
-         Animal wolf2 = new Animal(players[1], 3, "Wolf2", new Position(6,2));
+         Animal wolf2 = new Animal(players[1], 3, "Wolf", new Position(6,2));
          playBoard[6][2].setAnimal(wolf2);
          
-         Animal dog2 = new Animal(players[1], 4, "Dog2", new Position(7,5));
+         Animal dog2 = new Animal(players[1], 4, "Dog", new Position(7,5));
          playBoard[7][5].setAnimal(dog2);
          
-         Animal leopard2 = new Animal(players[1], 5, "Leopard2", new Position(6,4));
+         Animal leopard2 = new Animal(players[1], 5, "Leopard", new Position(6,4));
          playBoard[6][4].setAnimal(leopard2);
                          
-         Animal tiger2 = new Animal(players[1], 6, "Tiger2", new Position(8,0));
+         Animal tiger2 = new Animal(players[1], 6, "Tiger", new Position(8,0));
          playBoard[8][0].setAnimal(tiger2); 
          
-         Animal lion2 = new Animal(players[1], 7, "Lion2", new Position(8,6));
+         Animal lion2 = new Animal(players[1], 7, "Lion", new Position(8,6));
          playBoard[8][6].setAnimal(lion2);
                                  
-         Animal elephant2 = new Animal(players[1], 8, "Elephant2", new Position(6,0));
+         Animal elephant2 = new Animal(players[1], 8, "Elephant", new Position(6,0));
          playBoard[6][0].setAnimal(elephant2);
     }
 
@@ -112,28 +115,63 @@ public class GameBoard {
         return playBoard[X][Y];
     }
 
-    public int getTurn(){
-        return nTurn;
-    }
-
     public boolean checkGameState(){
         return (bGameWin && bForceExit);
+    }
+
+    public Player getPlayer(int i){
+        return players[i];
     }
 
     /**Methods*/
 
     /**
+     * selects the animal to use
+     * @param nPlayer - index of player to get piece from
+     * @return animal to use
+     * 
+     * @author Carlo
+     */
+    public Animal selectAnimal(int nPlayer){
+        Scanner in = new Scanner(System.in);
+        ArrayList<Animal> PieceList = players[nPlayer].getPieces();
+        for(int i = 0; i < players[nPlayer].getNumPieces(); i++)
+            System.out.println((i+1) + ": " + PieceList.get(i).getSpecies() );
+
+        int i = -1;
+        do{
+        System.out.print("Select an animal: "); 
+        
+        try{
+            i = in.nextInt();
+        }catch(InputMismatchException e){
+            System.out.println("Error! Invalid input.");
+        }
+
+        if (i < 0 && i >= players[nPlayer].getNumPieces())
+            System.out.println("Input does not exist!");
+            
+        } while (i < 0 && i >= players[nPlayer].getNumPieces());
+        in.close();
+
+        return PieceList.get(i);
+
+    }
+
+
+    /**
      * sets new position of animal if new position is valid.
      * If there is an opposing animal in the new position, 
      * checks if the animal can be captured. Otherwise, retain position.
-     * @param currAnimal current animal to move
-     * @param newPos new position to check
-     * 
+     * @param - currAnimal current animal to move
+     * @param - newPos new position to check
      * @return true if successful, false if unsuccessful
+     * 
      * @author Carlo
      */
     public boolean moveAnimal(Animal currAnimal, Position newPos){
         Tile newTile = searchTile(newPos);
+        //if tile is a valid positon and (if applicable) can capture next tile
         if ( isValidPosition(currAnimal, newPos)
         && captureAnimal( currAnimal, newTile.getAnimal()) ){
             //remove animal from old tile
@@ -148,14 +186,19 @@ public class GameBoard {
     }
 
     /**
+     * Checks if currAnimal can capture otherAnimal if not null
      * 
+     * @param currAnimal - current animal that will capture
+     * @param otherAnimal - other animal to be captured
+     * @return true if captured/empty, false if not
      * 
-     * @param other
-     * @return
+     * @version 1.0
+     * @author Carlo
     */
     public boolean captureAnimal(Animal currAnimal, Animal otherAnimal){
         //if other animal exists in tile
         if(otherAnimal != null){
+            //if animals are opposing factions and currAnimal is higher rank, capture otherAnimal
             if(currAnimal.isOpposingFaction(otherAnimal) 
             && currAnimal.isHigherOrEqualRank(otherAnimal)){
                 otherAnimal.setCapture(true);
@@ -168,18 +211,22 @@ public class GameBoard {
                 otherAnimal.getFaction().reduceNumPieces();
                 return true;
             }
+            //else
             return false;
         }
-        // if null/default
+        // if other is null/default
         return true;
     }
 
     /**
-     * Searches for tile with matching position
-     * @param pos position of tile to search
-     * @return
+     * Searches for tile with matching position if position is valid
+     * @param pos - position of tile to search
+     * @return reference to specific tile if found, null if not found
+     * 
+     * @author Carlo
      */
     public Tile searchTile(Position pos){
+        //if position exists in playBoard
         if (Position.isWithinBounds(pos))
             for(int i = 0; i < ROW; i++)
                 for(int j = 0; j < COL; j++)
@@ -189,12 +236,23 @@ public class GameBoard {
         return null;
     }
 
+    /**
+     * Checks if pos is valid for currAnimal to move to
+     * @param currAnimal - current animal to check
+     * @param pos - next position to check for validity
+     * @return true if position is valid, false if not
+     * 
+     * @author Carlo
+     */
     public boolean isValidPosition(Animal currAnimal, Position pos){
+        //if pos is within bounds
         if (Position.isWithinBounds(pos) ){
-            if( !(Animal.isMouse(currAnimal) || Animal.canJump(currAnimal)) 
-            && searchTile(pos).isRiver()){
+            //if animal is not a mouse/jumper and pos is a river tile
+            if( !(Animal.isMouse(currAnimal) || !(Animal.canJump(currAnimal)) ) 
+            && searchTile(pos).isRiver())
                 return false;
-            }
+            
+            //if pos is a den tile and animal is from same faction
             else if (searchTile(pos).getTerrain() == currAnimal.getFaction().getDen())
                 return false;
 
@@ -207,7 +265,6 @@ public class GameBoard {
      * checks traps if there is an opponent animal close to a den.
      * @return Tile of animal that triggered check
      * 
-     * @version initial test
      * @author Carlo
      * */
     public Tile checkTrap(){

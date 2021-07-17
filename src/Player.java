@@ -25,6 +25,14 @@ public class Player {
         return this.numCaptured;
     }
 
+    public ArrayList<Animal> getPieces(){
+        return Pieces;
+    }
+    
+    public ArrayList<Animal> getCapturedPieces(){
+        return capturedPieces;
+    }
+
     /**Setters*/
     public void reduceNumPieces(){
         numPieces--;
