@@ -147,29 +147,30 @@ public class GameBoard {
      * 
      * @author Carlo
      */
-    public Animal selectAnimal(int nPlayer){
-        Scanner in = new Scanner(System.in);
+    public Animal selectAnimal(int nPlayer, Scanner kbIn){
         ArrayList<Animal> PieceList = players[nPlayer].getPieces();
-        for(int i = 0; i < players[nPlayer].getPieces().size(); i++)
-            System.out.println((i+1) + ": " + PieceList.get(i).getSpecies() );
-
-        int i = -1;
+        int nInput = -1;
         do{
-        System.out.print("Select an animal: "); 
-        
-        try{
-            i = in.nextInt();
-        }catch(InputMismatchException e){
-            System.out.println("Error! Invalid input.");
-        }
+            for(int i = 0; i < players[nPlayer].getPieces().size(); i++)
+                System.out.println((i+1) + ": " + PieceList.get(i).getSpecies() );
 
-        if (i < 0 && i >= players[nPlayer].getPieces().size())
-            System.out.println("Input does not exist!");
+            System.out.print("Select an animal: "); 
             
-        } while (i < 0 && i >= players[nPlayer].getPieces().size());
-        in.close();
+            try{
+                if (kbIn.hasNextInt()){
+                    nInput = kbIn.nextInt();
+                    kbIn.nextLine();
+                }
+            } catch(Exception e){
+                System.out.println("ERROR: Invalid input");
+            }
 
-        return PieceList.get(i);
+            if (nInput <= 0 || nInput > players[nPlayer].getPieces().size() )
+                System.out.println("Input does not exist!");
+            
+        } while(nInput <= 0 || nInput > players[nPlayer].getPieces().size() );
+
+        return PieceList.get(nInput-1);
 
     }
 

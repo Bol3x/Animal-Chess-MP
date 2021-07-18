@@ -8,13 +8,13 @@ public class TestMain{
         int nTurn = 0;  //
         boolean bForceExit = false;
         GameBoard board = new GameBoard();
+        Scanner kbIn = new Scanner(System.in);
         
         while (board.checkGameState() && !bForceExit){
-            Scanner kbIn = new Scanner(System.in);
-            
-            kbIn.close();
+            board.selectAnimal(nTurn % 2, kbIn);
         }
-        
+
+        kbIn.close();
     }
 
 
