@@ -150,7 +150,7 @@ public class GameBoard {
     public Animal selectAnimal(int nPlayer){
         Scanner in = new Scanner(System.in);
         ArrayList<Animal> PieceList = players[nPlayer].getPieces();
-        for(int i = 0; i < players[nPlayer].getNumPieces(); i++)
+        for(int i = 0; i < players[nPlayer].getPieces().size(); i++)
             System.out.println((i+1) + ": " + PieceList.get(i).getSpecies() );
 
         int i = -1;
@@ -163,10 +163,10 @@ public class GameBoard {
             System.out.println("Error! Invalid input.");
         }
 
-        if (i < 0 && i >= players[nPlayer].getNumPieces())
+        if (i < 0 && i >= players[nPlayer].getPieces().size())
             System.out.println("Input does not exist!");
             
-        } while (i < 0 && i >= players[nPlayer].getNumPieces());
+        } while (i < 0 && i >= players[nPlayer].getPieces().size());
         in.close();
 
         return PieceList.get(i);
@@ -228,10 +228,9 @@ public class GameBoard {
 
                 //update player stores
                 currAnimal.getFaction().addCapturedPieces(otherAnimal);
-                currAnimal.getFaction().addNumCaptured();
+                
                 //update other player stores
                 otherAnimal.getFaction().removePiece(otherAnimal);
-                otherAnimal.getFaction().reduceNumPieces();
                 return true;
             }
             //else

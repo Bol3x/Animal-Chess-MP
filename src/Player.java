@@ -6,8 +6,6 @@ import java.util.Collections;
 public class Player{
     private ArrayList<Animal> Pieces = new ArrayList<Animal>();
     private ArrayList<Animal> capturedPieces = new ArrayList<Animal>();
-    private int numPieces;
-    private int numCaptured = 0;
     private final Terrain DEN;
     
     public Player(Terrain den){
@@ -18,13 +16,6 @@ public class Player{
         return this.DEN;
     }
 
-    public int getNumPieces(){
-        return this.numPieces;
-    }
-
-    public int getNumCaptured(){
-        return this.numCaptured;
-    }
 
     public ArrayList<Animal> getPieces(){
         return Pieces;
@@ -35,13 +26,6 @@ public class Player{
     }
 
     /**Setters*/
-    public void reduceNumPieces(){
-        numPieces--;
-    }
-
-    public void addNumCaptured(){
-        numCaptured++;
-    }
 
     public void addPieces(Animal animal){
         Pieces.add(animal);
@@ -52,8 +36,7 @@ public class Player{
     }
 
     public void removePiece(Animal animal){
-        if(Pieces.contains(animal))
-            Pieces.remove(animal);
+        Pieces.remove(animal);
     }
 
     /**Methods*/
