@@ -1,6 +1,6 @@
 package src;
 
-public class Animal {
+public class Animal implements Comparable<Animal> {
     private final Player PLAYER_FACTION;
     private final int RANK;
     private final String SPECIES;
@@ -101,6 +101,20 @@ public class Animal {
      */
     public static boolean canJump(Animal animal){
         return (animal.RANK == 6 || animal.RANK == 7);
+    }
+
+    /**
+     * Comparable method override to sort animals by rank
+     * 
+     * @author Carlo
+    */
+    @Override
+    public int compareTo(Animal other){
+        if (this.RANK > other.RANK)
+            return 1;
+        if (this.RANK == other.RANK)
+            return 0;
+        return -1;
     }
 
 }
