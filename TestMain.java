@@ -6,18 +6,46 @@ public class TestMain{
     public static void main(String[] args){
         
         int nTurn = 0;  //
+        String Choice;
         boolean bForceExit = false;
         GameBoard board = new GameBoard();
         Scanner kbIn = new Scanner(System.in);
+        Animal dummy;
         
-        while (board.checkGameState() && !bForceExit){
-            board.selectAnimal(nTurn % 2, kbIn);
+        while (board.checkGameState() && !bForceExit) {
+            displayTurn(nTurn % 2);
+            displayBoard(board);
+            
+            dummy = board.selectAnimal(nTurn % 2, kbIn);
+            
+            System.out.println("What position will the piece move? : ");
+            Choice = kbIn.next();
+            switch (Choice) {
+                        case "w" -> {
+                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX() - 1, dummy.getPosition().getY() ) );
+                            nTurn++;
+                        }
+                        case "a" -> { 
+                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() - 1 ) );
+                             nTurn++;
+                        }     
+                        case "s" -> {
+                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX() + 1, dummy.getPosition().getY() ) );
+                            nTurn++;
+                        }    
+                        case "d" -> {
+                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() + 1 ) );
+                            nTurn++;
+                        }
+                     }
         }
-
         kbIn.close();
     }
-
-
+    
+    public static void displayTurn(int nTurn) {
+     System.out.println("Player " + nTurn + "  turn");
+    }
+    
     public static void displayAnimals(Player currPlayer){
         for(int i = 0; i < currPlayer.getPieces().size(); i++)
             System.out.println( (i+1) + ": " + currPlayer.getPieces().get(i));
