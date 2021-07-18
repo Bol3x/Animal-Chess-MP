@@ -1,12 +1,32 @@
 import src.*;
 
+import java.util.*;
+
 public class TestMain{
     public static void main(String[] args){
         
+        int nTurn = 0;  //
+        boolean bForceExit = false;
         GameBoard board = new GameBoard();
-        displayBoard(board);
+        
+        while (board.checkGameState() && !bForceExit){
+            Scanner kbIn = new Scanner(System.in);
+            
+            kbIn.close();
+        }
+        
+    }
+
+
+    public static void displayAnimals(Player currPlayer){
+        for(int i = 0; i < currPlayer.getPieces().size(); i++)
+            System.out.println( (i+1) + ": " + currPlayer.getPieces().get(i));
     }
     
+    /**
+     * displays gameboard
+     * @param board
+     */
     public static void displayBoard(GameBoard board){
         for(int i = 0; i < GameBoard.ROW; i++){
             System.out.print("|");
@@ -26,8 +46,6 @@ public class TestMain{
                         case 6 -> System.out.print("Ti");
                         case 7 -> System.out.print("Li");
                         case 8 -> System.out.print("El");
-                        default -> {
-                        }
                     }
                 }
                 
