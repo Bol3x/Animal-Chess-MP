@@ -6,8 +6,7 @@ public class GameBoard {
     public static final int ROW = 9;
     public static final int COL = 7;
 
-    private boolean bGameWin = true;
-    private boolean bForceExit = false;
+    private boolean bGameWin = false;
     private Tile playBoard[][] = new Tile[ROW][COL];
     private Player players[] = new Player[2];
 
@@ -28,7 +27,7 @@ public class GameBoard {
         
         //set dens
         playBoard[0][3] = new Tile(new Position(0,3) , Terrain.DEN1);
-        playBoard[ROW-1][3] = new Tile(new Position(ROW-1,3) , Terrain.DEN2);
+        playBoard[8][3] = new Tile(new Position(ROW-1,3) , Terrain.DEN2);
 
         //set traps
         playBoard[0][2] = new Tile(new Position(0,2) , Terrain.TRAP);
@@ -53,52 +52,68 @@ public class GameBoard {
           //set Player 1 Animals
          Animal mouse = new Animal(players[0], 1, "Mouse", new Position(2,0));
          playBoard[2][0].setAnimal(mouse);
+         players[0].addPieces(mouse);
          
          Animal cat = new Animal(players[0], 2, "Cat", new Position(1,5));
          playBoard[1][5].setAnimal(cat);
+         players[0].addPieces(cat);
          
          Animal wolf = new Animal(players[0], 3, "Wolf", new Position(2,4));
          playBoard[2][4].setAnimal(wolf);
+         players[0].addPieces(wolf);
          
          Animal dog = new Animal(players[0], 4, "Dog", new Position(1,1));
          playBoard[1][1].setAnimal(dog);
+         players[0].addPieces(dog);
          
          Animal leopard = new Animal(players[0], 5, "Leopard", new Position(2,2));
          playBoard[2][2].setAnimal(leopard);
+         players[0].addPieces(leopard);
                          
          Animal tiger = new Animal(players[0], 6, "Tiger", new Position(0,6));
          playBoard[0][6].setAnimal(tiger); 
+         players[0].addPieces(tiger);
          
          Animal lion = new Animal(players[0], 7, "Lion", new Position(0,0));
          playBoard[0][0].setAnimal(lion);
+         players[0].addPieces(lion);
                                  
          Animal elephant = new Animal(players[0], 8, "Elephant", new Position(2,6));
          playBoard[2][6].setAnimal(elephant);
+         players[0].addPieces(elephant);
          
          //set Player 2 Animals
          Animal mouse2 = new Animal(players[1], 1, "Mouse", new Position(6,6));
          playBoard[6][6].setAnimal(mouse2);
+         players[1].addPieces(mouse2);
          
          Animal cat2 = new Animal(players[1], 2, "Cat", new Position(7,1));
          playBoard[7][1].setAnimal(cat2);
+         players[1].addPieces(cat2);
          
          Animal wolf2 = new Animal(players[1], 3, "Wolf", new Position(6,2));
          playBoard[6][2].setAnimal(wolf2);
+         players[1].addPieces(wolf2);
          
          Animal dog2 = new Animal(players[1], 4, "Dog", new Position(7,5));
          playBoard[7][5].setAnimal(dog2);
+         players[1].addPieces(dog2);
          
          Animal leopard2 = new Animal(players[1], 5, "Leopard", new Position(6,4));
          playBoard[6][4].setAnimal(leopard2);
+         players[1].addPieces(leopard2);
                          
          Animal tiger2 = new Animal(players[1], 6, "Tiger", new Position(8,0));
-         playBoard[8][0].setAnimal(tiger2); 
+         playBoard[8][0].setAnimal(tiger2);
+         players[1].addPieces(tiger2);
          
          Animal lion2 = new Animal(players[1], 7, "Lion", new Position(8,6));
          playBoard[8][6].setAnimal(lion2);
+         players[1].addPieces(lion2);
                                  
          Animal elephant2 = new Animal(players[1], 8, "Elephant", new Position(6,0));
          playBoard[6][0].setAnimal(elephant2);
+         players[1].addPieces(elephant2);
     }
 
     /**Constructor*/
@@ -116,7 +131,7 @@ public class GameBoard {
     }
 
     public boolean checkGameState(){
-        return (bGameWin && bForceExit);
+        return (!bGameWin);
     }
 
     public Player getPlayer(int i){
@@ -169,18 +184,26 @@ public class GameBoard {
      * 
      * @author Carlo
      */
-    public boolean moveAnimal(Animal currAnimal, Position newPos){
-        Tile newTile = searchTile(newPos);
-        //if tile is a valid positon and (if applicable) can capture next tile
-        if ( isValidPosition(currAnimal, newPos)
-        && captureAnimal( currAnimal, newTile.getAnimal()) ){
-            //remove animal from old tile
-            Tile oldTile = searchTile( currAnimal.getPosition() );
-            oldTile.setAnimal(null); 
+    public boolean moveAnimal(Animal currAnimal, Position nextPos){
+        Tile newTile = searchTile(nextPos);
 
-            newTile.setAnimal(currAnimal);
-            currAnimal.setPosition(newPos);
-            return true;
+        //if nextPos is a valid positon for currAnimal
+        if ( isValidPosition(currAnimal, nextPos)){
+
+            //jumps across river if animal can jump and next tile is river
+            if ( Animal.canJump(currAnimal) && newTile.isRiver() )
+                newTile = searchTile( jumpRiver(currAnimal.getPosition(), nextPos) );
+            
+            //checks (if applicable) currAnimal can capture animal on new tile
+            if (captureAnimal( currAnimal, newTile.getAnimal()) ){
+                //remove animal from old tile
+                Tile oldTile = searchTile( currAnimal.getPosition() );
+                oldTile.setAnimal(null); 
+
+                newTile.setAnimal(currAnimal);
+                currAnimal.setPosition(nextPos);
+                return true;
+            }
         }
         return false;
     }
@@ -204,7 +227,7 @@ public class GameBoard {
                 otherAnimal.setCapture(true);
 
                 //update player stores
-                currAnimal.getFaction().setCaptured(otherAnimal);
+                currAnimal.getFaction().addCapturedPieces(otherAnimal);
                 currAnimal.getFaction().addNumCaptured();
                 //update other player stores
                 otherAnimal.getFaction().removePiece(otherAnimal);
@@ -237,7 +260,7 @@ public class GameBoard {
     }
 
     /**
-     * Checks if pos is valid for currAnimal to move to
+     * Checks if pos is valid tile for currAnimal to move to
      * @param currAnimal - current animal to check
      * @param pos - next position to check for validity
      * @return true if position is valid, false if not
@@ -259,6 +282,47 @@ public class GameBoard {
             return true;
         }
         return false;
+    }
+
+    /**
+     * performs jumping over a river, returning the new position to move to.
+     * @param currPos - current animal's position
+     * @param nextPos - next positon to move to
+     * @return new position across the river tiles, next tile directly if not a river
+     */
+    public Position jumpRiver(Position currPos, Position nextPos){
+        Position newPos = nextPos;
+
+        //if animal is right of river
+        if ( currPos.getY() > nextPos.getY() ){
+            newPos = nextPos;
+            while( searchTile(newPos).isRiver() )
+                newPos = new Position(newPos.getX(), newPos.getY()-1);
+            
+        }
+        //if animal is left of river
+        else if ( currPos.getY() < nextPos.getY() ){
+            newPos = nextPos;
+            while( searchTile(newPos).isRiver() )
+                newPos = new Position(newPos.getX(), newPos.getY()+1);
+            
+        }
+
+        //if animal is below river
+        else if ( currPos.getX() > nextPos.getX() ){
+            newPos = nextPos;
+            while( searchTile(newPos).isRiver() )
+                newPos = new Position(newPos.getX()-1, newPos.getY());
+            
+        }
+
+        //if animal is above river
+        else if ( currPos.getX() < nextPos.getX() ){
+            newPos = nextPos;
+            while( searchTile(newPos).isRiver() )
+                newPos = new Position(newPos.getX()+1, newPos.getY());
+        }
+        return newPos;
     }
 
     /**
