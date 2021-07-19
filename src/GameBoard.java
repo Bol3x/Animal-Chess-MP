@@ -192,6 +192,10 @@ public class GameBoard {
             if ( Animal.canJump(currAnimal) && newTile.isRiver() ){
                 newPos = jumpRiver(currAnimal.getPosition(), nextPos);
                 newTile = searchTile(newPos);
+
+                //if jump is unsuccessful
+                if (nextPos.equals(newPos) )
+                    return false;
             }
             
             //checks (if applicable) currAnimal can capture animal on new tile
@@ -205,6 +209,7 @@ public class GameBoard {
                 return true;
             }
         }
+        //if move is unsuccessful
         return false;
     }
 
@@ -270,7 +275,7 @@ public class GameBoard {
         //if pos is within bounds
         if (Position.isWithinBounds(pos) ){
             //if animal is not a mouse/jumper and pos is a river tile
-            if( (!Animal.isMouse(currAnimal) && !Animal.canJump(currAnimal) ) 
+            if( !Animal.isMouse(currAnimal) && !Animal.canJump(currAnimal) 
             && searchTile(pos).isRiver())
                 return false;
             
@@ -294,28 +299,44 @@ public class GameBoard {
 
         //if animal is right of river
         if ( currPos.getY() > nextPos.getY() ){
-            while( searchTile(newPos).isRiver() )
+            while(searchTile(newPos).isRiver() ){
+                //if animal (mouse) is in river
+                if (searchTile(newPos).hasAnimal() )
+                    return nextPos;
+
                 newPos = new Position(newPos.getX(), newPos.getY()-1);
-            
+            }
         }
         //if animal is left of river
         else if ( currPos.getY() < nextPos.getY() ){
-            while( searchTile(newPos).isRiver() )
+            while( searchTile(newPos).isRiver() ){
+                if (searchTile(newPos).hasAnimal() )
+                    return nextPos;
+
                 newPos = new Position(newPos.getX(), newPos.getY()+1);
+            }
             
         }
 
         //if animal is below river
         else if ( currPos.getX() > nextPos.getX() ){
-            while( searchTile(newPos).isRiver() )
+            while( searchTile(newPos).isRiver() ){
+                if (searchTile(newPos).hasAnimal() )
+                    return nextPos;
+
                 newPos = new Position(newPos.getX()-1, newPos.getY());
+            }
             
         }
 
         //if animal is above river
         else if ( currPos.getX() < nextPos.getX() ){
-            while( searchTile(newPos).isRiver() )
+            while( searchTile(newPos).isRiver() ){
+                if (searchTile(newPos).hasAnimal() )
+                    return nextPos;
+
                 newPos = new Position(newPos.getX()+1, newPos.getY());
+            }
         }
         return newPos;
     }
