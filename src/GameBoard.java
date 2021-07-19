@@ -156,13 +156,9 @@ public class GameBoard {
 
             System.out.print("Select an animal: "); 
             
-            try{
-                if (kbIn.hasNextInt()){
-                    nInput = kbIn.nextInt();
-                    kbIn.nextLine();
-                }
-            } catch(Exception e){
-                System.out.println("ERROR: Invalid input");
+            if (kbIn.hasNextInt()){
+                nInput = kbIn.nextInt();
+                kbIn.nextLine();
             }
 
             if (nInput <= 0 || nInput > players[nPlayer].getPieces().size() )
@@ -187,13 +183,16 @@ public class GameBoard {
      */
     public boolean moveAnimal(Animal currAnimal, Position nextPos){
         Tile newTile = searchTile(nextPos);
+        Position newPos = nextPos;
 
         //if nextPos is a valid positon for currAnimal
         if ( isValidPosition(currAnimal, nextPos)){
 
             //jumps across river if animal can jump and next tile is river
-            if ( Animal.canJump(currAnimal) && newTile.isRiver() )
-                newTile = searchTile( jumpRiver(currAnimal.getPosition(), nextPos) );
+            if ( Animal.canJump(currAnimal) && newTile.isRiver() ){
+                newPos = jumpRiver(currAnimal.getPosition(), nextPos);
+                newTile = searchTile(newPos);
+            }
             
             //checks (if applicable) currAnimal can capture animal on new tile
             if (captureAnimal( currAnimal, newTile.getAnimal()) ){
@@ -202,7 +201,7 @@ public class GameBoard {
                 oldTile.setAnimal(null); 
 
                 newTile.setAnimal(currAnimal);
-                currAnimal.setPosition(nextPos);
+                currAnimal.setPosition(newPos);
                 return true;
             }
         }
@@ -271,7 +270,7 @@ public class GameBoard {
         //if pos is within bounds
         if (Position.isWithinBounds(pos) ){
             //if animal is not a mouse/jumper and pos is a river tile
-            if( !(Animal.isMouse(currAnimal) || !(Animal.canJump(currAnimal)) ) 
+            if( (!Animal.isMouse(currAnimal) && !Animal.canJump(currAnimal) ) 
             && searchTile(pos).isRiver())
                 return false;
             
@@ -295,14 +294,12 @@ public class GameBoard {
 
         //if animal is right of river
         if ( currPos.getY() > nextPos.getY() ){
-            newPos = nextPos;
             while( searchTile(newPos).isRiver() )
                 newPos = new Position(newPos.getX(), newPos.getY()-1);
             
         }
         //if animal is left of river
         else if ( currPos.getY() < nextPos.getY() ){
-            newPos = nextPos;
             while( searchTile(newPos).isRiver() )
                 newPos = new Position(newPos.getX(), newPos.getY()+1);
             
@@ -310,7 +307,6 @@ public class GameBoard {
 
         //if animal is below river
         else if ( currPos.getX() > nextPos.getX() ){
-            newPos = nextPos;
             while( searchTile(newPos).isRiver() )
                 newPos = new Position(newPos.getX()-1, newPos.getY());
             
@@ -318,7 +314,6 @@ public class GameBoard {
 
         //if animal is above river
         else if ( currPos.getX() < nextPos.getX() ){
-            newPos = nextPos;
             while( searchTile(newPos).isRiver() )
                 newPos = new Position(newPos.getX()+1, newPos.getY());
         }
