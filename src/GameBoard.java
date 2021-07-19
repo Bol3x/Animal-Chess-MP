@@ -369,5 +369,9 @@ public class GameBoard {
         //no opponent animals close to den
         return null;
     }
-
+     
+    public boolean checkWinningMove(){
+        return playBoard[0][3].hasAnimal() 
+            || playBoard[8][3].hasAnimal();
+    }
 }
