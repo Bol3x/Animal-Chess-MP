@@ -8,37 +8,55 @@ public class TestMain{
         int nTurn = 0;  //
         String Choice;
         boolean bForceExit = false;
+        boolean bMove = false; 
         GameBoard board = new GameBoard();
         Scanner kbIn = new Scanner(System.in);
         Animal dummy;
         
-        while (board.checkGameState() && !bForceExit) {
+        displayBoard(board);
+        
+        while (board.checkGameState() && !bForceExit) {         
             displayTurn(nTurn % 2);
-            displayBoard(board);
-            
+           
             dummy = board.selectAnimal(nTurn % 2, kbIn);
             
             System.out.println("What position will the piece move? : ");
             Choice = kbIn.next();
             switch (Choice) {
                         case "w" -> {
-                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX() - 1, dummy.getPosition().getY() ) );
+                            bMove = board.moveAnimal(dummy, new Position(dummy.getPosition().getX() - 1, dummy.getPosition().getY() ) );
+                           if(bMove) 
                             nTurn++;
                         }
                         case "a" -> { 
-                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() - 1 ) );
-                             nTurn++;
+                            bMove = board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() - 1 ) );
+                            if(bMove)
+                            nTurn++;
                         }     
                         case "s" -> {
-                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX() + 1, dummy.getPosition().getY() ) );
+                            bMove = board.moveAnimal(dummy, new Position(dummy.getPosition().getX() + 1, dummy.getPosition().getY() ) );
+                            if(bMove)
                             nTurn++;
                         }    
                         case "d" -> {
-                            board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() + 1 ) );
+                            bMove = board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() + 1 ) );
+                             if(bMove)
                             nTurn++;
                         }
                      }
+            
+         displayBoard(board);
+
+          if(board.checkWinningMove()) {
+               bForceExit = true;
+          }
         }
+        
+        if(nTurn % 2 != 0)
+            System.out.println("Player 0 Won!");
+        else
+           System.out.println("Player 1 Won!");
+        
         kbIn.close();
     }
     
@@ -62,7 +80,7 @@ public class TestMain{
             for(int j = 0; j < GameBoard.COL; j++){
 
                 if (board.getTile(i, j).isTrap())
-                    System.out.print("T");
+                    System.out.print("T ");
                 
                 else if (board.getTile(i, j).hasAnimal()){
                     switch (board.getTile(i, j).getAnimal().getRank()) {
@@ -78,17 +96,17 @@ public class TestMain{
                 }
                 
                 else if (board.getTile(i, j).isRiver())
-                    System.out.print("R");
+                    System.out.print("R ");
 
                 else if (board.getTile(i, j).isDen())
-                    System.out.print("D");
+                    System.out.print("D ");
                 
                 else
-                    System.out.print(" ");
+                    System.out.print("  ");
 
                 System.out.print("|");
             }
-            System.out.println("\n---------------");
+            System.out.println("\n-----------------------");
         }
     }
  }
