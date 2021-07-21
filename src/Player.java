@@ -4,63 +4,104 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Player{
+
+    /* Class Variables */
     private ArrayList<Animal> Pieces = new ArrayList<Animal>();
     private ArrayList<Animal> capturedPieces = new ArrayList<Animal>();
     private final Terrain DEN;
     
+    /* Constructor */
+    /**
+     * Player constructor.
+     * @param den - Player's den
+     */
     public Player(Terrain den){
         this.DEN = den;
     }
 
+    /* Getters */
+    /**
+     * Gets den belonging to player.
+     * @return DEN field
+     */
     public Terrain getDen(){
         return this.DEN;
     }
-
-
+    
+    /**
+     * Gets ArrayList of animals belonging to player.
+     * @return Pieces field
+     */
     public ArrayList<Animal> getPieces(){
         return Pieces;
     }
     
+    /**
+     * Gets Arraylist of animals captured by player.
+     * @return capturedPieces field
+     */
     public ArrayList<Animal> getCapturedPieces(){
         return capturedPieces;
     }
 
-    /**Setters*/
-
+    /* Setters */
+    /**
+     * Adds pieces belonging to player.
+     * @param animal - Animal piece to add
+     */
     public void addPieces(Animal animal){
         Pieces.add(animal);
     }
 
+    /**
+     * Adds pieces captured by player.
+     * @param captured - Captured animal piece to add
+     */
     public void addCapturedPieces(Animal captured){
         capturedPieces.add(captured);
     }
 
+    /**
+     * Removes piece from player (captured by other player).
+     * @param animal - Animal to remove
+     */
     public void removePiece(Animal animal){
         Pieces.remove(animal);
     }
 
-    /**Methods*/
+    /* Methods */
     
+    /**
+     * Shuffles pieces in random order.
+     */
     public void shufflePieces(){
         Collections.shuffle(Pieces);
     }
 
+    /**
+     * Sorts pieces according to rank.
+     */
     public void sortPieces(){
         Collections.sort(Pieces);
     }
 
-    /**Prototype Methods*/
+    /**
+     * Lists down pieces of player.
+     */
     public void listPieces(){
         for(Animal animal: Pieces){
             System.out.println
-            (Pieces.indexOf(animal) + ": " + animal.getSpecies() );
+            ((Pieces.indexOf(animal)+1) + ": " + animal.getSpecies() );
         }
     }
 
+    /**
+     * Lists down captured pieces by player.
+     */
     public void listCapturedPieces(){
         for(Animal animal : capturedPieces){
             System.out.println
-            (capturedPieces.indexOf(animal) + ": " + animal.getSpecies() );
+            ((capturedPieces.indexOf(animal)+1) + ": " + animal.getSpecies() );
         }
     }
 }

@@ -1,13 +1,22 @@
 package src;
 
 public class Animal implements Comparable<Animal> {
+
+    /* Class Variables */
     private final Player PLAYER_FACTION;
     private final int RANK;
     private final String SPECIES;
     private Position pos;
     private boolean bCaptured = false;
 
-    /**Constructor*/
+    /* Constructor */
+    /**
+     * Constructor for Animal object
+     * @param Faction - player it belongs to
+     * @param Rank - rank of animal
+     * @param strSpecies - name of animal
+     * @param position - initial position
+     */
     public Animal(Player Faction, int Rank, String strSpecies, Position position){
         this.PLAYER_FACTION = Faction;
         this.RANK = Rank;
@@ -16,32 +25,60 @@ public class Animal implements Comparable<Animal> {
     }
     
     /**Getters*/
+    /**
+     * Gets player the animal belongs to.
+     * @return PLAYER_FACTION field
+     */
     public Player getFaction(){
         return this.PLAYER_FACTION;
     }
     
+    /**
+     * Gets animal's rank.
+     * @return RANK field
+     */
     public int getRank(){
         return this.RANK;
     }
 
+    /**
+     * Gets animal's name.
+     * @return SPECIES field
+     */
     public String getSpecies(){
         return this.SPECIES;
     }
 
+    /**
+     * Gets animal's position.
+     * @return pos field
+     */
     public Position getPosition(){
         return this.pos;
     }
 
+    /**
+     * Gets animal's state (captured or not).
+     * @return bCaptured field
+     */
     public boolean isCaptured(){
         return this.bCaptured;
     }
 
     /**Setters*/
 
+    /**
+     * Sets the state of the animal (captured or not).
+     * @param bool - value to update with
+     */
     public void setCapture(boolean bool){
         this.bCaptured = bool;
     }
 
+    /**
+     * Sets a new position for the animal
+     * @param newPos - new position to update pos with
+     */
     public void setPosition(Position newPos){
         this.pos = newPos;
     }

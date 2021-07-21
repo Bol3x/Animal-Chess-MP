@@ -2,43 +2,73 @@ package src;
 
 public class Tile{
 
-    /**Class Variables*/
+    /* Class Variables */
     private Animal animal;
     private final Terrain TERRAIN;
     private final Position LOCATION;
 
-    /**Constructors*/
+    /* Constructors */
+    /**
+     * Tile Constructor with specific terrain.
+     * @param loc - Position to set
+     * @param ter - Terrain to set
+     */
     public Tile(Position loc, Terrain ter){
         this.animal = null;
         this.TERRAIN = ter;
         this.LOCATION = loc;
     }
 
+    /**
+     * Tile Constructor without terrain.
+     * @param loc - Position to set
+     */
     public Tile(Position loc){
         this.animal = null;
         this.TERRAIN = null;
         this.LOCATION = loc;
     }
 
-    /**Getters*/
+    /* Getters */
+
+    /**
+     * Gets animal stored in tile.
+     * @return animal field
+     */
     public Animal getAnimal(){
         return this.animal;
     }
 
+    /**
+     * Gets terrain stored in tile.
+     * @return TERRAIN field
+     */
     public Terrain getTerrain(){
         return this.TERRAIN;
     }
 
+    /**
+     * Gets position of tile.
+     * @return LOCATION field
+     */
     public Position getLocation(){
         return this.LOCATION;
     }
 
-    /**Setters*/
+    /* Setters */
+    /**
+     * Sets animal to tile.
+     * @param anim - Animal to set
+     */
     public void setAnimal(Animal anim){
         this.animal = anim;
     }
 
-    /**Methods*/
+    /* Methods */
+    /**
+     * Checks if tile has an animal.
+     * @return boolean value
+     */
     public boolean hasAnimal(){
         if (this.animal != null)
             return true;
@@ -46,6 +76,11 @@ public class Tile{
         return false;
     }
 
+
+    /**
+     * checks if tile has a river terrain.
+     * @return boolean value
+     */
     public boolean isRiver(){
         if (this.TERRAIN == Terrain.RIVER)
             return true;
@@ -53,6 +88,10 @@ public class Tile{
         return false;
     }
 
+    /**
+     * checks if tile has a trap terrain.
+     * @return boolean value
+     */
     public boolean isTrap(){
         if (this.TERRAIN == Terrain.TRAP)
             return true;
@@ -60,6 +99,10 @@ public class Tile{
         return false;
     }
 
+    /**
+     * checks if tile is one of the 2 dens.
+     * @return boolean value
+     */
     public boolean isDen(){
         if(this.TERRAIN == Terrain.DEN1
         || this.TERRAIN == Terrain.DEN2)
