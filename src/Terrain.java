@@ -1,5 +1,5 @@
 package src;
 
 public enum Terrain{
-    DEN1, DEN2, TRAP, RIVER
+    DEN_RED, DEN_BLUE, TRAP, RIVER
 }

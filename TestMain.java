@@ -4,10 +4,10 @@ import java.util.*;
 public class TestMain{
     public static void main(String[] args){
 
-        int nTurn = 0, nPlayer = nTurn;
         boolean bForceExit = false;
-        GameBoard board = new GameBoard();
         Scanner kbIn = new Scanner(System.in);
+        GameBoard board = new GameBoard(kbIn);
+        int nTurn = board.getFirstPlayer(), nPlayer = nTurn;
 
         displayBoard(board);
 

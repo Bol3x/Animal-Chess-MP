@@ -104,8 +104,8 @@ public class Tile{
      * @return boolean value
      */
     public boolean isDen(){
-        if(this.TERRAIN == Terrain.DEN1
-        || this.TERRAIN == Terrain.DEN2)
+        if(this.TERRAIN == Terrain.DEN_RED
+        || this.TERRAIN == Terrain.DEN_BLUE)
             return true;
         //else
         return false;

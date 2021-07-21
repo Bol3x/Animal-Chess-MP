@@ -8,7 +8,7 @@ public class Player{
     /* Class Variables */
     private ArrayList<Animal> Pieces = new ArrayList<Animal>();
     private ArrayList<Animal> capturedPieces = new ArrayList<Animal>();
-    private final Terrain DEN;
+    private final Terrain DEN_COLOR;
     
     /* Constructor */
     /**
@@ -16,7 +16,7 @@ public class Player{
      * @param den - Player's den
      */
     public Player(Terrain den){
-        this.DEN = den;
+        this.DEN_COLOR = den;
     }
 
     /* Getters */
@@ -25,7 +25,7 @@ public class Player{
      * @return DEN field
      */
     public Terrain getDen(){
-        return this.DEN;
+        return this.DEN_COLOR;
     }
     
     /**

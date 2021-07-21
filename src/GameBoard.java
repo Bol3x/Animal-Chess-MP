@@ -9,14 +9,85 @@ public class GameBoard {
     private boolean bGameWin = false;
     private Tile playBoard[][] = new Tile[ROW][COL];
     private Player players[] = new Player[2];
-
+    private int nFirstPlayer;
 
     /* Constructor */
+    public GameBoard(Scanner kbIn){
+        initPlayBoard(kbIn);
+    }
+
     /**
-     * GameBoard constructor, calls initPlayBoard.
+     * Initializes order of turns and player colors
+     * @param kbIn - keyboard input
      */
-    public GameBoard(){
-        initPlayBoard();
+    private void initPlayerColors(Scanner kbIn){
+        Player tempPlayer = new Player(null);
+        
+        tempPlayer.addPieces(new Animal(tempPlayer, 1, "Mouse", null));
+        tempPlayer.addPieces(new Animal(tempPlayer, 2, "Cat", null));
+        tempPlayer.addPieces(new Animal(tempPlayer, 3, "Wolf", null));
+        tempPlayer.addPieces(new Animal(tempPlayer, 4, "Dog", null));
+        tempPlayer.addPieces(new Animal(tempPlayer, 5, "Leopard", null));
+        tempPlayer.addPieces(new Animal(tempPlayer, 6, "Tiger", null));
+        tempPlayer.addPieces(new Animal(tempPlayer, 7, "Lion", null));
+        tempPlayer.addPieces(new Animal(tempPlayer, 8, "Elephant", null));
+
+        tempPlayer.shufflePieces();
+
+        Animal tempAnimal1, tempAnimal2;
+        int nInput;
+
+        do{
+        System.out.println("Player 1\nSelect a number from 1-8: ");
+        nInput = kbIn.nextInt(); kbIn.nextLine();
+
+            if (nInput <= 0 || nInput > tempPlayer.getPieces().size())
+                System.out.println("Invalid input!");
+        }while (nInput <= 0 || nInput > tempPlayer.getPieces().size());
+
+        tempAnimal1 = tempPlayer.getPieces().get(nInput-1);
+        tempPlayer.shufflePieces();
+        {
+        System.out.println("Player 2\nSelect a number from 1-8: ");
+        nInput = kbIn.nextInt(); kbIn.nextLine();
+
+            if (nInput <= 0 || nInput > tempPlayer.getPieces().size())
+                System.out.println("Invalid input!");
+        }while (nInput <= 0 || nInput > tempPlayer.getPieces().size());
+
+        tempAnimal2 = tempPlayer.getPieces().get(nInput-1);
+
+        System.out.println("Player 1 Chose: " + tempAnimal1.getSpecies() + ": Rank " + tempAnimal1.getRank());
+        System.out.println("Player 2 Chose: " + tempAnimal2.getSpecies() + ": Rank " + tempAnimal2.getRank());
+
+        boolean bHigher = tempAnimal1.getRank() >= tempAnimal2.getRank();
+        if (bHigher){
+            System.out.println("Player 1 goes first!");
+            nFirstPlayer = 0;
+        }
+        else{ 
+            System.out.println("Player 2 goes first!");
+            nFirstPlayer = 1;
+        } 
+        
+        do{
+            System.out.println("1. (Red: above)\n2. (Blue: Below)\nWhat color will you choose?: ");
+            nInput = kbIn.nextInt(); kbIn.nextLine();
+
+            if (nInput != 1 && nInput != 2)
+                System.out.println("Invalid input!");
+        }while(nInput != 1 && nInput != 2);
+
+        if ( (nInput == 1 && bHigher) || (nInput == 2 && !bHigher) ){
+            System.out.println("Player 1 will be RED\nPlayer 2 will be BLUE");
+            players[0] = new Player(Terrain.DEN_RED);
+            players[1] = new Player(Terrain.DEN_BLUE);
+        }
+        else{
+            System.out.println("Player 1 will be BLUE\nPlayer 2 will be RED");
+            players[0] = new Player(Terrain.DEN_BLUE);
+            players[1] = new Player(Terrain.DEN_RED);
+        }
     }
 
     /**
@@ -25,15 +96,14 @@ public class GameBoard {
      * 
      * @version 1.3 - moved animal instantiates to seperate function
      */
-    private void initPlayBoard(){
+    private void initPlayBoard(Scanner kbIn){
         
         //set players
-        players[0] = new Player(Terrain.DEN1);
-        players[1] = new Player(Terrain.DEN2);
+        initPlayerColors(kbIn);
         
         //set dens
-        playBoard[0][3] = new Tile(new Position(0,3) , Terrain.DEN1);
-        playBoard[8][3] = new Tile(new Position(ROW-1,3) , Terrain.DEN2);
+        playBoard[0][3] = new Tile(new Position(0,3) , Terrain.DEN_RED);
+        playBoard[8][3] = new Tile(new Position(8,3) , Terrain.DEN_BLUE);
 
         //set traps
         playBoard[0][2] = new Tile(new Position(0,2) , Terrain.TRAP);
@@ -55,27 +125,17 @@ public class GameBoard {
             }
         }
 
-        //set player 1 animals
-        initAnimal(0, 1, "Mouse", new Position(2,0));
-        initAnimal(0, 2, "Cat", new Position(1,5));
-        initAnimal(0, 3, "Wolf", new Position(2,4));
-        initAnimal(0, 4, "Dog", new Position(1,1));
-        initAnimal(0, 5, "Leopard", new Position(2,2));
-        initAnimal(0, 6, "Tiger", new Position(0,6));
-        initAnimal(0, 7, "Lion", new Position(0,0));
-        initAnimal(0, 8, "Elephant", new Position(2,6));
-
-        //set player 2 animals
-        initAnimal(1, 1, "Mouse", new Position(6,6));
-        initAnimal(1, 2, "Cat", new Position(7,1));
-        initAnimal(1, 3, "Wolf", new Position(6,2));
-        initAnimal(1, 4, "Dog", new Position(7,5));
-        initAnimal(1, 5, "Leopard", new Position(6,4));
-        initAnimal(1, 6, "Tiger", new Position(8,0));
-        initAnimal(1, 7, "Lion", new Position(8,6));
-        initAnimal(1, 8, "Elephant", new Position(6,0));
-
+        //initialize animals
+        if (players[0].getDen() == Terrain.DEN_RED){
+            initRedAnimals(0);
+            initBlueAnimals(1);
+        }
+        else if (players[0].getDen() == Terrain.DEN_BLUE){
+            initBlueAnimals(0);
+            initRedAnimals(1);
+        }
     }
+
 
     /**
      * initializes animals to the board and player fields
@@ -84,12 +144,41 @@ public class GameBoard {
      * @param strName - animal name
      * @param postion - initial position on board
      */
-    private void initAnimal(int nPlayer, int nRank, String strName, Position position){
-        Animal animal = new Animal(players[nPlayer], nRank, strName, position);
+    private void initAnimal(Player player, int nRank, String strName, Position position){
+        Animal animal = new Animal(player, nRank, strName, position);
         searchTile(position).setAnimal(animal);
-        players[nPlayer].addPieces(animal);
+        player.addPieces(animal);
     }
 
+    /**
+     * initializes animals in blue area (bottom 3 rows).
+     * @param nPlayer - player to assign animals to
+     */
+    public void initBlueAnimals(int nPlayer){
+        initAnimal(players[nPlayer], 1, "Mouse"     , new Position(6,6));
+        initAnimal(players[nPlayer], 2, "Cat"       , new Position(7,1));
+        initAnimal(players[nPlayer], 3, "Wolf"      , new Position(6,2));
+        initAnimal(players[nPlayer], 4, "Dog"       , new Position(7,5));
+        initAnimal(players[nPlayer], 5, "Leopard"   , new Position(6,4));
+        initAnimal(players[nPlayer], 6, "Tiger"     , new Position(8,0));
+        initAnimal(players[nPlayer], 7, "Lion"      , new Position(8,6));
+        initAnimal(players[nPlayer], 8, "Elephant"  , new Position(6,0));
+    }
+
+    /**
+     * initializes animals in red area (top 3 rows).
+     * @param nPlayer - player to assign animals to
+     */
+    public void initRedAnimals(int nPlayer){
+        initAnimal(players[nPlayer], 1, "Mouse"     , new Position(2,0));
+        initAnimal(players[nPlayer], 2, "Cat"       , new Position(1,5));
+        initAnimal(players[nPlayer], 3, "Wolf"      , new Position(2,4));
+        initAnimal(players[nPlayer], 4, "Dog"       , new Position(1,1));
+        initAnimal(players[nPlayer], 5, "Leopard"   , new Position(2,2));
+        initAnimal(players[nPlayer], 6, "Tiger"     , new Position(0,6));
+        initAnimal(players[nPlayer], 7, "Lion"      , new Position(0,0));
+        initAnimal(players[nPlayer], 8, "Elephant"  , new Position(2,6));
+    }
 
     /* Getters */
     /**
@@ -125,6 +214,14 @@ public class GameBoard {
      */
     public Player getPlayer(int i){
         return players[i];
+    }
+
+    /**
+     * Gets the index of the first player to move.
+     * @return 1 or 0, based on result of initPlayerColors
+     */
+    public int getFirstPlayer(){
+        return nFirstPlayer;
     }
 
     /* Methods */
@@ -339,7 +436,7 @@ public class GameBoard {
         for(int i = 0; i <= 1; i++){
             for(int j = 2; j <= 4; j++){
                 if(playBoard[i][j].hasAnimal()
-                && playBoard[i][j].getAnimal().getFaction().getDen() != Terrain.DEN1)
+                && playBoard[i][j].getAnimal().getFaction().getDen() != Terrain.DEN_RED)
                     return playBoard[i][j];
             }
         }
@@ -348,7 +445,7 @@ public class GameBoard {
         for(int i = 7; i <= 8; i++){
             for(int j = 2; j <= 4; j++){
                 if(playBoard[i][j].hasAnimal()
-                && playBoard[i][j].getAnimal().getFaction().getDen() != Terrain.DEN2)
+                && playBoard[i][j].getAnimal().getFaction().getDen() != Terrain.DEN_BLUE)
                     return playBoard[i][j];
             }
         }
