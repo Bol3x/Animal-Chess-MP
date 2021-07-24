@@ -1,5 +1,8 @@
 package src;
 
+/**
+ * Represents a location for <code>Animal</code> objects and special <code>Terrain</code> enumerations.
+ */
 public class Tile{
 
     /* Class Variables */

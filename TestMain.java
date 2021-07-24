@@ -1,6 +1,9 @@
 import src.*;
 import java.util.*;
 
+/**
+ * Test driver for testing the implementation of Classes in the <code>src</code> package.
+ */
 public class TestMain{
     public static void main(String[] args){
 
@@ -30,7 +33,7 @@ public class TestMain{
                 System.out.println("Invalid Move!");
 
          displayBoard(board);
-         board.checkWinningMove(nPlayer);
+         board.checkWinningMove((nPlayer+1) % 2);
             if (bMoved && board.checkGameState())
                 nTurn++;
         }

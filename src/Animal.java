@@ -1,5 +1,11 @@
 package src;
 
+/**
+ * Class for animal pieces to be used in the <code>GameBoard> class.
+ * <p>
+ * Each animal object will have their respective player faction, rank, species name, position, and state within the game, 
+ * and will be stored within the <code>Tile</code> and <code>Player</code> classes.
+ */
 public class Animal implements Comparable<Animal> {
 
     /* Class Variables */
@@ -100,8 +106,6 @@ public class Animal implements Comparable<Animal> {
      * check if animal and other are in opposing teams
      * @param otherAnimal - other animal to compare factions with
      * @return foolean value
-     * 
-     * @author Carlo
      */
     public boolean isOpposingFaction(Animal otherAnimal){
         return (this.PLAYER_FACTION != otherAnimal.PLAYER_FACTION);
@@ -109,41 +113,31 @@ public class Animal implements Comparable<Animal> {
 
     /**
      * check if rank is 1(mouse)
-     * @param animal - Animal to check
      * @return boolean value
-     * 
-     * @author Carlo
      */
-    public static boolean isMouse(Animal animal){
-        return (animal.RANK == 1);
+    public boolean isMouse(){
+        return (this.RANK == 1);
     }
 
     /**
      * check if rank is 8(elephant)
-     * @param animal - Animal to check
      * @return boolean value
-     * 
-     * @author Carlo
      */
-    public static boolean isElephant(Animal animal){
-        return (animal.RANK == 8);
+    public boolean isElephant(){
+        return (this.RANK == 8);
     }
 
     /**
      * check if rank is 6(tiger) or 7(lion)
      * @param animal - animal to check
      * @return boolean value
-     * 
-     * @author Carlo
      */
     public static boolean canJump(Animal animal){
         return (animal.RANK == 6 || animal.RANK == 7);
     }
 
     /**
-     * Comparable method override to sort animals by rank
-     * 
-     * @author Carlo
+     * Comparable method override to sort animals by rank.
     */
     @Override
     public int compareTo(Animal other){

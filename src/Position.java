@@ -1,5 +1,8 @@
 package src;
 
+/**
+ * An object denoting the location of another object in the GameBoard.
+ */
 public class Position {
     
     /* Class Variables */

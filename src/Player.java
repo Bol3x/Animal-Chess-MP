@@ -3,6 +3,11 @@ package src;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * The Player object lists down all animal pieces held by a player, both owned and captured pieces.
+ * <p>
+ * It also contains the particular color of the player as a den terrain enumeration.
+ */
 public class Player{
 
     /* Class Variables */

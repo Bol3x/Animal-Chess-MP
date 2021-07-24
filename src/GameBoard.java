@@ -2,8 +2,19 @@ package src;
 
 import java.util.*;
 
+/**
+ * Stores the main game board composed of <code>Tile></code> objects and controls movement of pieces within the board.
+ * <p>
+ * Handles initialization of gameplay features; Player initialization, animal move controls, and win conditions.
+ */
 public class GameBoard {
+    /**
+     * Row size of playBoard
+     */
     public static final int ROW = 9;
+    /**
+     * Col size of playBoard
+     */
     public static final int COL = 7;
 
     private boolean bGameWin = false;
@@ -12,6 +23,10 @@ public class GameBoard {
     private int nFirstPlayer;
 
     /* Constructor */
+    /**
+     * Constructs a playBoard and initializes players and animals to designated locations.
+     * @param kbIn - Keyboard user input for initializing players and turn order.
+     */
     public GameBoard(Scanner kbIn){
         initPlayBoard(kbIn);
     }
@@ -154,7 +169,7 @@ public class GameBoard {
      * initializes animals in blue area (bottom 3 rows).
      * @param nPlayer - player to assign animals to
      */
-    public void initBlueAnimals(int nPlayer){
+    private void initBlueAnimals(int nPlayer){
         initAnimal(players[nPlayer], 1, "Mouse"     , new Position(6,6));
         initAnimal(players[nPlayer], 2, "Cat"       , new Position(7,1));
         initAnimal(players[nPlayer], 3, "Wolf"      , new Position(6,2));
@@ -169,7 +184,7 @@ public class GameBoard {
      * initializes animals in red area (top 3 rows).
      * @param nPlayer - player to assign animals to
      */
-    public void initRedAnimals(int nPlayer){
+    private void initRedAnimals(int nPlayer){
         initAnimal(players[nPlayer], 1, "Mouse"     , new Position(2,0));
         initAnimal(players[nPlayer], 2, "Cat"       , new Position(1,5));
         initAnimal(players[nPlayer], 3, "Wolf"      , new Position(2,4));
@@ -230,7 +245,7 @@ public class GameBoard {
      * Selects the animal to use.
      * @param nPlayer - index of player to get piece from
      * @param kbIn - keyboard input scanner
-     * @return animal to use
+     * @return animal object to use
      */
     public Animal selectAnimal(int nPlayer, Scanner kbIn){
         ArrayList<Animal> PieceList = players[nPlayer].getPieces();
@@ -260,8 +275,8 @@ public class GameBoard {
      * sets new position of animal if new position is valid.
      * If there is an opposing animal in the new position, 
      * checks if the animal can be captured. Otherwise, retain position.
-     * @param - currAnimal current animal to move
-     * @param - newPos new position to check
+     * @param currAnimal - current animal to move
+     * @param nextPos - position to check
      * @return true if successful, false if unsuccessful
      */
     public boolean moveAnimal(Animal currAnimal, Position nextPos){
@@ -307,12 +322,19 @@ public class GameBoard {
     public boolean captureAnimal(Animal currAnimal, Animal otherAnimal){
         //if other animal exists in tile
         if(otherAnimal != null){
-            //if animals are opposing factions and currAnimal is higher rank, capture otherAnimal
-            if(currAnimal.isOpposingFaction(otherAnimal) 
+            /*
+            if animals are opposing factions AND
+            currAnimal is not an elephant while otherAnimal is a mouse OR
+            currAnimal is higher rank OR 
+            otherAnimal is in a trap OR
+            currAnimal is a mouse and otherAnimal is an elephant
+            */
+            if(currAnimal.isOpposingFaction(otherAnimal)
+            && !(currAnimal.isElephant() && otherAnimal.isMouse())
             &&(currAnimal.isHigherOrEqualRank(otherAnimal) 
                 || searchTile(otherAnimal.getPosition()).isTrap() 
-                || (Animal.isMouse(currAnimal) && Animal.isElephant(otherAnimal)))
-            ){
+                || (currAnimal.isMouse() && otherAnimal.isElephant())))
+            {
                 //if one animal is in a river and the other is not(specially for mice)
                 if( (searchTile(currAnimal.getPosition()).isRiver() && !searchTile(otherAnimal.getPosition()).isRiver())
                 ||  (!searchTile(currAnimal.getPosition()).isRiver() && searchTile(otherAnimal.getPosition()).isRiver())
@@ -361,7 +383,7 @@ public class GameBoard {
         //if pos is within bounds
         if (Position.isWithinBounds(pos) ){
             //if animal is not a mouse/jumper and pos is a river tile
-            if( !Animal.isMouse(currAnimal) && !Animal.canJump(currAnimal) 
+            if( !currAnimal.isMouse() && !Animal.canJump(currAnimal) 
             && searchTile(pos).isRiver())
                 return false;
             
@@ -456,7 +478,7 @@ public class GameBoard {
 
     /**
      * Checks for winning moves/conditions.
-     * @param nPlayer
+     * @param nPlayer - Player to check for available pieces.
      */
     public void checkWinningMove(int nPlayer){
         if(playBoard[0][3].hasAnimal()  //player 1 den
