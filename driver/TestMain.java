@@ -1,3 +1,5 @@
+package driver;
+
 import src.*;
 import java.util.*;
 
@@ -57,7 +59,7 @@ public class TestMain{
     /**
      * displays gameboard for all tiles,
      * including the objects within each tile (animal, terrain).
-     * @param board
+     * @param board - gameBoard to display
      */
     public static void displayBoard(GameBoard board){
         System.out.println("\n----------------------");

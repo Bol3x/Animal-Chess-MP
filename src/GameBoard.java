@@ -3,7 +3,7 @@ package src;
 import java.util.*;
 
 /**
- * Stores the main game board composed of <code>Tile></code> objects and controls movement of pieces within the board.
+ * Stores the main game board composed of <code>Tile</code> objects and controls movement of pieces within the board.
  * <p>
  * Handles initialization of gameplay features; Player initialization, animal move controls, and win conditions.
  */
@@ -62,7 +62,7 @@ public class GameBoard {
 
         tempAnimal1 = tempPlayer.getPieces().get(nInput-1);
         tempPlayer.shufflePieces();
-        {
+        do{
         System.out.println("Player 2\nSelect a number from 1-8: ");
         nInput = kbIn.nextInt(); kbIn.nextLine();
 

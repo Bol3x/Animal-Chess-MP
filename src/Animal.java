@@ -1,8 +1,7 @@
 package src;
 
 /**
- * Class for animal pieces to be used in the <code>GameBoard> class.
- * <p>
+ * Class for animal pieces to be used in the <code>GameBoard</code> class.
  * Each animal object will have their respective player faction, rank, species name, position, and state within the game, 
  * and will be stored within the <code>Tile</code> and <code>Player</code> classes.
  */
