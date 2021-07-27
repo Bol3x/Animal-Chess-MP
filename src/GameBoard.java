@@ -327,13 +327,13 @@ public class GameBoard {
             currAnimal is not an elephant while otherAnimal is a mouse OR
             currAnimal is higher rank OR 
             otherAnimal is in a trap OR
-            currAnimal is a mouse and otherAnimal is an elephant
+            currAnimal is a mouse and otherAnimal is an elephant And mouse is not trapped
             */
             if(currAnimal.isOpposingFaction(otherAnimal)
             && !(currAnimal.isElephant() && otherAnimal.isMouse())
-            &&(currAnimal.isHigherOrEqualRank(otherAnimal) 
+            && (currAnimal.isHigherOrEqualRank(otherAnimal) 
                 || searchTile(otherAnimal.getPosition()).isTrap() 
-                || (currAnimal.isMouse() && otherAnimal.isElephant())))
+                || (currAnimal.isMouse() && !searchTile(currAnimal.getPosition()).isTrap() && otherAnimal.isElephant())))
             {
                 //if one animal is in a river and the other is not(specially for mice)
                 if( (searchTile(currAnimal.getPosition()).isRiver() && !searchTile(otherAnimal.getPosition()).isRiver())
