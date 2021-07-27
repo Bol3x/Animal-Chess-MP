@@ -12,12 +12,12 @@ public class TestMain{
         boolean bForceExit = false;
         Scanner kbIn = new Scanner(System.in);
         GameBoard board = new GameBoard(kbIn);
-        int nTurn = board.getFirstPlayer(), nPlayer = nTurn;
-
+        int nTurn = 0, nPlayer = nTurn;
+     
         displayBoard(board);
 
         while (board.checkGameState() && !bForceExit) {
-            nPlayer = nTurn % 2;
+            nPlayer = (nTurn + board.getFirstPlayer()) % 2;
             boolean bMoved = false;
             displayTurn(nPlayer);
 
@@ -40,7 +40,7 @@ public class TestMain{
                 nTurn++;
         }
 
-        if(nPlayer != 0)
+        if(nPlayer == 0)
             System.out.println("Player 1 Won!");
         else
            System.out.println("Player 2 Won!");
