@@ -1,18 +1,13 @@
-package src;
+package src.Enums;
 
 /**
  * Enumeration to classify specific colors of dens and special terrain in the <code>Tile</code> class.
  */
 public enum Terrain{
     /**
-     * Red colored Den Terrain
+     * Den terrain
      */
-    DEN_RED,
-
-    /**
-     * Blue colored Den Terrain
-     */
-    DEN_BLUE, 
+    DEN,
     /**
      * Trap Terrain
      */

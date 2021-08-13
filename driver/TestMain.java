@@ -1,6 +1,8 @@
 package driver;
 
 import src.*;
+import src.Animals.Animal;
+import src.Enums.Color;
 import java.util.*;
 
 /**
@@ -19,17 +21,17 @@ public class TestMain{
         while (board.checkGameState() && !bForceExit) {
             nPlayer = (nTurn + board.getFirstPlayer()) % 2;
             boolean bMoved = false;
-            displayTurn(nPlayer);
+            displayTurn(board.getPlayer(nPlayer).getColor());
 
             Animal dummy = board.selectAnimal(nPlayer, kbIn);
 
             System.out.println("What position will the piece move? \n(W: up)\n(S: down)\n(A: left)\n(D: right): ");
             String Choice = kbIn.next();
             switch (Choice) {
-                        case "w", "W" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getPosition().getX() - 1, dummy.getPosition().getY() ) );
-                        case "a", "A" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() - 1 ) );
-                        case "s", "S" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getPosition().getX() + 1, dummy.getPosition().getY() ) );
-                        case "d", "D" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getPosition().getX(), dummy.getPosition().getY() + 1 ) );
+                        case "w", "W" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getTile().getLocation().getX() - 1, dummy.getTile().getLocation().getY() ) );
+                        case "a", "A" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getTile().getLocation().getX(), dummy.getTile().getLocation().getY() - 1 ) );
+                        case "s", "S" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getTile().getLocation().getX() + 1, dummy.getTile().getLocation().getY() ) );
+                        case "d", "D" -> bMoved = board.moveAnimal(dummy, new Position(dummy.getTile().getLocation().getX(), dummy.getTile().getLocation().getY() + 1 ) );
                      }
             if (!bMoved)
                 System.out.println("Invalid Move!");
@@ -52,8 +54,8 @@ public class TestMain{
      * displays current player's turn.
      * @param nTurn - turn count
      */
-    public static void displayTurn(int nTurn) {
-     System.out.println("Player " + (nTurn+1) + "'s  turn");
+    public static void displayTurn(Color color) {
+     System.out.println(color.toString() + " Player's  turn");
     }
 
     /**
@@ -62,7 +64,8 @@ public class TestMain{
      * @param board - gameBoard to display
      */
     public static void displayBoard(GameBoard board){
-        System.out.println("\n----------------------");
+        System.out.println("        " + board.getPlayer(board.getSecondPlayer()).getColor().toString());
+        System.out.println("----------------------");
         for(int i = 0; i < GameBoard.ROW; i++){
             System.out.print("|");
 
@@ -98,5 +101,6 @@ public class TestMain{
             }
             System.out.println("\n----------------------");
         }
+        System.out.println("        " + board.getPlayer(board.getFirstPlayer()).getColor().toString());
     }
  }

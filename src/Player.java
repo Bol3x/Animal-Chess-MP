@@ -3,6 +3,9 @@ package src;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import src.Animals.Animal;
+import src.Enums.Color;
+
 /**
  * The Player object lists down all animal pieces held by a player, both owned and captured pieces.
  * <p>
@@ -13,24 +16,24 @@ public class Player{
     /* Class Variables */
     private ArrayList<Animal> Pieces = new ArrayList<Animal>();
     private ArrayList<Animal> capturedPieces = new ArrayList<Animal>();
-    private final Terrain DEN_COLOR;
+    private final Color COLOR;
     
     /* Constructor */
     /**
      * Player constructor.
-     * @param den - Player's den
+     * @param color - Player's chosen color
      */
-    public Player(Terrain den){
-        this.DEN_COLOR = den;
+    public Player(Color color){
+        this.COLOR = color;
     }
 
     /* Getters */
     /**
-     * Gets den belonging to player.
-     * @return DEN field
+     * Gets color belonging to player.
+     * @return COLOR
      */
-    public Terrain getDen(){
-        return this.DEN_COLOR;
+    public Color getColor(){
+        return this.COLOR;
     }
     
     /**
@@ -75,13 +78,6 @@ public class Player{
     }
 
     /* Methods */
-    
-    /**
-     * Shuffles pieces in random order.
-     */
-    public void shufflePieces(){
-        Collections.shuffle(Pieces);
-    }
 
     /**
      * Sorts pieces according to rank.

@@ -1,14 +1,17 @@
 package src;
 
+import src.Animals.Animal;
+import src.Enums.Terrain;
+
 /**
  * Represents a location for <code>Animal</code> objects and special <code>Terrain</code> enumerations.
  */
 public class Tile{
 
     /* Class Variables */
-    private Animal animal;
-    private final Terrain TERRAIN;
-    private final Position LOCATION;
+    protected Animal animal;
+    protected final Terrain TERRAIN;
+    protected final Position LOCATION;
 
     /* Constructors */
     /**
@@ -107,10 +110,17 @@ public class Tile{
      * @return boolean value
      */
     public boolean isDen(){
-        if(this.TERRAIN == Terrain.DEN_RED
-        || this.TERRAIN == Terrain.DEN_BLUE)
+        if(this.TERRAIN == Terrain.DEN)
             return true;
         //else
         return false;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null) return false;
+
+        Tile other = (Tile) obj;
+        return other.LOCATION.equals(this.LOCATION);
+    }   
 }
