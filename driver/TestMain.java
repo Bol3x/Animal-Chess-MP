@@ -41,18 +41,14 @@ public class TestMain{
             if (bMoved && board.checkGameState())
                 nTurn++;
         }
-
-        if(nPlayer == 0)
-            System.out.println("Player 1 Won!");
-        else
-           System.out.println("Player 2 Won!");
+        System.out.println("Player " + board.getPlayer(nPlayer).getColor().toString() + " Won!");
 
         kbIn.close();
     }
 
     /**
      * displays current player's turn.
-     * @param nTurn - turn count
+     * @param color - current player's color
      */
     public static void displayTurn(Color color) {
      System.out.println(color.toString() + " Player's  turn");

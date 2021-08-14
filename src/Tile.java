@@ -14,6 +14,7 @@ public class Tile{
     protected final Position LOCATION;
 
     /* Constructors */
+    
     /**
      * Tile Constructor with specific terrain.
      * @param loc - Position to set

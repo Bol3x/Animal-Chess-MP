@@ -15,7 +15,7 @@ public class Animal implements Comparable<Animal> {
     protected final int RANK;
     protected final String SPECIES;
     protected Tile tile;
-    protected boolean bCaptured = false;
+    protected boolean bCaptured;
 
     /* Constructor */
     /**
@@ -23,13 +23,14 @@ public class Animal implements Comparable<Animal> {
      * @param Faction - player it belongs to
      * @param Rank - rank of animal
      * @param strSpecies - name of animal
-     * @param position - initial tile
+     * @param pos - initial tile
      */
     public Animal(Player Faction, int Rank, String strSpecies, Tile pos){
         PLAYER_FACTION = Faction;
         RANK = Rank;
         SPECIES = strSpecies;
         tile = pos;
+        bCaptured = false;
     }
     
     /**Getters*/
@@ -84,7 +85,7 @@ public class Animal implements Comparable<Animal> {
 
     /**
      * Sets a new tile for the animal
-     * @param newPos - new tile to update pos with
+     * @param newTile - new tile to update pos with
      */
     public void setTile(Tile newTile){
         this.tile = newTile;
@@ -117,7 +118,7 @@ public class Animal implements Comparable<Animal> {
      * 
      * @version 1.3 - moved method to <code>Animal</code> class for specific instructions.
     */
-    public boolean captureAnimal(Animal other){
+    public boolean capture(Animal other){
         if (other != null){
             /*
             if other animal is opposing faction AND
@@ -140,6 +141,10 @@ public class Animal implements Comparable<Animal> {
         return true;
     }
 
+    /**
+     * Checks if the animal is a jumper (rank 6 or 7)
+     * @return true if is a jumper, false if not
+     */
     public boolean canJump(){
         return RANK == 6 || RANK == 7;
     }

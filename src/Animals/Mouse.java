@@ -3,14 +3,21 @@ package src.Animals;
 import src.Player;
 import src.Tile;
 
+/**
+ * Mouse subclass of Animal. Specifies a capture method unique to Mouse objects.
+ */
 public class Mouse extends Animal{
     public Mouse(Player Faction, int Rank, String strSpecies, Tile pos){
         super(Faction, Rank, strSpecies, pos);
     }
 
     @Override
-    public boolean captureAnimal(Animal other){
+    public boolean capture(Animal other){
         if (other != null){
+            /*
+             if other animal is opposing faction AND
+             other animal is an elephant OR is equal rank OR other is trapped 
+             */
             if(this.isOpposingFaction(other) 
             && (other instanceof Elephant || isHigherOrEqualRank(other) || other.getTile().isTrap())){
 

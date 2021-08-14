@@ -91,18 +91,26 @@ public class GameBoard {
             nFirstPlayer = 1;
         } 
         
+        ArrayList<Color> colorList = new ArrayList<Color>();
+        for(int i = 0; i < Color.MAX_COLORS; i++){
+            colorList.add(Color.getColor(i));
+        }
+
         //assign color to each player
         for(int i = 0; i < 2; i++){
             do{
-                Color.displayColors();
+                for(int j = 0; j < colorList.size(); j++){
+                    System.out.println((j+1) + ". " + colorList.get(j).toString());
+                }
                 System.out.println("What color will you choose?: ");
                 nInput = kbIn.nextInt(); kbIn.nextLine();
 
-                if (nInput <= 1 && nInput >=  Color.MAX_COLORS)
+                if (nInput <= 0 || nInput > colorList.size())
                     System.out.println("Invalid input!");
-            }while(nInput <= 1 && nInput >= Color.MAX_COLORS);
+            }while(nInput <= 0 || nInput > colorList.size());
 
-            Color color = Color.chooseColor(nInput);
+            Color color = colorList.get(nInput-1);
+            colorList.remove(color);
             
             //assigns color
             if (nFirstPlayer == 0)
@@ -117,6 +125,8 @@ public class GameBoard {
             
         }
     }
+
+
 
     /**
      * Initializes all tiles and pieces onto the board, 
@@ -224,8 +234,14 @@ public class GameBoard {
         return playBoard;
     }
 
-    public Tile getTile(int x, int y){
-        return playBoard[x][y];
+    /**
+     * Gets tile specified by <code>x</code> and <code>y</code> parameters
+     * @param X - row
+     * @param Y - column
+     * @return Tile of specified location
+     */
+    public Tile getTile(int X, int Y){
+        return playBoard[X][Y];
     }
 
     /** 
@@ -263,7 +279,7 @@ public class GameBoard {
 
     /**
      * Gets the index of the first player to move in <code>players[]</code>.
-     * @return 1 or 0, based on result of <code>initPlayerColors()>/code>
+     * @return 1 or 0, based on result of <code>initPlayerColors()</code>
      */
     public int getFirstPlayer(){
         return nFirstPlayer;
@@ -271,7 +287,7 @@ public class GameBoard {
 
     /**
      * Gets the index of the second player to move in <code>players[]</code>.
-     * @return 1 or 0, based on result of <code>initPlayerColors()>/code>
+     * @return 1 or 0, based on result of <code>initPlayerColors()</code>
      */
     public int getSecondPlayer(){
         return nFirstPlayer == 0 ? 1 : 0;
@@ -335,7 +351,7 @@ public class GameBoard {
             }
             
             //checks (if applicable) currAnimal can capture animal on new tile
-            if (currAnimal.captureAnimal(newTile.getAnimal()) ){
+            if (currAnimal.capture(newTile.getAnimal()) ){
                 //remove animal from old tile
                 currAnimal.getTile().setAnimal(null); 
 
@@ -404,7 +420,7 @@ public class GameBoard {
         if ( currPos.getY() > nextPos.getY() ){
             while(searchTile(newPos).isRiver() ){
                 //if animal (mouse) is in river, exit
-                if (searchTile(newPos).hasAnimal() )
+                if (searchTile(newPos).hasAnimal() || !Position.isWithinBounds(newPos))
                     return nextPos;
 
                 newPos = new Position(newPos.getX(), newPos.getY()-1);
@@ -413,7 +429,7 @@ public class GameBoard {
         //if animal is left of river
         else if ( currPos.getY() < nextPos.getY() ){
             while( searchTile(newPos).isRiver() ){
-                if (searchTile(newPos).hasAnimal() )
+                if (searchTile(newPos).hasAnimal() || !Position.isWithinBounds(newPos))
                     return nextPos;
 
                 newPos = new Position(newPos.getX(), newPos.getY()+1);
@@ -424,7 +440,7 @@ public class GameBoard {
         //if animal is below river
         else if ( currPos.getX() > nextPos.getX() ){
             while( searchTile(newPos).isRiver() ){
-                if (searchTile(newPos).hasAnimal() )
+                if (searchTile(newPos).hasAnimal() || !Position.isWithinBounds(newPos))
                     return nextPos;
 
                 newPos = new Position(newPos.getX()-1, newPos.getY());
@@ -435,7 +451,7 @@ public class GameBoard {
         //if animal is above river
         else if ( currPos.getX() < nextPos.getX() ){
             while( searchTile(newPos).isRiver() ){
-                if (searchTile(newPos).hasAnimal() )
+                if (searchTile(newPos).hasAnimal() || !Position.isWithinBounds(newPos))
                     return nextPos;
 
                 newPos = new Position(newPos.getX()+1, newPos.getY());
