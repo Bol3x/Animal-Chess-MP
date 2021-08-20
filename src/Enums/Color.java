@@ -1,7 +1,5 @@
 package src.Enums;
 
-import java.util.ArrayList;
-
 /**
  * Enumeration to classify colors of players
  */

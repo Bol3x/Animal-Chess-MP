@@ -2,13 +2,14 @@ package src.Animals;
 
 import src.Player;
 import src.Tile;
+import src.Enums.AnimalName;
 
 /**
  * Elephant subclass of Animal. Specifies a capture method unique to Elephant objects.
  */
 public class Elephant extends Animal{
-    public Elephant(Player Faction, int Rank, String strSpecies, Tile pos){
-        super(Faction, Rank, strSpecies, pos);
+    public Elephant(Player Faction, Tile pos){
+        super(Faction, 8, AnimalName.Elephant, pos);
     }
 
     @Override

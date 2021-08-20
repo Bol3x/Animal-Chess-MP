@@ -2,13 +2,14 @@ package src.Animals;
 
 import src.Player;
 import src.Tile;
+import src.Enums.AnimalName;
 
 /**
  * Mouse subclass of Animal. Specifies a capture method unique to Mouse objects.
  */
 public class Mouse extends Animal{
-    public Mouse(Player Faction, int Rank, String strSpecies, Tile pos){
-        super(Faction, Rank, strSpecies, pos);
+    public Mouse(Player Faction, Tile pos){
+        super(Faction, 1, AnimalName.Mouse, pos);
     }
 
     @Override

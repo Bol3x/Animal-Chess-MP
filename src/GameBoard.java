@@ -2,8 +2,7 @@ package src;
 
 import java.util.*;
 import src.Animals.*;
-import src.Enums.Color;
-import src.Enums.Terrain;
+import src.Enums.*;
 
 /**
  * Stores the main game board composed of <code>Tile</code> objects and controls movement of pieces within the board.
@@ -43,14 +42,14 @@ public class GameBoard {
         ArrayList<Animal> temp = new ArrayList<Animal>();
         
         //create temp pieces
-        temp.add(new Animal(null, 1, "Mouse", null));
-        temp.add(new Animal(null, 2, "Cat", null));
-        temp.add(new Animal(null, 3, "Wolf", null));
-        temp.add(new Animal(null, 4, "Dog", null));
-        temp.add(new Animal(null, 5, "Leopard", null));
-        temp.add(new Animal(null, 6, "Tiger", null));
-        temp.add(new Animal(null, 7, "Lion", null));
-        temp.add(new Animal(null, 8, "Elephant", null));
+        temp.add(new Animal(null, 1, AnimalName.Mouse   , null));
+        temp.add(new Animal(null, 2, AnimalName.Cat     , null));
+        temp.add(new Animal(null, 3, AnimalName.Wolf    , null));
+        temp.add(new Animal(null, 4, AnimalName.Dog     , null));
+        temp.add(new Animal(null, 5, AnimalName.Leopard , null));
+        temp.add(new Animal(null, 6, AnimalName.Tiger   , null));
+        temp.add(new Animal(null, 7, AnimalName.Lion    , null));
+        temp.add(new Animal(null, 8, AnimalName.Elephant, null));
 
         //shuffle pieces
         Collections.shuffle(temp);
@@ -176,20 +175,20 @@ public class GameBoard {
      * @param strName - animal name
      * @param postion - initial tile position on board
      */
-    private void initAnimal(Player player, int nRank, String strName, Position position){
+    private void initAnimal(Player player, int nRank, AnimalName species, Position position){
         switch(nRank){
-            case 1: Mouse mouse = new Mouse(player, nRank, strName, searchTile(position));
+            case 1: Mouse mouse = new Mouse(player, searchTile(position));
                     searchTile(position).setAnimal(mouse);
                     player.addPieces(mouse);
                     break;
 
-            case 8: Elephant elephant = new Elephant(player, nRank, strName, searchTile(position));
+            case 8: Elephant elephant = new Elephant(player, searchTile(position));
                     searchTile(position).setAnimal(elephant);
                     player.addPieces(elephant);
                     break;
             
             default:
-                    Animal animal = new Animal(player, nRank, strName, searchTile(position));
+                    Animal animal = new Animal(player, nRank, species, searchTile(position));
                     searchTile(position).setAnimal(animal);
                     player.addPieces(animal);
         }
@@ -200,14 +199,14 @@ public class GameBoard {
      * @param nPlayer - player to assign animals to
      */
     private void initTopAnimals(int nPlayer){
-        initAnimal(players[nPlayer], 1, "Mouse"     , new Position(2,0));
-        initAnimal(players[nPlayer], 2, "Cat"       , new Position(1,5));
-        initAnimal(players[nPlayer], 3, "Wolf"      , new Position(2,4));
-        initAnimal(players[nPlayer], 4, "Dog"       , new Position(1,1));
-        initAnimal(players[nPlayer], 5, "Leopard"   , new Position(2,2));
-        initAnimal(players[nPlayer], 6, "Tiger"     , new Position(0,6));
-        initAnimal(players[nPlayer], 7, "Lion"      , new Position(0,0));
-        initAnimal(players[nPlayer], 8, "Elephant"  , new Position(2,6));
+        initAnimal(players[nPlayer], 1, AnimalName.Mouse    , new Position(2,0));
+        initAnimal(players[nPlayer], 2, AnimalName.Cat      , new Position(1,5));
+        initAnimal(players[nPlayer], 3, AnimalName.Wolf     , new Position(2,4));
+        initAnimal(players[nPlayer], 4, AnimalName.Dog      , new Position(1,1));
+        initAnimal(players[nPlayer], 5, AnimalName.Leopard  , new Position(2,2));
+        initAnimal(players[nPlayer], 6, AnimalName.Tiger    , new Position(0,6));
+        initAnimal(players[nPlayer], 7, AnimalName.Lion     , new Position(0,0));
+        initAnimal(players[nPlayer], 8, AnimalName.Elephant , new Position(2,6));
     }
 
     /**
@@ -215,14 +214,14 @@ public class GameBoard {
      * @param nPlayer - player to assign animals to
      */
     private void initBottomAnimals(int nPlayer){
-        initAnimal(players[nPlayer], 1, "Mouse"     , new Position(6,6));
-        initAnimal(players[nPlayer], 2, "Cat"       , new Position(7,1));
-        initAnimal(players[nPlayer], 3, "Wolf"      , new Position(6,2));
-        initAnimal(players[nPlayer], 4, "Dog"       , new Position(7,5));
-        initAnimal(players[nPlayer], 5, "Leopard"   , new Position(6,4));
-        initAnimal(players[nPlayer], 6, "Tiger"     , new Position(8,0));
-        initAnimal(players[nPlayer], 7, "Lion"      , new Position(8,6));
-        initAnimal(players[nPlayer], 8, "Elephant"  , new Position(6,0));
+        initAnimal(players[nPlayer], 1, AnimalName.Mouse    , new Position(6,6));
+        initAnimal(players[nPlayer], 2, AnimalName.Cat      , new Position(7,1));
+        initAnimal(players[nPlayer], 3, AnimalName.Wolf     , new Position(6,2));
+        initAnimal(players[nPlayer], 4, AnimalName.Dog      , new Position(7,5));
+        initAnimal(players[nPlayer], 5, AnimalName.Leopard  , new Position(6,4));
+        initAnimal(players[nPlayer], 6, AnimalName.Tiger    , new Position(8,0));
+        initAnimal(players[nPlayer], 7, AnimalName.Lion     , new Position(8,6));
+        initAnimal(players[nPlayer], 8, AnimalName.Elephant , new Position(6,0));
     }
 
     /* Getters */

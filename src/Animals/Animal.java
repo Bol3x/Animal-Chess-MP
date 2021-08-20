@@ -2,6 +2,7 @@ package src.Animals;
 
 import src.Player;
 import src.Tile;
+import src.Enums.AnimalName;
 
 /**
  * Class for animal pieces to be used in the <code>GameBoard</code> class.
@@ -13,7 +14,7 @@ public class Animal implements Comparable<Animal> {
     /* Class Variables */
     protected final Player PLAYER_FACTION;
     protected final int RANK;
-    protected final String SPECIES;
+    protected final AnimalName SPECIES;
     protected Tile tile;
     protected boolean bCaptured;
 
@@ -25,10 +26,10 @@ public class Animal implements Comparable<Animal> {
      * @param strSpecies - name of animal
      * @param pos - initial tile
      */
-    public Animal(Player Faction, int Rank, String strSpecies, Tile pos){
+    public Animal(Player Faction, int Rank, AnimalName species, Tile pos){
         PLAYER_FACTION = Faction;
         RANK = Rank;
-        SPECIES = strSpecies;
+        SPECIES = species;
         tile = pos;
         bCaptured = false;
     }
@@ -54,7 +55,7 @@ public class Animal implements Comparable<Animal> {
      * Gets animal's name.
      * @return SPECIES field
      */
-    public String getSpecies(){
+    public AnimalName getSpecies(){
         return this.SPECIES;
     }
 

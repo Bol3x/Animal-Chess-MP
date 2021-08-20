@@ -41,7 +41,7 @@ public class TestMain{
             if (bMoved && board.checkGameState())
                 nTurn++;
         }
-        System.out.println("Player " + board.getPlayer(nPlayer).getColor().toString() + " Won!");
+        System.out.println("Player " + board.getPlayer(nPlayer).getColor() + " Won!");
 
         kbIn.close();
     }
@@ -51,7 +51,7 @@ public class TestMain{
      * @param color - current player's color
      */
     public static void displayTurn(Color color) {
-     System.out.println(color.toString() + " Player's  turn");
+     System.out.println(color + " Player's turn");
     }
 
     /**
@@ -60,7 +60,7 @@ public class TestMain{
      * @param board - gameBoard to display
      */
     public static void displayBoard(GameBoard board){
-        System.out.println("        " + board.getPlayer(board.getSecondPlayer()).getColor().toString());
+        System.out.println("        " + board.getPlayer(board.getSecondPlayer()).getColor());
         System.out.println("----------------------");
         for(int i = 0; i < GameBoard.ROW; i++){
             System.out.print("|");
@@ -97,6 +97,6 @@ public class TestMain{
             }
             System.out.println("\n----------------------");
         }
-        System.out.println("        " + board.getPlayer(board.getFirstPlayer()).getColor().toString());
+        System.out.println("        " + board.getPlayer(board.getFirstPlayer()).getColor());
     }
  }
