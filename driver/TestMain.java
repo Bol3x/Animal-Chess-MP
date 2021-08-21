@@ -2,7 +2,7 @@ package driver;
 
 import src.*;
 import src.Animals.Animal;
-import src.Enums.Color;
+import src.Enums.AvailableColor;
 import java.util.*;
 
 /**
@@ -13,7 +13,7 @@ public class TestMain{
 
         boolean bForceExit = false;
         Scanner kbIn = new Scanner(System.in);
-        GameBoard board = new GameBoard(kbIn);
+        GameBoard board = new GameBoard();
         int nTurn = 0, nPlayer = nTurn;
      
         displayBoard(board);
@@ -50,7 +50,7 @@ public class TestMain{
      * displays current player's turn.
      * @param color - current player's color
      */
-    public static void displayTurn(Color color) {
+    public static void displayTurn(AvailableColor color) {
      System.out.println(color + " Player's turn");
     }
 

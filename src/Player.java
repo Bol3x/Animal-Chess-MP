@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import src.Animals.Animal;
-import src.Enums.Color;
+import src.Enums.AvailableColor;
 
 /**
  * The Player object lists down all animal pieces held by a player, both owned and captured pieces.
@@ -16,14 +16,14 @@ public class Player{
     /* Class Variables */
     private ArrayList<Animal> Pieces = new ArrayList<Animal>();
     private ArrayList<Animal> capturedPieces = new ArrayList<Animal>();
-    private final Color COLOR;
+    private final AvailableColor COLOR;
     
     /* Constructor */
     /**
      * Player constructor.
      * @param color - Player's chosen color
      */
-    public Player(Color color){
+    public Player(AvailableColor color){
         this.COLOR = color;
     }
 
@@ -32,7 +32,7 @@ public class Player{
      * Gets color belonging to player.
      * @return COLOR
      */
-    public Color getColor(){
+    public AvailableColor getColor(){
         return this.COLOR;
     }
     

@@ -14,66 +14,82 @@ import src.Enums.AnimalName;
 
 
 public class GUI extends JFrame{
-	private JPanel botPanel;
-	private JPanel centerPanel;
-	private JPanel topPanel;
-	ArrayList<Animal> testAnimal = new ArrayList<Animal>();
 
-	private JButton[][] board;
+	public static final String MENU_PANEL = "MenuPanel";
+	public static final String PLAYER_SELECT_PANEL = "PlayerSelectPanel";
+	public static final String GAME_PANEL = "GamePanel";
+	public static final String EXIT_FRAME = "EXIT";
+
+	private CardLayout cardLayout;
+
+	private MenuPanel menuPanel;
+	private PlayerSelectPanel gameStartPanel;
+	private GamePanel gamePanel;
 
 	public GUI(){
 		super("Animal Chess");
 		
-		setSize(800, 1000);
-		setLayout(new BorderLayout());
+		setSize(700, 950);
+
+		cardLayout = new CardLayout();
+		setLayout(cardLayout);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//top animal list
-		topPanel = new JPanel();
-		topPanel.setLayout(new FlowLayout());
-		JLabel lblTop = new JLabel("Animals: ");
-		topPanel.add(lblTop);
-		testAnimal.add(new Mouse(null, null));
+		menuPanel = new MenuPanel();
+		gameStartPanel = new PlayerSelectPanel();
+		gamePanel = new GamePanel();
 
-		add(topPanel, BorderLayout.NORTH);
+		add(menuPanel, MENU_PANEL);
+		add(gameStartPanel, PLAYER_SELECT_PANEL);
+		add(gamePanel, GAME_PANEL);
 
-		//main game board
-		board = new JButton[GameBoard.ROW][GameBoard.COL];
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new GridLayout(GameBoard.ROW, GameBoard.COL));
-		for(int i = 0; i < GameBoard.ROW; i++){
-			for(int j = 0; j < GameBoard.COL; j++){
-				board[i][j] = new JButton("");
-
-				addImage(i, j);
-
-				centerPanel.add(board[i][j]);
-			}
-		}
-		add(centerPanel, BorderLayout.CENTER);
-
-		//bot animal list
-		botPanel = new JPanel();
-		botPanel.setLayout(new FlowLayout());
-		JLabel lblBot = new JLabel("Animals: ");
-		botPanel.add(lblBot);
-
-		add(botPanel, BorderLayout.SOUTH);
+		cardLayout.show(getContentPane(), MENU_PANEL);
 
 		setVisible(true);
 	}
 
-	private void addImage(int x, int y){
+	public void setActionListener(ActionListener listener){
+		menuPanel.setActionListener(listener);
+		gameStartPanel.setNextButtonListener(listener);
+	}
+
+	public MenuPanel getMenuPanel(){
+		return menuPanel;
+	}
+
+	public GamePanel getGamePanel(){
+		return gamePanel;
+	}
+
+	public PlayerSelectPanel getPlayerSelectPanel(){
+		return gameStartPanel;
+	}
+
+	public void showMenuPanel(){
+		cardLayout.show(getContentPane(), MENU_PANEL);
+	}
+
+	public void showPlayerSelectPanel(){
+		cardLayout.show(getContentPane(), PLAYER_SELECT_PANEL);
+	}
+
+	public void showGamePanel(){
+		cardLayout.show(getContentPane(), GAME_PANEL);
+	}
+
+	private ImageIcon addImageIcon(int w, int h){
 		try{
 			Image img = ImageIO.read(getClass().getResource("images/mouse.jpg"));
 			ImageIcon icon = new ImageIcon(img);
-			ImageIcon scaledImg = new ImageIcon(getScaledImage(icon.getImage(), 64, 64));
+			ImageIcon scaledImg = new ImageIcon(getScaledImage(icon.getImage(), w, h));
 
-			board[x][y].setIcon(scaledImg);
+			return scaledImg;
+
 		} catch(IOException e){
 			System.out.println(e);
 		}
 
+		return null;
 	}
 
 	private Image getScaledImage(Image srcImg, int w, int h){

@@ -29,15 +29,15 @@ public class GameBoard {
      * Constructs a playBoard and initializes players and animals to designated locations.
      * @param kbIn - Keyboard user input for initializing players and turn order.
      */
-    public GameBoard(Scanner kbIn){
-        initPlayBoard(kbIn);
+    public GameBoard(){
+        initPlayBoard();
     }
 
     /**
      * Initializes order of turns and player colors
      * @param kbIn - keyboard input
      */
-    private void initPlayerColors(Scanner kbIn){
+    private void initFirstPlayer(int[] nChoices){
         //create temp storage 
         ArrayList<Animal> temp = new ArrayList<Animal>();
         
@@ -56,23 +56,12 @@ public class GameBoard {
 
         //temp animals
         Animal[] tempAnimals = new Animal[2];
-        
-        //input
-        int nInput;
 
 
         //player selects
         for(int i = 0; i < 2; i++){
-            do{
-            System.out.println("Player" + (i+1) + "\nSelect a number from 1-8: ");
-            nInput = kbIn.nextInt(); kbIn.nextLine();
-
-                if (nInput <= 0 || nInput > temp.size())
-                    System.out.println("Invalid input!");
-            }while (nInput <= 0 || nInput > temp.size());
-
-            //store in temp animal and shuffle temp
-            tempAnimals[i] = temp.get(nInput-1);
+            //store choice in temp animal and shuffle temp
+            tempAnimals[i] = temp.get(nChoices[i]-1);
             Collections.shuffle(temp);
         }
 
@@ -89,10 +78,12 @@ public class GameBoard {
             System.out.println("Player 2 goes first!");
             nFirstPlayer = 1;
         } 
-        
-        ArrayList<Color> colorList = new ArrayList<Color>();
-        for(int i = 0; i < Color.MAX_COLORS; i++){
-            colorList.add(Color.getColor(i));
+    }
+
+    private void initPlayerColors(int[] nColorChoices){
+        ArrayList<AvailableColor> colorList = new ArrayList<AvailableColor>();
+        for(int i = 0; i < AvailableColor.MAX_COLORS; i++){
+            colorList.add(AvailableColor.getColor(i));
         }
 
         //assign color to each player
@@ -108,7 +99,7 @@ public class GameBoard {
                     System.out.println("Invalid input!");
             }while(nInput <= 0 || nInput > colorList.size());
 
-            Color color = colorList.get(nInput-1);
+            AvailableColor color = colorList.get(nInput-1);
             colorList.remove(color);
             
             //assigns color
@@ -126,21 +117,23 @@ public class GameBoard {
     }
 
 
-
     /**
      * Initializes all tiles and pieces onto the board, 
      * and provides pieces ownership to their respective player
      * 
      * @version 1.3 - moved animal instantiates to seperate function
      */
-    private void initPlayBoard(Scanner kbIn){
+    private void initPlayBoard(int[] nChoice, int[] nColorChoice){
         
         //set players
-        initPlayerColors(kbIn);
+        initFirstPlayer(nChoice);
+
+        //set players' colors
+        initPlayerColors(nColorChoice);
         
         //set dens
-        playBoard[0][3] = new DenTile(new Position(0,3) , Color.RED);
-        playBoard[8][3] = new DenTile(new Position(8,3) , Color.BLUE);
+        playBoard[0][3] = new DenTile(new Position(0,3) , AvailableColor.RED);
+        playBoard[8][3] = new DenTile(new Position(8,3) , AvailableColor.BLUE);
 
         //set traps
         playBoard[0][2] = new Tile(new Position(0,2) , Terrain.TRAP);

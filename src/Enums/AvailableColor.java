@@ -3,7 +3,7 @@ package src.Enums;
 /**
  * Enumeration to classify colors of players
  */
-public enum Color{
+public enum AvailableColor{
     
     RED,
     BLUE;
@@ -14,14 +14,14 @@ public enum Color{
      */
     public static final int MAX_COLORS = 2;
 
-    private static final Color[] colors = values();
+    private static final AvailableColor[] colors = values();
 
     /**
      * Gets an enum by its order of declaration in the class
      * @param i - number of Color's ordinal
      * @return color enum
      */
-    public static Color getColor(int i){
+    public static AvailableColor getColor(int i){
         return colors[i];
     }
 }
