@@ -13,6 +13,7 @@ public class Controller implements ActionListener{
     public Controller(){
         view = new GUI();
         startListener = new StartListener(view.getPlayerSelectPanel());
+        view.setGamePanel(model);
         view.setActionListener(this);
     }
 

@@ -1,5 +1,7 @@
 package src.Animals;
 
+import java.awt.image.BufferedImage;
+
 import src.Player;
 import src.Tile;
 import src.Enums.AnimalName;
@@ -8,8 +10,8 @@ import src.Enums.AnimalName;
  * Mouse subclass of Animal. Specifies a capture method unique to Mouse objects.
  */
 public class Mouse extends Animal{
-    public Mouse(Player Faction, Tile pos){
-        super(Faction, 1, AnimalName.Mouse, pos);
+    public Mouse(Player Faction, Tile pos, BufferedImage icon){
+        super(Faction, 1, AnimalName.Mouse, icon, pos);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package src.Animals;
 
+import java.awt.image.BufferedImage;
+
 import src.Player;
 import src.Tile;
 import src.Enums.AnimalName;
@@ -8,8 +10,8 @@ import src.Enums.AnimalName;
  * Elephant subclass of Animal. Specifies a capture method unique to Elephant objects.
  */
 public class Elephant extends Animal{
-    public Elephant(Player Faction, Tile pos){
-        super(Faction, 8, AnimalName.Elephant, pos);
+    public Elephant(Player Faction, BufferedImage icon, Tile pos){
+        super(Faction, 8, AnimalName.Elephant, icon, pos);
     }
 
     @Override

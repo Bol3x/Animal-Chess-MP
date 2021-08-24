@@ -31,38 +31,65 @@ public class GUI extends JFrame{
 		
 		setSize(700, 950);
 
+		//creates cardLayout
 		cardLayout = new CardLayout();
 		setLayout(cardLayout);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		//cards in cardLayout
 		menuPanel = new MenuPanel();
 		gameStartPanel = new PlayerSelectPanel();
-		gamePanel = new GamePanel();
 
-		add(menuPanel, MENU_PANEL);
-		add(gameStartPanel, PLAYER_SELECT_PANEL);
-		add(gamePanel, GAME_PANEL);
+		//add to frame
+		this.add(menuPanel, MENU_PANEL);
+		this.add(gameStartPanel, PLAYER_SELECT_PANEL);
 
+		//show menu card first
 		cardLayout.show(getContentPane(), MENU_PANEL);
 
+		//settings
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 
+	/**
+	 * sets action listeners for the menu buttons and other select buttons
+	 * @param listener
+	 */
 	public void setActionListener(ActionListener listener){
 		menuPanel.setActionListener(listener);
 		gameStartPanel.setNextButtonListener(listener);
 	}
 
+	/**
+	 * gets the menuPanel
+	 * @return the menuPanel of the GUI
+	 */
 	public MenuPanel getMenuPanel(){
 		return menuPanel;
 	}
 
+	/**
+	 * gets the gamePanel
+	 * @return the gamePanel of the GUI
+	 */
 	public GamePanel getGamePanel(){
 		return gamePanel;
 	}
 
+	/**
+	 * gets the PlayerSelectPanel (gameStartPanel)
+	 * @return the playerSelectPanel of the GUI
+	 */
 	public PlayerSelectPanel getPlayerSelectPanel(){
 		return gameStartPanel;
+	}
+
+	/**
+	 * initializes the gamePanel
+	 */
+	public void setGamePanel(GameBoard gameBoard){
+		gamePanel = new GamePanel();
+		this.add(gamePanel, GAME_PANEL);
 	}
 
 	public void showMenuPanel(){
@@ -100,9 +127,5 @@ public class GUI extends JFrame{
 		g2.drawImage(srcImg, 0, 0, w, h, null);
 		g2.dispose();
 		return scaledImg;
-	}
-
-	public static void main(String[] args){
-		GUI a = new GUI();
 	}
 }

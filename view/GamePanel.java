@@ -6,9 +6,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.IOException;
 
-import src.GameBoard;
-import src.Animals.*;
-import src.Enums.AnimalName;
+import src.*;
 
 
 public class GamePanel extends JPanel{
@@ -17,27 +15,31 @@ public class GamePanel extends JPanel{
 	private JPanel centerPanel;
 	private JPanel topPanel;
 
-	private JButton[][] board;
+	//model gameBoard
+	private Tile[][] boardModel;
+
+	private TileDisplay[][] board = new TileDisplay[GameBoard.ROW][GameBoard.COL];
 
     public GamePanel(){
+
         //gamePanel init
 		setLayout(new BorderLayout());
 
 		//top animal list
 		topPanel = new JPanel(new FlowLayout());
-		
+
 		JLabel lblTop = new JLabel("Animals: ");
 		topPanel.add(lblTop);
 
 		add(topPanel, BorderLayout.NORTH);
 
 		//main game board
-		board = new JButton[GameBoard.ROW][GameBoard.COL];
 		centerPanel = new JPanel(new GridLayout(GameBoard.ROW, GameBoard.COL));
 
+		//initialize all TileDisplay buttons
 		for(int i = 0; i < GameBoard.ROW; i++){
 			for(int j = 0; j < GameBoard.COL; j++){
-				board[i][j] = new JButton("");
+				board[i][j] = new TileDisplay();
 				
 				centerPanel.add(board[i][j]);
 			}

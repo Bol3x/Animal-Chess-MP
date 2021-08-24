@@ -5,7 +5,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.io.IOException;
+import java.io.*;
 
 public class MenuPanel extends JPanel{
     
@@ -43,7 +43,7 @@ public class MenuPanel extends JPanel{
 
     private ImageIcon addImageIcon(int w, int h){
 		try{
-			Image img = ImageIO.read(getClass().getResource("images/mouse.jpg"));
+			Image img = ImageIO.read(new File("images/mouse.jpg"));
 			ImageIcon icon = new ImageIcon(img);
 			ImageIcon scaledImg = new ImageIcon(getScaledImage(icon.getImage(), w, h));
 
