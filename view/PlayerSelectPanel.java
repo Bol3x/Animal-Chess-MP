@@ -74,6 +74,10 @@ public class PlayerSelectPanel extends JPanel{
         }
     }
 
+     public void disableChoiceButton(int i){
+          buttonSelect[i].setEnabled(false);
+    }
+     
     public void enableNextButton(){
         btnNextPanel.setEnabled(true);
     }
