@@ -19,12 +19,14 @@ public class GUI extends JFrame{
 	public static final String PLAYER_SELECT_PANEL = "PlayerSelectPanel";
 	public static final String GAME_PANEL = "GamePanel";
 	public static final String EXIT_FRAME = "EXIT";
+                  public static final String COLOR_PANEL = "ColorPanel";
 
 	private CardLayout cardLayout;
 
-	private MenuPanel menuPanel;
-	private PlayerSelectPanel gameStartPanel;
+	private MainPanel mainPanel;
+	private PlayerPanel gameStartPanel;
 	private GamePanel gamePanel;
+                  private ColorPanel colorPanel;
 
 	public GUI(){
 		super("Animal Chess");
@@ -36,12 +38,14 @@ public class GUI extends JFrame{
 		setLayout(cardLayout);
 
 		//cards in cardLayout
-		menuPanel = new MenuPanel();
-		gameStartPanel = new PlayerSelectPanel();
+		mainPanel = new MainPanel();
+		gameStartPanel = new PlayerPanel();
+                                    colorPanel = new ColorPanel();
 
 		//add to frame
-		this.add(menuPanel, MENU_PANEL);
+		this.add(mainPanel, MENU_PANEL);
 		this.add(gameStartPanel, PLAYER_SELECT_PANEL);
+                                    this.add(colorPanel, COLOR_PANEL);
 
 		//show menu card first
 		cardLayout.show(getContentPane(), MENU_PANEL);
@@ -49,6 +53,7 @@ public class GUI extends JFrame{
 		//settings
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+                                    setResizable(false);
 	}
 
 	/**
@@ -56,7 +61,8 @@ public class GUI extends JFrame{
 	 * @param listener
 	 */
 	public void setActionListener(ActionListener listener){
-		menuPanel.setActionListener(listener);
+		mainPanel.setActionListener(listener);
+                                    colorPanel.setNextButtonListener(listener);
 		gameStartPanel.setNextButtonListener(listener);
 	}
 
@@ -64,8 +70,8 @@ public class GUI extends JFrame{
 	 * gets the menuPanel
 	 * @return the menuPanel of the GUI
 	 */
-	public MenuPanel getMenuPanel(){
-		return menuPanel;
+	public MainPanel getMainPanel(){
+		return mainPanel;
 	}
 
 	/**
@@ -80,10 +86,18 @@ public class GUI extends JFrame{
 	 * gets the PlayerSelectPanel (gameStartPanel)
 	 * @return the playerSelectPanel of the GUI
 	 */
-	public PlayerSelectPanel getPlayerSelectPanel(){
+	public PlayerPanel getPlayerSelectPanel(){
 		return gameStartPanel;
 	}
-
+                  
+                  /**
+	 * gets the ColorPanel (ColorPanel)
+	 * @return the ColorPanel of the GUI
+	 */
+                  public ColorPanel getColorPanel(){
+                                    return colorPanel;
+                  }
+                  
 	/**
 	 * initializes the gamePanel
 	 */
@@ -103,6 +117,10 @@ public class GUI extends JFrame{
 	public void showGamePanel(){
 		cardLayout.show(getContentPane(), GAME_PANEL);
 	}
+        
+                 public void showColorPanel(){
+                                    cardLayout.show(getContentPane(), COLOR_PANEL);
+                  }
 
 	private ImageIcon addImageIcon(int w, int h){
 		try{
@@ -129,3 +147,5 @@ public class GUI extends JFrame{
 		return scaledImg;
 	}
 }
+
+
