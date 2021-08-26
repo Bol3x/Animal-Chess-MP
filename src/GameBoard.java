@@ -156,6 +156,14 @@ public class GameBoard {
         return (!bGameWin);
     }
 
+    /**
+     * Gets the player handler.
+     * @return player handler reference
+     */
+    public PlayerHandler getPlayerHandler(){
+        return playerHandler;
+    }
+
     /* Methods */
 
     /**
@@ -170,7 +178,6 @@ public class GameBoard {
         do{
             System.out.println("Available Pieces:");
             player.listPieces();
-
             System.out.print("Select an animal: "); 
             
             if (kbIn.hasNextInt()){
@@ -184,7 +191,6 @@ public class GameBoard {
         } while(nInput <= 0 || nInput > player.getPieces().size() );
 
         return PieceList.get(nInput-1);
-
     }
 
 

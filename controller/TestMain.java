@@ -1,4 +1,4 @@
-package driver;
+package controller;
 
 import src.*;
 import src.Animals.Animal;

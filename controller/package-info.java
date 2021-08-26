@@ -5,4 +5,4 @@
  * GUI implementation is yet to be developed for this project.
  * @version 1.0
  */
-package driver;
+package controller;

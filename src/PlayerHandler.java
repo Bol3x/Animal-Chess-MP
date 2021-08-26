@@ -7,7 +7,8 @@ import src.Enums.*;
 
 public class PlayerHandler {
 
-    private Player players[] = new Player[2];
+    private Player[] players = new Player[2];
+    private Animal[] animalChoices = new Animal[2];
     private final int nFirstPlayer;
 
 
@@ -39,22 +40,18 @@ public class PlayerHandler {
         //shuffle pieces
         Collections.shuffle(temp);
 
-        //temp animals
-        Animal[] tempAnimals = new Animal[2];
-
-
         //player selects
         for(int i = 0; i < 2; i++){
             //store choice in temp animal and shuffle temp
-            tempAnimals[i] = temp.get(nChoices[i]-1);
+            animalChoices[i] = temp.get(nChoices[i]-1);
             Collections.shuffle(temp);
         }
 
-        System.out.println("Player 1 Chose: " + tempAnimals[0].getSpecies() + ": Rank " + tempAnimals[0].getRank());
-        System.out.println("Player 2 Chose: " + tempAnimals[1].getSpecies() + ": Rank " + tempAnimals[1].getRank());
+        System.out.println("Player 1 Chose: " + animalChoices[0].getSpecies() + ": Rank " + animalChoices[0].getRank());
+        System.out.println("Player 2 Chose: " + animalChoices[1].getSpecies() + ": Rank " + animalChoices[1].getRank());
 
         //determine first player turn
-        boolean bHigher = tempAnimals[0].getRank() >= tempAnimals[1].getRank();
+        boolean bHigher = animalChoices[0].getRank() >= animalChoices[1].getRank();
         if (bHigher){
             System.out.println("Player 1 goes first!");
             //return 0th index as first player
@@ -65,6 +62,10 @@ public class PlayerHandler {
             //return 1st index as first player
             return 1;
         } 
+    }
+
+    public Animal[] getAnimalChoices(){
+        return animalChoices;
     }
 
     /**
@@ -80,7 +81,7 @@ public class PlayerHandler {
      * @return 1 or 0, based on result of <code>initPlayerColors()</code>
      */
     public int getSecondPlayerIdx(){
-        return nFirstPlayer == 1 ? 1 : 0;
+        return nFirstPlayer == 1 ? 0 : 1;
     }
     
     /**

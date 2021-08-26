@@ -5,14 +5,14 @@
  */
 package view;
 
-import javax.swing.BorderFactory;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 /**
  *
  * @author Desktop PC
  */
-public class ColorPanel extends javax.swing.JPanel {
+public class ColorPanel extends JPanel {
 
     /**
      * Creates new form ColorPanel

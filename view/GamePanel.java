@@ -15,11 +15,9 @@ import src.Enums.AvailableColor;
 
 public class GamePanel extends JPanel{
 
-	private JPanel topPanel;
-	private JLabel lblTopPlayer;
+	private JLabel lblTurn;
 	private JPanel centerPanel;
-    private JPanel botPanel;
-	private JLabel lblBotPlayer;
+	private GameStats gameInfoFrame;
 
 	//model gameBoard
 	private GameBoard model;
@@ -27,28 +25,29 @@ public class GamePanel extends JPanel{
 
 	private TileDisplay[][] boardView = new TileDisplay[GameBoard.ROW][GameBoard.COL];
 
-    public GamePanel(){
+    public GamePanel(GameBoard gameBoard){
+		model = gameBoard;
+		boardModel = model.getPlayBoard();
+		initPanel();
+    }
 
-        //gamePanel init
+	private void initPanel(){
+		//gamePanel init
 		setLayout(new BorderLayout());
 
 		//top animal list
+		JPanel topPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		topPanel = new JPanel(new GridBagLayout());
-
-		JLabel lblTop = new JLabel("Animals: ");
-		gbc.insets.bottom = 25;
-		gbc.insets.top = 25;
+		lblTurn = new JLabel("Player x's Turn");
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		topPanel.add(lblTop, gbc);
-		lblTopPlayer = new JLabel("Team RED");
+		topPanel.add(lblTurn, gbc);
+
+		JLabel lblTopPlayer = new JLabel("Team " + model.getPlayerHandler().getSecondPlayer().getColor().toString());
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.insets.bottom = 0;
-		gbc.insets.top = 0;
+		gbc.insets.top = 30;
 		topPanel.add(lblTopPlayer, gbc);
-
 		this.add(topPanel, BorderLayout.NORTH);
 
 		//main game board
@@ -62,43 +61,44 @@ public class GamePanel extends JPanel{
 				centerPanel.add(boardView[i][j]);
 			}
 		}
+		//display model board to view board
 		highlightTerrain();
+		highlightDens(model.getLowerDen().getColor());
+		highlightDens(model.getUpperDen().getColor());
+		displayTiles();
+
 		this.add(centerPanel, BorderLayout.CENTER);
 
 		//bot animal list
-		gbc = new GridBagConstraints();
-		botPanel = new JPanel(new GridBagLayout());
+		JPanel botPanel = new JPanel(new FlowLayout());
 
-		lblBotPlayer = new JLabel("Team BLUE");
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		botPanel.add(lblBotPlayer, gbc);
-		JLabel lblBot = new JLabel("Animals: ");
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets.bottom = 25;
-		gbc.insets.top = 25;
-		botPanel.add(lblBot, gbc);
-
+		JLabel lblBotPlayer = new JLabel("Team " + model.getPlayerHandler().getFirstPlayer().getColor().toString());
+		botPanel.add(lblBotPlayer);
 		this.add(botPanel, BorderLayout.SOUTH);
-		
-    }
+	}
+
+	public void displayTiles(){
+		for(int i = 0; i < GameBoard.ROW; i++)
+			for(int j = 0; j < GameBoard.COL; j++)
+				if (boardModel[i][j].hasAnimal())
+					displayAnimal(boardModel[i][j].getAnimal(), boardView[i][j]);
+	}
 
 	/**
-	 * placeholder for animal images - uses letters instead
+	 * placeholder for animal images - uses letters instead for now
 	 */
 	public void displayAnimal(Animal animal, TileDisplay tile){
 		switch(animal.getSpecies()){
-			case Mouse 	 -> tile.setText("Mo");
-			case Cat 	 -> tile.setText("Ca");
-			case Wolf 	 -> tile.setText("Wo");
-			case Dog 	 -> tile.setText("Do");
-			case Leopard -> tile.setText("Le");
-			case Tiger	 -> tile.setText("Ti");
-			case Lion	 -> tile.setText("Li");
-			case Elephant-> tile.setText("El");
+			case Mouse 	 -> tile.setText("MO");
+			case Cat 	 -> tile.setText("CA");
+			case Wolf 	 -> tile.setText("WO");
+			case Dog 	 -> tile.setText("DO");
+			case Leopard -> tile.setText("LE");
+			case Tiger	 -> tile.setText("TI");
+			case Lion	 -> tile.setText("LI");
+			case Elephant-> tile.setText("EL");
 		}
-		if (animal.getFaction().getColor() == AvailableColor.BLUE)
+		if (animal.getFaction().getColor().equals(AvailableColor.BLUE) )
 			tile.setText(tile.getText().toLowerCase());
 	}
 
@@ -116,8 +116,10 @@ public class GamePanel extends JPanel{
 		LineBorder riverBorder = new LineBorder(Color.BLUE);
 		for(int i = 3; i <= 5; i++){
 			for(int j = 1; j <= 5; j++){
-				if (j != 3)
+				if (j != 3){
 					boardView[i][j].setBorder(riverBorder);
+					boardView[i][j].setBackground(Color.BLUE);
+				}
 			}
 		}
 	}
