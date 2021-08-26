@@ -1,9 +1,9 @@
 package driver;
 
 import java.awt.event.*;
-import javax.swing.JButton;
 
 import view.PlayerPanel;
+import src.PlayerHandler;
 
 public class StartListener implements ActionListener{
     int[] nChoices;
@@ -29,11 +29,17 @@ public class StartListener implements ActionListener{
         if(nCurrent == 2){
               view.disableChoiceButtons();
               view.enableNextButton();
+
+              PlayerHandler pHandler = new PlayerHandler(nChoices);
               
-              if(nChoices[0] > nChoices[1]) 
-                  view.setResult("Player 1 gets to pick colors");
+              if(pHandler.getFirstPlayerIdx() == 0) 
+                  view.setResult("Player 1 gets to pick colors first");
               else
-                  view.setResult("Player 2 gets to pick colors");
+                  view.setResult("Player 2 gets to pick colors first");
         }
+    }
+
+    public int[] getChoices(){
+        return nChoices;
     }
 }

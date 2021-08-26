@@ -22,7 +22,7 @@ public class TileDisplay extends JButton{
      */
     public void displayAnimal(Animal animal){
         //if the animal 
-            image = animal.getIcon();
+            //image = animal.getIcon();
             highlightColor = animal.getFaction().getColor().getVisibleColor();
     }
 

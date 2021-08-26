@@ -21,116 +21,22 @@ public class GameBoard {
 
     private boolean bGameWin = false;
     private Tile playBoard[][] = new Tile[ROW][COL];
-    private Player players[] = new Player[2];
-    private int nFirstPlayer;
+    private PlayerHandler playerHandler;
 
     /* Constructor */
     /**
      * Constructs a playBoard and initializes players and animals to designated locations.
-     * @param kbIn - Keyboard user input for initializing players and turn order.
      */
-    public GameBoard(){
-        initPlayBoard();
+    public GameBoard(PlayerHandler pHandler){
+        playerHandler = pHandler;
+        initializeBoard();
     }
 
     /**
-     * Initializes order of turns and player colors
-     * @param kbIn - keyboard input
+     * creates all tiles and pieces onto the board, 
+     * and provides pieces' ownership to a respective player.
      */
-    private void initFirstPlayer(int[] nChoices){
-        //create temp storage 
-        ArrayList<Animal> temp = new ArrayList<Animal>();
-        
-        //create temp pieces
-        temp.add(new Animal(null, 1, AnimalName.Mouse   , null));
-        temp.add(new Animal(null, 2, AnimalName.Cat     , null));
-        temp.add(new Animal(null, 3, AnimalName.Wolf    , null));
-        temp.add(new Animal(null, 4, AnimalName.Dog     , null));
-        temp.add(new Animal(null, 5, AnimalName.Leopard , null));
-        temp.add(new Animal(null, 6, AnimalName.Tiger   , null));
-        temp.add(new Animal(null, 7, AnimalName.Lion    , null));
-        temp.add(new Animal(null, 8, AnimalName.Elephant, null));
-
-        //shuffle pieces
-        Collections.shuffle(temp);
-
-        //temp animals
-        Animal[] tempAnimals = new Animal[2];
-
-
-        //player selects
-        for(int i = 0; i < 2; i++){
-            //store choice in temp animal and shuffle temp
-            tempAnimals[i] = temp.get(nChoices[i]-1);
-            Collections.shuffle(temp);
-        }
-
-        System.out.println("Player 1 Chose: " + tempAnimals[0].getSpecies() + ": Rank " + tempAnimals[0].getRank());
-        System.out.println("Player 2 Chose: " + tempAnimals[1].getSpecies() + ": Rank " + tempAnimals[1].getRank());
-
-        //determine first player turn
-        boolean bHigher = tempAnimals[0].getRank() >= tempAnimals[1].getRank();
-        if (bHigher){
-            System.out.println("Player 1 goes first!");
-            nFirstPlayer = 0;
-        }
-        else{ 
-            System.out.println("Player 2 goes first!");
-            nFirstPlayer = 1;
-        } 
-    }
-
-    private void initPlayerColors(int[] nColorChoices){
-        ArrayList<AvailableColor> colorList = new ArrayList<AvailableColor>();
-        for(int i = 0; i < AvailableColor.MAX_COLORS; i++){
-            colorList.add(AvailableColor.getColor(i));
-        }
-
-        //assign color to each player
-        for(int i = 0; i < 2; i++){
-            do{
-                for(int j = 0; j < colorList.size(); j++){
-                    System.out.println((j+1) + ". " + colorList.get(j).toString());
-                }
-                System.out.println("What color will you choose?: ");
-                nInput = kbIn.nextInt(); kbIn.nextLine();
-
-                if (nInput <= 0 || nInput > colorList.size())
-                    System.out.println("Invalid input!");
-            }while(nInput <= 0 || nInput > colorList.size());
-
-            AvailableColor color = colorList.get(nInput-1);
-            colorList.remove(color);
-            
-            //assigns color
-            if (nFirstPlayer == 0)
-                if (i == 0)
-                        players[0] = new Player(color);
-                else    players[1] = new Player(color);
-
-            else if (nFirstPlayer == 1)
-                if (i == 0)
-                        players[1] = new Player(color);
-                else    players[0] = new Player(color);
-            
-        }
-    }
-
-
-    /**
-     * Initializes all tiles and pieces onto the board, 
-     * and provides pieces ownership to their respective player
-     * 
-     * @version 1.3 - moved animal instantiates to seperate function
-     */
-    private void initPlayBoard(int[] nChoice, int[] nColorChoice){
-        
-        //set players
-        initFirstPlayer(nChoice);
-
-        //set players' colors
-        initPlayerColors(nColorChoice);
-        
+    public void initializeBoard(){
         //set dens
         playBoard[0][3] = new DenTile(new Position(0,3) , AvailableColor.RED);
         playBoard[8][3] = new DenTile(new Position(8,3) , AvailableColor.BLUE);
@@ -156,8 +62,8 @@ public class GameBoard {
         }
 
         //initialize animals
-        initTopAnimals(getSecondPlayer());
-        initBottomAnimals(getFirstPlayer());
+        initTopAnimals(playerHandler.getSecondPlayer());
+        initBottomAnimals(playerHandler.getFirstPlayer());
     }
 
 
@@ -191,30 +97,30 @@ public class GameBoard {
      * initializes animals in top area (top 3 rows).
      * @param nPlayer - player to assign animals to
      */
-    private void initTopAnimals(int nPlayer){
-        initAnimal(players[nPlayer], 1, AnimalName.Mouse    , new Position(2,0));
-        initAnimal(players[nPlayer], 2, AnimalName.Cat      , new Position(1,5));
-        initAnimal(players[nPlayer], 3, AnimalName.Wolf     , new Position(2,4));
-        initAnimal(players[nPlayer], 4, AnimalName.Dog      , new Position(1,1));
-        initAnimal(players[nPlayer], 5, AnimalName.Leopard  , new Position(2,2));
-        initAnimal(players[nPlayer], 6, AnimalName.Tiger    , new Position(0,6));
-        initAnimal(players[nPlayer], 7, AnimalName.Lion     , new Position(0,0));
-        initAnimal(players[nPlayer], 8, AnimalName.Elephant , new Position(2,6));
+    private void initTopAnimals(Player player){
+        initAnimal(player, 1, AnimalName.Mouse    , new Position(2,0));
+        initAnimal(player, 2, AnimalName.Cat      , new Position(1,5));
+        initAnimal(player, 3, AnimalName.Wolf     , new Position(2,4));
+        initAnimal(player, 4, AnimalName.Dog      , new Position(1,1));
+        initAnimal(player, 5, AnimalName.Leopard  , new Position(2,2));
+        initAnimal(player, 6, AnimalName.Tiger    , new Position(0,6));
+        initAnimal(player, 7, AnimalName.Lion     , new Position(0,0));
+        initAnimal(player, 8, AnimalName.Elephant , new Position(2,6));
     }
 
     /**
      * initializes animals in bottom area (bottom 3 rows).
      * @param nPlayer - player to assign animals to
      */
-    private void initBottomAnimals(int nPlayer){
-        initAnimal(players[nPlayer], 1, AnimalName.Mouse    , new Position(6,6));
-        initAnimal(players[nPlayer], 2, AnimalName.Cat      , new Position(7,1));
-        initAnimal(players[nPlayer], 3, AnimalName.Wolf     , new Position(6,2));
-        initAnimal(players[nPlayer], 4, AnimalName.Dog      , new Position(7,5));
-        initAnimal(players[nPlayer], 5, AnimalName.Leopard  , new Position(6,4));
-        initAnimal(players[nPlayer], 6, AnimalName.Tiger    , new Position(8,0));
-        initAnimal(players[nPlayer], 7, AnimalName.Lion     , new Position(8,6));
-        initAnimal(players[nPlayer], 8, AnimalName.Elephant , new Position(6,0));
+    private void initBottomAnimals(Player player){
+        initAnimal(player, 1, AnimalName.Mouse    , new Position(6,6));
+        initAnimal(player, 2, AnimalName.Cat      , new Position(7,1));
+        initAnimal(player, 3, AnimalName.Wolf     , new Position(6,2));
+        initAnimal(player, 4, AnimalName.Dog      , new Position(7,5));
+        initAnimal(player, 5, AnimalName.Leopard  , new Position(6,4));
+        initAnimal(player, 6, AnimalName.Tiger    , new Position(8,0));
+        initAnimal(player, 7, AnimalName.Lion     , new Position(8,6));
+        initAnimal(player, 8, AnimalName.Elephant , new Position(6,0));
     }
 
     /* Getters */
@@ -224,16 +130,6 @@ public class GameBoard {
      */
     public Tile[][] getPlayBoard(){
         return playBoard;
-    }
-
-    /**
-     * Gets tile specified by <code>x</code> and <code>y</code> parameters
-     * @param X - row
-     * @param Y - column
-     * @return Tile of specified location
-     */
-    public Tile getTile(int X, int Y){
-        return playBoard[X][Y];
     }
 
     /** 
@@ -260,31 +156,6 @@ public class GameBoard {
         return (!bGameWin);
     }
 
-    /**
-     * Gets player object by index.
-     * @param i - index of specific player to access
-     * @return Player object
-     */
-    public Player getPlayer(int i){
-        return players[i];
-    }
-
-    /**
-     * Gets the index of the first player to move in <code>players[]</code>.
-     * @return 1 or 0, based on result of <code>initPlayerColors()</code>
-     */
-    public int getFirstPlayer(){
-        return nFirstPlayer;
-    }
-
-    /**
-     * Gets the index of the second player to move in <code>players[]</code>.
-     * @return 1 or 0, based on result of <code>initPlayerColors()</code>
-     */
-    public int getSecondPlayer(){
-        return nFirstPlayer == 0 ? 1 : 0;
-    }
-
     /* Methods */
 
     /**
@@ -293,12 +164,12 @@ public class GameBoard {
      * @param kbIn - keyboard input scanner
      * @return animal object to use
      */
-    public Animal selectAnimal(int nPlayer, Scanner kbIn){
-        ArrayList<Animal> PieceList = players[nPlayer].getPieces();
+    public Animal selectAnimal(Player player, Scanner kbIn){
+        ArrayList<Animal> PieceList = player.getPieces();
         int nInput = -1;
         do{
             System.out.println("Available Pieces:");
-            players[nPlayer].listPieces();
+            player.listPieces();
 
             System.out.print("Select an animal: "); 
             
@@ -307,10 +178,10 @@ public class GameBoard {
                 kbIn.nextLine();
             }
 
-            if (nInput <= 0 || nInput > players[nPlayer].getPieces().size() )
+            if (nInput <= 0 || nInput > player.getPieces().size() )
                 System.out.println("Input does not exist!");
             
-        } while(nInput <= 0 || nInput > players[nPlayer].getPieces().size() );
+        } while(nInput <= 0 || nInput > player.getPieces().size() );
 
         return PieceList.get(nInput-1);
 
@@ -365,10 +236,7 @@ public class GameBoard {
     public Tile searchTile(Position pos){
         //if position exists in playBoard
         if (Position.isWithinBounds(pos))
-            for(int i = 0; i < ROW; i++)
-                for(int j = 0; j < COL; j++)
-                    if (playBoard[i][j].equals(new Tile(pos)) )
-                        return playBoard[i][j];
+            return playBoard[pos.getX()][pos.getY()];
         
         return null;
     }
@@ -479,14 +347,14 @@ public class GameBoard {
         return null;
     }
 
-    /**
+    /*
      * Checks for winning moves/conditions.
      * @param nPlayer - Player to check for available pieces.
      */
-    public void checkWinningMove(int nPlayer){
-        if(playBoard[0][3].hasAnimal()  //player 1 den
-        || playBoard[8][3].hasAnimal()  //player 2 den
-        || players[nPlayer].getPieces().isEmpty() ) //player is out of pieces
+    public void checkWinningMove(Player player){
+        if(getUpperDen().hasAnimal()    //upper den has animal
+        || getLowerDen().hasAnimal()    //lower den has animal
+        || player.getPieces().isEmpty() ) //player is out of pieces
             bGameWin = true;
     }
 }

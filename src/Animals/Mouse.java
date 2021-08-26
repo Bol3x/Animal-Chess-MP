@@ -10,8 +10,8 @@ import src.Enums.AnimalName;
  * Mouse subclass of Animal. Specifies a capture method unique to Mouse objects.
  */
 public class Mouse extends Animal{
-    public Mouse(Player Faction, Tile pos, BufferedImage icon){
-        super(Faction, 1, AnimalName.Mouse, icon, pos);
+    public Mouse(Player Faction, Tile pos /*,BufferedImage icon*/){
+        super(Faction, 1, AnimalName.Mouse, /*icon,*/ pos);
     }
 
     @Override

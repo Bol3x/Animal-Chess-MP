@@ -1,7 +1,6 @@
 package driver;
 
 import java.awt.event.*;
-import javax.swing.JButton;
 
 import view.ColorPanel;
 
