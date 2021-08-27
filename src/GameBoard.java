@@ -1,6 +1,5 @@
 package src;
 
-import java.util.*;
 import src.Animals.*;
 import src.Enums.*;
 
@@ -19,7 +18,6 @@ public class GameBoard {
      */
     public static final int COL = 7;
 
-    private boolean bGameWin = false;
     private Tile playBoard[][] = new Tile[ROW][COL];
     private PlayerHandler playerHandler;
 
@@ -38,8 +36,8 @@ public class GameBoard {
      */
     public void initializeBoard(){
         //set dens
-        playBoard[0][3] = new DenTile(new Position(0,3) , AvailableColor.RED);
-        playBoard[8][3] = new DenTile(new Position(8,3) , AvailableColor.BLUE);
+        playBoard[0][3] = new DenTile(new Position(0,3) , playerHandler.getSecondPlayer().getColor());
+        playBoard[8][3] = new DenTile(new Position(8,3) , playerHandler.getFirstPlayer().getColor());
 
         //set traps
         playBoard[0][2] = new Tile(new Position(0,2) , Terrain.TRAP);
@@ -149,14 +147,6 @@ public class GameBoard {
     }
 
     /**
-     * Checks if game is still running (No win condition is met)
-     * @return false if win condition is met, true if game is still running
-     */
-    public boolean checkGameState(){
-        return (!bGameWin);
-    }
-
-    /**
      * Gets the player handler.
      * @return player handler reference
      */
@@ -165,34 +155,6 @@ public class GameBoard {
     }
 
     /* Methods */
-
-    /**
-     * Selects the animal to use.
-     * @param nPlayer - index of player to get piece from
-     * @param kbIn - keyboard input scanner
-     * @return animal object to use
-     */
-    public Animal selectAnimal(Player player, Scanner kbIn){
-        ArrayList<Animal> PieceList = player.getPieces();
-        int nInput = -1;
-        do{
-            System.out.println("Available Pieces:");
-            player.listPieces();
-            System.out.print("Select an animal: "); 
-            
-            if (kbIn.hasNextInt()){
-                nInput = kbIn.nextInt();
-                kbIn.nextLine();
-            }
-
-            if (nInput <= 0 || nInput > player.getPieces().size() )
-                System.out.println("Input does not exist!");
-            
-        } while(nInput <= 0 || nInput > player.getPieces().size() );
-
-        return PieceList.get(nInput-1);
-    }
-
 
     /**
      * sets new position of animal if new position is valid.
@@ -253,19 +215,28 @@ public class GameBoard {
      * @param pos - next position to check for validity
      * @return true if position is valid, false if not
      */
-    public boolean isValidPosition(Animal currAnimal, Position pos){
+    public boolean isValidPosition(Animal currAnimal, Position nextPos){
         //if pos is within bounds
-        if (Position.isWithinBounds(pos) ){
-            Tile tempTile = searchTile(pos);
+        if (Position.isWithinBounds(nextPos) ){
+            Tile tempTile = searchTile(nextPos);
             //if animal is not a mouse/jumper and pos is a river tile
             if( !(currAnimal instanceof Mouse) && !(currAnimal.canJump()) 
             && tempTile.isRiver())
                 return false;
             
+            if (currAnimal.canJump() && tempTile.isRiver()){
+                Position newPos = jumpRiver(currAnimal.getTile().getLocation(), nextPos);
+                if (nextPos.equals(newPos))
+                    return false;
+            }
+
+            if(!currAnimal.capture(tempTile.getAnimal()))
+                return false;
+
             //if pos is a den tile and animal is from same faction
             else if (tempTile instanceof DenTile){
                 DenTile tempDen = (DenTile) tempTile;
-                if (tempDen.getColor() == currAnimal.getFaction().getColor())
+                if (tempDen.getColor().equals(currAnimal.getFaction().getColor()) )
                     return false;
             }
             return true;
@@ -353,14 +324,16 @@ public class GameBoard {
         return null;
     }
 
-    /*
+    /**
      * Checks for winning moves/conditions.
      * @param nPlayer - Player to check for available pieces.
      */
-    public void checkWinningMove(Player player){
+    public boolean checkWinningMove(Player player){
         if(getUpperDen().hasAnimal()    //upper den has animal
         || getLowerDen().hasAnimal()    //lower den has animal
         || player.getPieces().isEmpty() ) //player is out of pieces
-            bGameWin = true;
+            return true;
+        
+        return false;
     }
 }

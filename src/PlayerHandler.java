@@ -100,6 +100,10 @@ public class PlayerHandler {
         return players[getSecondPlayerIdx()];
     }
 
+    public Player[] getPlayers(){
+        return players;
+    }
+
     public void initFirstPlayerColor(AvailableColor color){
         players[getFirstPlayerIdx()] = new Player(color);
     }

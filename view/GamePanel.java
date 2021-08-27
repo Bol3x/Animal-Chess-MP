@@ -16,10 +16,13 @@ import src.Enums.AvailableColor;
 
 public class GamePanel extends JPanel{
 
+	public static final String ANIMAL_SPACE = "Animal";
+	public static final String FREE_SPACE = "Free";
+
 	private JLabel lblTurn;
-	JLabel lblTopPlayer;
+	private JLabel lblTopPlayer;
 	private JPanel centerPanel;
-	JLabel lblBotPlayer;
+	private JLabel lblBotPlayer;
 
 	private GameStats gameInfoFrame;
 
@@ -41,7 +44,7 @@ public class GamePanel extends JPanel{
 		gbc.gridy = 0;
 		topPanel.add(lblTurn, gbc);
 
-		JLabel lblTopPlayer = new JLabel("Team Y");
+		lblTopPlayer = new JLabel("Team Y");
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.insets.top = 30;
@@ -54,8 +57,8 @@ public class GamePanel extends JPanel{
 		//initialize all TileDisplay buttons
 		for(int i = 0; i < GameBoard.ROW; i++){
 			for(int j = 0; j < GameBoard.COL; j++){
-				boardView[i][j] = new TileDisplay();
-				
+				boardView[i][j] = new TileDisplay(new Position(i,j) );
+
 				centerPanel.add(boardView[i][j]);
 			}
 		}
@@ -76,6 +79,7 @@ public class GamePanel extends JPanel{
 			for(int j = 0; j < GameBoard.COL; j++)
 				if (boardModel[i][j].hasAnimal())
 					displayAnimal(boardModel[i][j].getAnimal(), boardView[i][j]);
+				else boardView[i][j].setText("");
 	}
 
 	/**
@@ -117,10 +121,12 @@ public class GamePanel extends JPanel{
 			}
 		}
 
-		LineBorder upperDenBorder = new LineBorder(pHandler.getFirstPlayer().getColor().getVisibleColor());
+		//upper den color
+		LineBorder upperDenBorder = new LineBorder(pHandler.getSecondPlayer().getColor().getVisibleColor(), 6);
 		boardView[0][3].setBorder(upperDenBorder);
 
-		LineBorder lowerDenBorder = new LineBorder(pHandler.getSecondPlayer().getColor().getVisibleColor());
+		//lower den color
+		LineBorder lowerDenBorder = new LineBorder(pHandler.getFirstPlayer().getColor().getVisibleColor(), 6);
 		boardView[8][3].setBorder(lowerDenBorder);
 	}
 
@@ -134,6 +140,79 @@ public class GamePanel extends JPanel{
 					boardView[i][j].setEnabled(false);
 			}
 		}
+	}
+
+	public void displayMove(GameBoard model, JButton btnTrigger){
+		Position pos = null;
+		for(int i = 0; i < GameBoard.ROW; i++){
+			for(int j = 0; j < GameBoard.COL; j++){
+				if(btnTrigger.equals(boardView[i][j])){
+					pos = new Position(i, j);
+				}
+				else boardView[i][j].setEnabled(false);
+			}
+		}
+
+		if (pos != null){
+			//up
+			Position posUp = new Position(pos.getX()-1, pos.getY());
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posUp))
+				enableTile(posUp);
+			//down
+			Position posDown = new Position(pos.getX()+1, pos.getY());
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posDown))
+				enableTile(posDown);
+			//left
+			Position posLeft = new Position(pos.getX(), pos.getY()-1);
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posLeft))
+				enableTile(posLeft);
+			//right
+			Position posRight = new Position(pos.getX(), pos.getY()+1);
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posRight))
+				enableTile(posRight);
+		}
+	}
+	
+	public void undisplayMove(Position pos){
+		if (pos != null){
+			//up
+			Position posUp = new Position(pos.getX()-1, pos.getY());
+			disableTile(posUp);
+			//down
+			Position posDown = new Position(pos.getX()+1, pos.getY());
+			disableTile(posDown);
+			//left
+			Position posLeft = new Position(pos.getX(), pos.getY()-1);
+			disableTile(posLeft);
+			//right
+			Position posRight = new Position(pos.getX(), pos.getY()+1);
+			disableTile(posRight);
+		}
+	}
+
+	public void setTurnLabel(String playerColor){
+		lblTurn.setText("Player " + playerColor + "'s turn");
+	}
+
+	public void setPlayerLabels(PlayerHandler pHandler){
+		lblTopPlayer.setText("Team " + pHandler.getSecondPlayer().getColor());
+		lblBotPlayer.setText("Team " +  pHandler.getFirstPlayer().getColor());
+	}
+
+	public void enableTile(Position pos){
+		if (Position.isWithinBounds(pos))
+			boardView[pos.getX()][pos.getY()].setEnabled(true);
+	}
+
+	public void disableTile(Position pos){
+		if (Position.isWithinBounds(pos))
+			boardView[pos.getX()][pos.getY()].setEnabled(false);
+	}
+
+	public void disableBoard(){
+		for(int i = 0; i < GameBoard.ROW; i++)
+			for(int j = 0; j < GameBoard.COL; j++)
+				boardView[i][j].setEnabled(false);
 	}
 
 	public TileDisplay getTileDisplay(Position pos){
@@ -151,13 +230,6 @@ public class GamePanel extends JPanel{
 		for(int i = 0; i < GameBoard.ROW; i++)
 			for(int j = 0; j < GameBoard.COL; j++)
 				boardView[i][j].addActionListener(listener);
-			
-		
-	}
-
-	public void setPlayerLabels(PlayerHandler pHandler){
-		lblTopPlayer.setText("Team " + pHandler.getSecondPlayer().getColor());
-		lblBotPlayer.setText("Team " +  pHandler.getFirstPlayer().getColor());
 	}
 
 }

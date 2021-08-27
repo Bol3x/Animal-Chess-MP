@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import src.Position;
 import src.Animals.Animal;
 
 
@@ -11,9 +12,15 @@ public class TileDisplay extends JButton{
     private int thickness = 4;
     private Color highlightColor = Color.green;
     private BufferedImage image;
+    private final Position pos;
 
-    public TileDisplay(){
+    public TileDisplay(Position loc){
         super();
+        pos = loc;
+    }
+
+    public Position getPosition(){
+        return pos;
     }
 
     /**
