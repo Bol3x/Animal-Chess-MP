@@ -24,7 +24,7 @@ public class GUI extends JFrame{
 	private CardLayout cardLayout;
 
 	private MainPanel mainPanel;
-	private PlayerPanel gameStartPanel;
+	private PlayerPanel playerPanel;
 	private GamePanel gamePanel;
     private ColorPanel colorPanel;
 
@@ -39,13 +39,15 @@ public class GUI extends JFrame{
 
 		//cards in cardLayout
 		mainPanel = new MainPanel();
-		gameStartPanel = new PlayerPanel();
+		playerPanel = new PlayerPanel();
         colorPanel = new ColorPanel();
+		gamePanel = new GamePanel();
 
 		//add to frame
 		this.add(mainPanel, MENU_PANEL);
-		this.add(gameStartPanel, PLAYER_SELECT_PANEL);
+		this.add(playerPanel, PLAYER_SELECT_PANEL);
         this.add(colorPanel, COLOR_PANEL);
+		this.add(gamePanel, GAME_PANEL);
 
 		//show menu card first
 		cardLayout.show(getContentPane(), MENU_PANEL);
@@ -63,7 +65,7 @@ public class GUI extends JFrame{
 	public void setActionListener(ActionListener listener){
 		mainPanel.setActionListener(listener);
         colorPanel.setNextButtonListener(listener);
-		gameStartPanel.setNextButtonListener(listener);
+		playerPanel.setNextButtonListener(listener);
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class GUI extends JFrame{
 	 * @return the playerSelectPanel of the GUI
 	 */
 	public PlayerPanel getPlayerSelectPanel(){
-		return gameStartPanel;
+		return playerPanel;
 	}
                   
 	/**
@@ -97,14 +99,6 @@ public class GUI extends JFrame{
     public ColorPanel getColorPanel(){
     return colorPanel;
     }
-                  
-	/**
-	 * initializes the gamePanel
-	 */
-	public void setGamePanel(GameBoard gameBoard){
-		gamePanel = new GamePanel(gameBoard);
-		this.add(gamePanel, GAME_PANEL);
-	}
 
 	public void showMenuPanel(){
 		cardLayout.show(getContentPane(), MENU_PANEL);

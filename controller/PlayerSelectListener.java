@@ -6,18 +6,16 @@ import view.PlayerPanel;
 import src.PlayerHandler;
 import src.Animals.Animal;
 
-public class StartListener implements ActionListener{
+public class PlayerSelectListener implements ActionListener{
     private int[] nChoices;
     private int nCurrent;
     private PlayerPanel view;
-    private ColorListener colorListener;
     private PlayerHandler pHandler;
     
-    public StartListener(PlayerPanel menuPanel, ColorListener cListener){
+    public PlayerSelectListener(PlayerPanel menuPanel){
         nChoices = new int[2];
         nCurrent = 0;
         view = menuPanel;
-        colorListener = cListener;
         view.setChoiceButtonListener(this);
     }
 
@@ -43,8 +41,10 @@ public class StartListener implements ActionListener{
               else{
                   view.setResult("Player 2 goes first!");
               }
-
-              colorListener.setHandler(pHandler);
         }
+    }
+
+    public PlayerHandler getPlayerHandler(){
+        return pHandler;
     }
 }

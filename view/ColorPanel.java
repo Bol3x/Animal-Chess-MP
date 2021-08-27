@@ -34,7 +34,7 @@ public class ColorPanel extends JPanel {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        selectorLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
 
@@ -44,11 +44,10 @@ public class ColorPanel extends JPanel {
         jButton2.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
         jButton2.setText("2");
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
-        jLabel1.setText("Select a color below:");
+        selectorLabel.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        selectorLabel.setText("Player X, Select a color below:");
 
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 24)); // NOI18N
-        jLabel2.setText("               Player X has picked Color Y ");
 
         jButton3.setText("Next");
 
@@ -63,7 +62,7 @@ public class ColorPanel extends JPanel {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(193, 193, 193))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selectorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(211, 211, 211))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(118, 118, 118)
@@ -81,7 +80,7 @@ public class ColorPanel extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(134, 134, 134)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(selectorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -102,12 +101,16 @@ public class ColorPanel extends JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel selectorLabel;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 
     public void setResult(String str){
         jLabel2.setText(str);
+    }
+
+    public void setSelector(String str){
+        selectorLabel.setText(str);
     }
     
      public void disableColorButtons(){

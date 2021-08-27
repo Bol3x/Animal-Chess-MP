@@ -6,6 +6,7 @@ import javax.swing.border.LineBorder;
 
 import java.awt.*;
 import java.awt.image.*;
+import java.awt.event.*;
 import java.io.IOException;
 
 import src.*;
@@ -16,18 +17,15 @@ import src.Enums.AvailableColor;
 public class GamePanel extends JPanel{
 
 	private JLabel lblTurn;
+	JLabel lblTopPlayer;
 	private JPanel centerPanel;
-	private GameStats gameInfoFrame;
+	JLabel lblBotPlayer;
 
-	//model gameBoard
-	private GameBoard model;
-	private Tile[][] boardModel;
+	private GameStats gameInfoFrame;
 
 	private TileDisplay[][] boardView = new TileDisplay[GameBoard.ROW][GameBoard.COL];
 
-    public GamePanel(GameBoard gameBoard){
-		model = gameBoard;
-		boardModel = model.getPlayBoard();
+    public GamePanel(){
 		initPanel();
     }
 
@@ -43,7 +41,7 @@ public class GamePanel extends JPanel{
 		gbc.gridy = 0;
 		topPanel.add(lblTurn, gbc);
 
-		JLabel lblTopPlayer = new JLabel("Team " + model.getPlayerHandler().getSecondPlayer().getColor().toString());
+		JLabel lblTopPlayer = new JLabel("Team Y");
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.insets.top = 30;
@@ -62,22 +60,18 @@ public class GamePanel extends JPanel{
 			}
 		}
 		//display model board to view board
-		highlightTerrain();
-		highlightDens(model.getLowerDen().getColor());
-		highlightDens(model.getUpperDen().getColor());
-		displayTiles();
 
 		this.add(centerPanel, BorderLayout.CENTER);
 
 		//bot animal list
 		JPanel botPanel = new JPanel(new FlowLayout());
 
-		JLabel lblBotPlayer = new JLabel("Team " + model.getPlayerHandler().getFirstPlayer().getColor().toString());
+		lblBotPlayer = new JLabel("Team X");
 		botPanel.add(lblBotPlayer);
 		this.add(botPanel, BorderLayout.SOUTH);
 	}
 
-	public void displayTiles(){
+	public void displayTiles(Tile[][] boardModel){
 		for(int i = 0; i < GameBoard.ROW; i++)
 			for(int j = 0; j < GameBoard.COL; j++)
 				if (boardModel[i][j].hasAnimal())
@@ -102,7 +96,7 @@ public class GamePanel extends JPanel{
 			tile.setText(tile.getText().toLowerCase());
 	}
 
-	public void highlightTerrain(){
+	public void highlightTerrain(PlayerHandler pHandler){
 		//put border highlight on trap buttons
 		LineBorder trapBorder = new LineBorder(Color.red, 4);
 		boardView[0][2].setBorder(trapBorder);
@@ -118,24 +112,27 @@ public class GamePanel extends JPanel{
 			for(int j = 1; j <= 5; j++){
 				if (j != 3){
 					boardView[i][j].setBorder(riverBorder);
-					boardView[i][j].setBackground(Color.BLUE);
+					boardView[i][j].setBackground(Color.CYAN);
 				}
 			}
 		}
+
+		LineBorder upperDenBorder = new LineBorder(pHandler.getFirstPlayer().getColor().getVisibleColor());
+		boardView[0][3].setBorder(upperDenBorder);
+
+		LineBorder lowerDenBorder = new LineBorder(pHandler.getSecondPlayer().getColor().getVisibleColor());
+		boardView[8][3].setBorder(lowerDenBorder);
 	}
 
-	public void highlightDens(AvailableColor color){
-		Color clr = color.getVisibleColor();
-		LineBorder denHighlightColor = new LineBorder(clr, 6);
-
-		TileDisplay den;
-		if (color.equals(model.getLowerDen().getColor())){
-			den = getTileDisplay(new Position(8,3));
-			den.setBorder(denHighlightColor);
-		}
-		else{
-			den = getTileDisplay(new Position(0,3));
-			den.setBorder(denHighlightColor);
+	public void enablePlayerPieces(Tile[][] boardModel, Player player){
+		for(int i = 0; i < GameBoard.ROW; i++){
+			for(int j = 0; j < GameBoard.COL; j++){
+				Tile temp = boardModel[i][j];
+				if (temp.hasAnimal() && temp.getAnimal().getFaction().equals(player))
+					boardView[i][j].setEnabled(true);
+				else
+					boardView[i][j].setEnabled(false);
+			}
 		}
 	}
 
@@ -145,4 +142,22 @@ public class GamePanel extends JPanel{
 		
 		return null;
 	}
+
+	public GameStats getGameStats(){
+		return gameInfoFrame;
+	}
+
+	public void setBoardListener(ActionListener listener){
+		for(int i = 0; i < GameBoard.ROW; i++)
+			for(int j = 0; j < GameBoard.COL; j++)
+				boardView[i][j].addActionListener(listener);
+			
+		
+	}
+
+	public void setPlayerLabels(PlayerHandler pHandler){
+		lblTopPlayer.setText("Team " + pHandler.getSecondPlayer().getColor());
+		lblBotPlayer.setText("Team " +  pHandler.getFirstPlayer().getColor());
+	}
+
 }

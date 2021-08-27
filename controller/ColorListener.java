@@ -1,30 +1,25 @@
 package controller;
 
 import java.awt.event.*;
-import javax.swing.JButton;
 
-import src.GameBoard;
-import src.Player;
 import src.PlayerHandler;
 import src.Enums.AvailableColor;
 import view.ColorPanel;
-import view.GUI;
 
 public class ColorListener implements ActionListener {
-    private int nChoice;
     private ColorPanel view;
-    private GUI gui;
     private PlayerHandler pHandler;
-
     
-    public ColorListener(ColorPanel colorPanel, GUI gui){
+    public ColorListener(ColorPanel colorPanel, PlayerHandler handler){
         view = colorPanel;
-        this.gui = gui;
+        pHandler = handler;
         view.setColorButtonListener(this);
+
+        view.setSelector("Player " + (pHandler.getFirstPlayerIdx()+1) + ", Select a color below:");
     }
     
     public void actionPerformed(ActionEvent e){
-        nChoice = Integer.parseInt(e.getActionCommand());
+        int nChoice = Integer.parseInt(e.getActionCommand());
         /*disable individual button
         JButton btn = (JButton)e.getSource();
 
@@ -43,13 +38,8 @@ public class ColorListener implements ActionListener {
                 pHandler.initSecondPlayerColor(AvailableColor.RED);
             break;
         }
-
-        gui.setGamePanel(new GameBoard(pHandler));
+        
         view.disableColorButtons();
         view.enableNextButton();
-    }
-
-    public void setHandler(PlayerHandler pHandler){
-        this.pHandler = pHandler;
     }
 }
