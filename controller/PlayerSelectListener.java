@@ -16,6 +16,8 @@ public class PlayerSelectListener implements ActionListener{
         nChoices = new int[2];
         nCurrent = 0;
         view = menuPanel;
+        view.setLabel2Visibility(false);
+        view.setLabel3Visibility(false);
         view.setChoiceButtonListener(this);
     }
 
@@ -23,7 +25,8 @@ public class PlayerSelectListener implements ActionListener{
          nChoices[nCurrent] = Integer.parseInt(e.getActionCommand());
        
         
-        view.setResult("Player " + (nCurrent+1) + " chose number "  + nChoices[nCurrent]);
+        view.setLabel2Result("Player " + (nCurrent+1) + " chose number "  + nChoices[nCurrent]);
+        view.setLabel2Visibility(true);
         nCurrent++;
        
         if(nCurrent == 2){
@@ -32,14 +35,16 @@ public class PlayerSelectListener implements ActionListener{
 
               pHandler = new PlayerHandler(nChoices);
               Animal[] choices = pHandler.getAnimalChoices();
-              view.setResult("Player 1 chose " + choices[0].getSpecies() + " Rank: " + choices[0].getRank() 
+              view.setLabel2Result("Player 1 chose " + choices[0].getSpecies() + " Rank: " + choices[0].getRank() 
               + ", Player 2 chose " + choices[1].getSpecies() + " Rank: " + choices[1].getRank());
               
               if(pHandler.getFirstPlayerIdx() == 0){
-                  view.setResult("Player 1 goes first!");
+                  view.setLabel3Result("Player 1 goes first!");
+                   view.setLabel3Visibility(true);
               }
               else{
-                  view.setResult("Player 2 goes first!");
+                  view.setLabel3Result("Player 2 goes first!");
+                   view.setLabel3Visibility(true);
               }
         }
     }
