@@ -2,7 +2,6 @@ package view;
 
 import javax.swing.*;
 
-import src.Player;
 import src.PlayerHandler;
 
 import java.awt.*;
