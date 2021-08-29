@@ -181,15 +181,37 @@ public class GameBoard {
                     return false;
             }
             
-            //checks (if applicable) currAnimal can capture animal on new tile
-            if (currAnimal.capture(newTile.getAnimal()) ){
+            //if new tile is free
+            if (newTile.getAnimal() == null){
                 //remove animal from old tile
                 currAnimal.getTile().setAnimal(null); 
 
                 //place animal on new tile
                 newTile.setAnimal(currAnimal);
+
+                //place new tile on animal
                 currAnimal.setTile(newTile);
+
                 return true;
+            }
+            //checks if currAnimal can capture animal on new tile
+            if (newTile.getAnimal() != null &&
+                currAnimal.capture(newTile.getAnimal()) ){
+                    //remove animal from old tile
+                    currAnimal.getTile().setAnimal(null); 
+
+                    //place animal on new tile
+                    newTile.setAnimal(currAnimal);
+
+                    //place new tile on animal
+                    currAnimal.setTile(newTile);
+
+                    Animal other = newTile.getAnimal();
+
+                    //modify player lists
+                    currAnimal.getFaction().addCapturedPieces(other);
+                    other.getFaction().removePiece(other);
+                    return true;
             }
         }
         //if move is unsuccessful
@@ -230,7 +252,7 @@ public class GameBoard {
                     return false;
             }
 
-            if(!currAnimal.capture(tempTile.getAnimal()))
+            if(tempTile.getAnimal() != null && !currAnimal.capture(tempTile.getAnimal()))
                 return false;
 
             //if pos is a den tile and animal is from same faction

@@ -29,9 +29,7 @@ public class Mouse extends Animal{
                 || (!this.getTile().isRiver() && other.getTile().isRiver()) )
                     return false;
 
-                other.switchCapture();
-                this.getFaction().addCapturedPieces(other);
-                other.getFaction().removePiece(other);
+                //otherwise,
                 return true;
             }
             //else, can't capture
