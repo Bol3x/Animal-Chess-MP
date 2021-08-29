@@ -195,18 +195,19 @@ public class GameBoard {
                 return true;
             }
             //checks if currAnimal can capture animal on new tile
-            if (newTile.getAnimal() != null &&
+            else if (newTile.getAnimal() != null &&
                 currAnimal.capture(newTile.getAnimal()) ){
                     //remove animal from old tile
                     currAnimal.getTile().setAnimal(null); 
+
+                    //get other animal to update player lists
+                    Animal other = newTile.getAnimal();
 
                     //place animal on new tile
                     newTile.setAnimal(currAnimal);
 
                     //place new tile on animal
                     currAnimal.setTile(newTile);
-
-                    Animal other = newTile.getAnimal();
 
                     //modify player lists
                     currAnimal.getFaction().addCapturedPieces(other);

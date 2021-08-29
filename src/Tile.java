@@ -32,7 +32,7 @@ public class Tile{
      */
     public Tile(Position loc){
         this.animal = null;
-        this.TERRAIN = null;
+        this.TERRAIN = Terrain.GRASS;
         this.LOCATION = loc;
     }
 

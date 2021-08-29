@@ -40,6 +40,9 @@ public class Controller implements ActionListener{
                     view.showGamePanel();
             break;
 
+            case GUI.MENU_PANEL : view.showMenuPanel();
+            break;
+
             case GUI.EXIT_FRAME : System.exit(0);
         }
     }

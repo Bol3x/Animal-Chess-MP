@@ -18,7 +18,7 @@ public class BoardListener implements ActionListener{
     private PlayerHandler pHandler;
 
 
-    private int nTurns = 1;
+    private int nTurns = 0;
     private int nCurrPlayer;
     private boolean bGameWin = false;
 
@@ -48,7 +48,7 @@ public class BoardListener implements ActionListener{
         //apply model to view
         view.setPlayerLabels(pHandler);
 
-        view.highlightTerrain(pHandler);
+        view.highlightTerrain(modelBoard, pHandler);
         updateBoard();
     }
 

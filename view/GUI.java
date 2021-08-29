@@ -31,7 +31,7 @@ public class GUI extends JFrame{
 	public GUI(){
 		super("Animal Chess");
 		
-		setSize(670, 850);
+		setSize(610, 850);
 
 		//creates cardLayout
 		cardLayout = new CardLayout();

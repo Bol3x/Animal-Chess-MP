@@ -6,5 +6,6 @@ package src.Enums;
 public enum Terrain{
     DEN,
     TRAP, 
-    RIVER;
+    RIVER,
+    GRASS;
 }

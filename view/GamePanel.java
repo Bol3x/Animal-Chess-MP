@@ -18,7 +18,6 @@ public class GamePanel extends JPanel{
 
 	private JLabel lblTurn;
 	private JLabel lblTopPlayer;
-	private JPanel centerPanel;
 	private JLabel lblBotPlayer;
 
 	private GameStats gameInfoFrame;
@@ -49,12 +48,16 @@ public class GamePanel extends JPanel{
 		this.add(topPanel, BorderLayout.NORTH);
 
 		//main game board
-		centerPanel = new JPanel(new GridLayout(GameBoard.ROW, GameBoard.COL));
+		GridLayout grid = new GridLayout(GameBoard.ROW, GameBoard.COL);
+
+		JPanel centerPanel = new JPanel(grid);
 
 		//initialize all TileDisplay buttons
 		for(int i = 0; i < GameBoard.ROW; i++){
 			for(int j = 0; j < GameBoard.COL; j++){
 				boardView[i][j] = new TileDisplay(new Position(i,j) );
+				boardView[i][j].setHorizontalTextPosition(JButton.CENTER);
+				boardView[i][j].setVerticalTextPosition(JButton.CENTER);
 
 				centerPanel.add(boardView[i][j]);
 			}
@@ -97,7 +100,24 @@ public class GamePanel extends JPanel{
 			tile.setText(tile.getText().toLowerCase());
 	}
 
-	public void highlightTerrain(PlayerHandler pHandler){
+	public void highlightTerrain(Tile[][] model, PlayerHandler pHandler){
+		ImageIcon trap = addImageIcon(82, 82, "trap.png");
+		ImageIcon river = addImageIcon(82, 82, "water.jpg");
+		ImageIcon den = addImageIcon(82, 82, "den.png");
+		ImageIcon grass = addImageIcon(82, 82, "grass.jpg");
+
+		for(int i = 0; i < GameBoard.ROW; i++){
+			for(int j = 0; j < GameBoard.COL; j++){
+				switch(model[i][j].getTerrain()){
+					case TRAP -> boardView[i][j].setIcon(trap);
+					case RIVER -> boardView[i][j].setIcon(river);
+					case DEN -> boardView[i][j].setIcon(den);
+					case GRASS -> boardView[i][j].setIcon(grass);
+				}
+			}
+		}
+
+		/*
 		//put border highlight on trap buttons
 		LineBorder trapBorder = new LineBorder(Color.red, 4);
 		boardView[0][2].setBorder(trapBorder);
@@ -117,6 +137,7 @@ public class GamePanel extends JPanel{
 				}
 			}
 		}
+		*/
 
 		//upper den color
 		LineBorder upperDenBorder = new LineBorder(pHandler.getSecondPlayer().getColor().getVisibleColor(), 6);
@@ -132,9 +153,9 @@ public class GamePanel extends JPanel{
 			for(int j = 0; j < GameBoard.COL; j++){
 				Tile temp = boardModel[i][j];
 				if (temp.hasAnimal() && temp.getAnimal().getFaction().equals(player))
-					boardView[i][j].setEnabled(true);
+					enableTile(new Position(i,j));
 				else
-					boardView[i][j].setEnabled(false);
+					disableTile(new Position(i,j));
 			}
 		}
 	}
@@ -153,8 +174,9 @@ public class GamePanel extends JPanel{
 		if (pos != null){
 			//up
 			Position posUp = new Position(pos.getX()-1, pos.getY());
-			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posUp))
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posUp)){
 				enableTile(posUp);
+			}
 			//down
 			Position posDown = new Position(pos.getX()+1, pos.getY());
 			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posDown))
@@ -202,14 +224,16 @@ public class GamePanel extends JPanel{
 	}
 
 	public void disableTile(Position pos){
-		if (Position.isWithinBounds(pos))
+		if (Position.isWithinBounds(pos)){
 			boardView[pos.getX()][pos.getY()].setEnabled(false);
+			boardView[pos.getX()][pos.getY()].setOpaque(true);
+		}
 	}
 
 	public void disableBoard(){
 		for(int i = 0; i < GameBoard.ROW; i++)
 			for(int j = 0; j < GameBoard.COL; j++)
-				boardView[i][j].setEnabled(false);
+				disableTile(new Position(i,j));
 	}
 
 	public TileDisplay getTileDisplay(Position pos){
@@ -229,4 +253,27 @@ public class GamePanel extends JPanel{
 				boardView[i][j].addActionListener(listener);
 	}
 
+	private ImageIcon addImageIcon(int w, int h, String filename){
+		try{
+			Image img = ImageIO.read(getClass().getResource("/view/images/"+filename));
+			ImageIcon icon = new ImageIcon(img);
+			ImageIcon scaledImg = new ImageIcon(getScaledImage(icon.getImage(), w, h));
+
+			return scaledImg;
+
+		} catch(IOException e){
+			System.out.println(e);
+		}
+		return null;
+	}
+
+	private Image getScaledImage(Image srcImg, int w, int h){
+		BufferedImage scaledImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2 = scaledImg.createGraphics();
+
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2.drawImage(srcImg, 0, 0, w, h, null);
+		g2.dispose();
+		return scaledImg;
+	}
 }
