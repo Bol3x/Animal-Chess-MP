@@ -105,4 +105,9 @@ public class Player{
             ((capturedPieces.indexOf(animal)+1) + ": " + animal.getSpecies() );
         }
     }
+
+    @Override
+    public String toString(){
+        return this.COLOR.toString();
+    }
 }

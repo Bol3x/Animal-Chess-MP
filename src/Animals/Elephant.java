@@ -27,10 +27,6 @@ public class Elephant extends Animal{
             && this.isHigherOrEqualRank(other)
             && (!(other instanceof Mouse) || other.getTile().isTrap() )
             ){
-                other.switchCapture();
-                this.getFaction().addCapturedPieces(other);
-                other.getFaction().removePiece(other);
-                //return true
                 return true;
             }
             //else, can't capture

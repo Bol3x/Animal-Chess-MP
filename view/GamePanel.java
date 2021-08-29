@@ -16,9 +16,6 @@ import src.Enums.AvailableColor;
 
 public class GamePanel extends JPanel{
 
-	public static final String ANIMAL_SPACE = "Animal";
-	public static final String FREE_SPACE = "Free";
-
 	private JLabel lblTurn;
 	private JLabel lblTopPlayer;
 	private JPanel centerPanel;
@@ -195,8 +192,8 @@ public class GamePanel extends JPanel{
 	}
 
 	public void setPlayerLabels(PlayerHandler pHandler){
-		lblTopPlayer.setText("Team " + pHandler.getSecondPlayer().getColor());
-		lblBotPlayer.setText("Team " +  pHandler.getFirstPlayer().getColor());
+		lblTopPlayer.setText("Team " + pHandler.getSecondPlayer());
+		lblBotPlayer.setText("Team " +  pHandler.getFirstPlayer());
 	}
 
 	public void enableTile(Position pos){
