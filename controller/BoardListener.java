@@ -14,39 +14,54 @@ public class BoardListener implements ActionListener{
     private GameBoard model;
     private Tile[][] modelBoard;
     private GamePanel view;
-    private GameStats viewStats;
+    private GameStats gameStats;
     private PlayerHandler pHandler;
 
 
-    private int nTurns = 0;
+    private int nTurns = 1;
     private int nCurrPlayer;
     private boolean bGameWin = false;
 
     public BoardListener(GamePanel panel, GameBoard gameBoard){
+        //set gameboard as model
         model = gameBoard;
+
+        //get player handler from model for simpler player access
         pHandler = model.getPlayerHandler();
+
+        //set initial current player index to obtain from pHandler
         nCurrPlayer = nTurns - 1 + pHandler.getFirstPlayerIdx();
+
+        //get gameboard from model for simpler board access 
         modelBoard = model.getPlayBoard();
+
+        //set GUI panel of game
         view = panel;
-        //viewStats = view.getGameStats();
+
+        //set ActionListener for board pieces
         view.setBoardListener(this);
 
-        //visualize board
+        //initialize game stats frame
+        gameStats = new GameStats();
+        gameStats.initPlayerLabels(pHandler);
+
+        //apply model to view
         view.setPlayerLabels(pHandler);
 
         view.highlightTerrain(pHandler);
         updateBoard();
     }
 
-
-    //TODO FIND SOLN FOR MOVEMENT
-
     //if button is selected
     TileDisplay currentSrc = null;
     
     @Override
     public void actionPerformed(ActionEvent e){
+
+        //get current player
         Player currPlayer = pHandler.getPlayers()[nCurrPlayer];
+
+        //if no object is selected, 
         if(currentSrc == null){
             currentSrc = (TileDisplay) e.getSource();
             view.displayMove(model, currentSrc);
@@ -59,20 +74,21 @@ public class BoardListener implements ActionListener{
         }
 
         else{
-            Position selectPos = currentSrc.getPosition();
+            Position currPos = currentSrc.getPosition();
+            view.undisplayMove(currPos);
+
             Position nextPos = ((TileDisplay) e.getSource()).getPosition();
-            view.undisplayMove(selectPos);
-            model.moveAnimal(model.searchTile(selectPos).getAnimal(), nextPos);
+            model.moveAnimal(model.searchTile(currPos).getAnimal(), nextPos);
             currentSrc = null;
 
+            updateBoard();
+            
             bGameWin = model.checkWinningMove(currPlayer);
-            if (!bGameWin)
-                updateBoard();
         }
 
         if(bGameWin){
             view.disableBoard();
-            System.out.println("Player " + currPlayer.getColor() + " Wins!");
+            System.out.println("Player " + currPlayer + " Wins!");
         }
     }
 
@@ -81,15 +97,11 @@ public class BoardListener implements ActionListener{
      */
     public void updateBoard(){
         nTurns++;
+        gameStats.updateStats(pHandler);
+        
         nCurrPlayer = (nTurns - 1 + pHandler.getFirstPlayerIdx()) % 2;
         view.setTurnLabel(pHandler.getPlayers()[nCurrPlayer].getColor().toString());
         view.enablePlayerPieces(modelBoard, pHandler.getPlayers()[nCurrPlayer]);
         view.displayTiles(modelBoard);
-    }
-
-
-    public void revertTurn(){
-        nTurns--;
-        nCurrPlayer = (nTurns - 1 + pHandler.getFirstPlayerIdx()) % 2;
     }
 }
