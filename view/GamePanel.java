@@ -11,7 +11,6 @@ import java.io.IOException;
 
 import src.*;
 import src.Animals.Animal;
-import src.Enums.AvailableColor;
 
 
 public class GamePanel extends JPanel{
@@ -50,15 +49,21 @@ public class GamePanel extends JPanel{
 		//main game board
 		GridLayout grid = new GridLayout(GameBoard.ROW, GameBoard.COL);
 
-		JPanel centerPanel = new JPanel(grid);
+		ImageIcon img = addImageIcon(588, 722, "RealBoard.jpg");
+
+		JPanel centerPanel = new JPanel(grid){
+			@Override
+			public void paintComponent(Graphics g){
+				super.paintComponent(g);
+					g.drawImage(img.getImage(), 3, 0, null);
+			}
+		};
 
 		//initialize all TileDisplay buttons
 		for(int i = 0; i < GameBoard.ROW; i++){
 			for(int j = 0; j < GameBoard.COL; j++){
 				boardView[i][j] = new TileDisplay(new Position(i,j) );
-				boardView[i][j].setHorizontalTextPosition(JButton.CENTER);
-				boardView[i][j].setVerticalTextPosition(JButton.CENTER);
-
+				
 				centerPanel.add(boardView[i][j]);
 			}
 		}
@@ -79,31 +84,44 @@ public class GamePanel extends JPanel{
 			for(int j = 0; j < GameBoard.COL; j++)
 				if (boardModel[i][j].hasAnimal())
 					displayAnimal(boardModel[i][j].getAnimal(), boardView[i][j]);
-				else boardView[i][j].setText("");
+				else boardView[i][j].setIcon(null);
 	}
 
 	/**
 	 * placeholder for animal images - uses letters instead for now
 	 */
 	public void displayAnimal(Animal animal, TileDisplay tile){
-		switch(animal.getSpecies()){
-			case Mouse 	 -> tile.setText("MO");
-			case Cat 	 -> tile.setText("CA");
-			case Wolf 	 -> tile.setText("WO");
-			case Dog 	 -> tile.setText("DO");
-			case Leopard -> tile.setText("LE");
-			case Tiger	 -> tile.setText("TI");
-			case Lion	 -> tile.setText("LI");
-			case Elephant-> tile.setText("EL");
+		StringBuilder filename = new StringBuilder("/view/images/animals/");
+		switch (animal.getFaction().getColor()){
+			case RED -> filename.append("red_");
+			case BLUE ->filename.append("blue_");
 		}
-		if (animal.getFaction().getColor().equals(AvailableColor.BLUE) )
-			tile.setText(tile.getText().toLowerCase());
+		
+		switch(animal.getSpecies()){
+			case Mouse 	 -> filename.append("mouse.png");
+			case Cat 	 -> filename.append("cat.png");
+			case Wolf 	 -> filename.append("wolf.png");
+			case Dog 	 -> filename.append("dog.png");
+			case Leopard -> filename.append("leopard.png");
+			case Tiger	 -> filename.append("tiger.png");
+			case Lion	 -> filename.append("lion.png");
+			case Elephant-> filename.append("elephant.png");
+		}
+
+		Image img = null;
+		try{
+			img = ImageIO.read(getClass().getResource(filename.toString()));
+		} catch(IOException e){
+			System.out.println(e);
+		}
+		tile.setIcon(new ImageIcon(img.getScaledInstance(72, 72, Image.SCALE_SMOOTH)));
 	}
 
 	public void highlightTerrain(Tile[][] model, PlayerHandler pHandler){
-		ImageIcon trap = addImageIcon(82, 82, "trap.png");
+		/*
+		ImageIcon trap = addImageIcon(82, 82, "trapTile.png");
 		ImageIcon river = addImageIcon(82, 82, "water.jpg");
-		ImageIcon den = addImageIcon(82, 82, "den.png");
+		ImageIcon den = addImageIcon(82, 82, "denTile.jpg");
 		ImageIcon grass = addImageIcon(82, 82, "grass.jpg");
 
 		for(int i = 0; i < GameBoard.ROW; i++){
@@ -116,10 +134,10 @@ public class GamePanel extends JPanel{
 				}
 			}
 		}
-
-		/*
+		*/
+		
 		//put border highlight on trap buttons
-		LineBorder trapBorder = new LineBorder(Color.red, 4);
+		LineBorder trapBorder = new LineBorder(Color.DARK_GRAY, 2);
 		boardView[0][2].setBorder(trapBorder);
 		boardView[0][4].setBorder(trapBorder);
 		boardView[1][3].setBorder(trapBorder);
@@ -137,7 +155,6 @@ public class GamePanel extends JPanel{
 				}
 			}
 		}
-		*/
 
 		//upper den color
 		LineBorder upperDenBorder = new LineBorder(pHandler.getSecondPlayer().getColor().getVisibleColor(), 6);
@@ -152,8 +169,9 @@ public class GamePanel extends JPanel{
 		for(int i = 0; i < GameBoard.ROW; i++){
 			for(int j = 0; j < GameBoard.COL; j++){
 				Tile temp = boardModel[i][j];
-				if (temp.hasAnimal() && temp.getAnimal().getFaction().equals(player))
+				if (temp.hasAnimal() && temp.getAnimal().getFaction().equals(player)){
 					enableTile(new Position(i,j));
+				}
 				else
 					disableTile(new Position(i,j));
 			}
@@ -175,20 +193,27 @@ public class GamePanel extends JPanel{
 			//up
 			Position posUp = new Position(pos.getX()-1, pos.getY());
 			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posUp)){
+				getTileDisplay(posUp).setBorder(new LineBorder(Color.GREEN, 4));
 				enableTile(posUp);
 			}
 			//down
 			Position posDown = new Position(pos.getX()+1, pos.getY());
-			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posDown))
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posDown)){
+				getTileDisplay(posDown).setBorder(new LineBorder(Color.GREEN, 4));
 				enableTile(posDown);
+			}
 			//left
 			Position posLeft = new Position(pos.getX(), pos.getY()-1);
-			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posLeft))
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posLeft)){
+				getTileDisplay(posLeft).setBorder(new LineBorder(Color.GREEN, 4));
 				enableTile(posLeft);
+			}
 			//right
 			Position posRight = new Position(pos.getX(), pos.getY()+1);
-			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posRight))
+			if (model.isValidPosition(model.searchTile(pos).getAnimal(), posRight)){
+				getTileDisplay(posRight).setBorder(new LineBorder(Color.GREEN, 4));
 				enableTile(posRight);
+			}
 		}
 	}
 	
@@ -196,16 +221,28 @@ public class GamePanel extends JPanel{
 		if (pos != null){
 			//up
 			Position posUp = new Position(pos.getX()-1, pos.getY());
-			disableTile(posUp);
+			if (Position.isWithinBounds(posUp)){
+				getTileDisplay(posUp).setBorder(UIManager.getBorder("Button.border"));
+				disableTile(posUp);
+			}
 			//down
 			Position posDown = new Position(pos.getX()+1, pos.getY());
-			disableTile(posDown);
+			if(Position.isWithinBounds(posDown)){
+				getTileDisplay(posDown).setBorder(UIManager.getBorder("Button.border"));
+				disableTile(posDown);
+			}
 			//left
 			Position posLeft = new Position(pos.getX(), pos.getY()-1);
-			disableTile(posLeft);
+			if (Position.isWithinBounds(posLeft)){
+				getTileDisplay(posLeft).setBorder(UIManager.getBorder("Button.border"));
+				disableTile(posLeft);
+			}
 			//right
 			Position posRight = new Position(pos.getX(), pos.getY()+1);
-			disableTile(posRight);
+			if (Position.isWithinBounds(posRight)){
+				getTileDisplay(posRight).setBorder(UIManager.getBorder("Button.border"));
+				disableTile(posRight);
+			}
 		}
 	}
 
@@ -226,7 +263,6 @@ public class GamePanel extends JPanel{
 	public void disableTile(Position pos){
 		if (Position.isWithinBounds(pos)){
 			boardView[pos.getX()][pos.getY()].setEnabled(false);
-			boardView[pos.getX()][pos.getY()].setOpaque(true);
 		}
 	}
 

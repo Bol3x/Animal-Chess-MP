@@ -17,7 +17,6 @@ public class Animal implements Comparable<Animal> {
     protected final Player PLAYER_FACTION;
     protected final int RANK;
     protected final AnimalName SPECIES;
-    //protected final BufferedImage ICON;
     protected Tile tile;
 
     /* Constructor */
@@ -28,11 +27,10 @@ public class Animal implements Comparable<Animal> {
      * @param strSpecies - name of animal
      * @param pos - initial tile
      */
-    public Animal(Player Faction, int Rank, AnimalName species, /*BufferedImage icon,*/ Tile pos){
+    public Animal(Player Faction, int Rank, AnimalName species, Tile pos){
         PLAYER_FACTION = Faction;
         RANK = Rank;
         SPECIES = species;
-        //ICON = icon;
         tile = pos;
     }
     
@@ -60,16 +58,6 @@ public class Animal implements Comparable<Animal> {
     public AnimalName getSpecies(){
         return this.SPECIES;
     }
-
-    /*
-    /**
-     * Gets icon of animal
-     * @return buffered image of animal
-     *
-    public BufferedImage getIcon(){
-        return ICON;
-    }
-    */
 
     /**
      * Gets animal's current tile.
