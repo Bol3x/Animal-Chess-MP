@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 import src.*;
 
-import view.*;
+import view.GUI;
 
 public class Controller implements ActionListener{
     private GUI view;

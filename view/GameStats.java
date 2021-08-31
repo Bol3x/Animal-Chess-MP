@@ -17,6 +17,8 @@ public class GameStats extends JFrame{
     private JPanel player2Animals;
     private JLabel player2AnimalCount;
 
+    private JLabel lblTurn;
+
     public GameStats(){
         super("Stats");
         this.setSize(450, 250);
@@ -40,7 +42,7 @@ public class GameStats extends JFrame{
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets.bottom = 55;
+        gbc.insets.bottom = 40;
         this.add(player2Panel, gbc);
 
         player1Panel = new JPanel();
@@ -61,8 +63,14 @@ public class GameStats extends JFrame{
         gbc.gridy = 1;
         this.add(player1Panel, gbc);
 
+        lblTurn = new JLabel("Turn x: Player A's turn");
+        gbc.gridy = 2;
+        gbc.insets.bottom = 10;
+
+        this.add(lblTurn, gbc);
 
         this.setVisible(true);
+        this.setAlwaysOnTop(true);
         this.setResizable(false);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -70,6 +78,10 @@ public class GameStats extends JFrame{
     public void initPlayerLabels(PlayerHandler pHandler){
         player1.setText("Player " + pHandler.getFirstPlayer());
         player2.setText("Player " + pHandler.getSecondPlayer());
+    }
+
+    public void updateTurnDisplay(int nTurn, String playerColor){
+        lblTurn.setText("Turn " + nTurn + ": Player " + playerColor + "'s Turn");
     }
 
     public void updateStats(PlayerHandler pHandler){

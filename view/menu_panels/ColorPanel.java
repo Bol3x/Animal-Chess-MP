@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.menu_panels;
 
 import javax.swing.*;
+
+import view.GUI;
+
 import java.awt.*;
 import java.awt.event.*;
 /**

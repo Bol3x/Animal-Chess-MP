@@ -17,6 +17,8 @@ public class Animal implements Comparable<Animal> {
     protected final Player PLAYER_FACTION;
     protected final int RANK;
     protected final AnimalName SPECIES;
+    protected final BufferedImage IMG;
+    protected final BufferedImage DISABLED_IMG;
     protected Tile tile;
 
     /* Constructor */
@@ -27,9 +29,13 @@ public class Animal implements Comparable<Animal> {
      * @param strSpecies - name of animal
      * @param pos - initial tile
      */
-    public Animal(Player Faction, int Rank, AnimalName species, Tile pos){
+    public Animal(Player Faction, int Rank, AnimalName species, BufferedImage img, BufferedImage disabledImage, Tile pos){
         PLAYER_FACTION = Faction;
         RANK = Rank;
+
+        IMG = img;
+        DISABLED_IMG = disabledImage;
+
         SPECIES = species;
         tile = pos;
     }
@@ -65,6 +71,20 @@ public class Animal implements Comparable<Animal> {
      */
     public Tile getTile(){
         return tile;
+    }
+
+    /**
+     * Gets image of animal
+     */
+    public BufferedImage getImage(){
+        return IMG;
+    }
+
+    /**
+     * Gets disabled image of animal (when tile is disabled)
+     */
+    public BufferedImage getDisabledImage(){
+        return DISABLED_IMG;
     }
 
     /**Setters*/
@@ -105,16 +125,19 @@ public class Animal implements Comparable<Animal> {
      * @version 1.3 - moved method to <code>Animal</code> class for specific instructions.
     */
     public boolean capture(Animal other){
-        /*
-        if other animal is opposing faction AND
-        other animal is lower rank OR is trapped
-        */
-        if (this.isOpposingFaction(other)
-        && (this.isHigherOrEqualRank(other) || other.getTile().isTrap()) ){
-            return true;
+        if (other != null){
+            /*
+            if other animal is opposing faction AND
+            other animal is lower rank OR is trapped
+            */
+            if (this.isOpposingFaction(other)
+            && (this.isHigherOrEqualRank(other) || other.getTile().isTrap()) ){
+                return true;
+            }
+            //else, can't capture
+            return false;
         }
-        //else, can't capture
-        return false;
+        return true;
     }
 
     /**

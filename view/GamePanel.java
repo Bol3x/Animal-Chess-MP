@@ -84,58 +84,22 @@ public class GamePanel extends JPanel{
 			for(int j = 0; j < GameBoard.COL; j++)
 				if (boardModel[i][j].hasAnimal())
 					displayAnimal(boardModel[i][j].getAnimal(), boardView[i][j]);
-				else boardView[i][j].setIcon(null);
+				else{ 
+					boardView[i][j].setIcon(null);
+					boardView[i][j].setDisabledIcon(null);
+				}
 	}
 
 	/**
 	 * placeholder for animal images - uses letters instead for now
 	 */
 	public void displayAnimal(Animal animal, TileDisplay tile){
-		StringBuilder filename = new StringBuilder("/view/images/animals/");
-		switch (animal.getFaction().getColor()){
-			case RED -> filename.append("red_");
-			case BLUE ->filename.append("blue_");
-		}
-		
-		switch(animal.getSpecies()){
-			case Mouse 	 -> filename.append("mouse.png");
-			case Cat 	 -> filename.append("cat.png");
-			case Wolf 	 -> filename.append("wolf.png");
-			case Dog 	 -> filename.append("dog.png");
-			case Leopard -> filename.append("leopard.png");
-			case Tiger	 -> filename.append("tiger.png");
-			case Lion	 -> filename.append("lion.png");
-			case Elephant-> filename.append("elephant.png");
-		}
-
-		Image img = null;
-		try{
-			img = ImageIO.read(getClass().getResource(filename.toString()));
-		} catch(IOException e){
-			System.out.println(e);
-		}
-		tile.setIcon(new ImageIcon(img.getScaledInstance(72, 72, Image.SCALE_SMOOTH)));
+		tile.setIcon(new ImageIcon(animal.getImage()) );
+		tile.setDisabledIcon(new ImageIcon(animal.getDisabledImage()) );
 	}
 
-	public void highlightTerrain(Tile[][] model, PlayerHandler pHandler){
-		/*
-		ImageIcon trap = addImageIcon(82, 82, "trapTile.png");
-		ImageIcon river = addImageIcon(82, 82, "water.jpg");
-		ImageIcon den = addImageIcon(82, 82, "denTile.jpg");
-		ImageIcon grass = addImageIcon(82, 82, "grass.jpg");
+	public void highlightTerrain(PlayerHandler pHandler){
 
-		for(int i = 0; i < GameBoard.ROW; i++){
-			for(int j = 0; j < GameBoard.COL; j++){
-				switch(model[i][j].getTerrain()){
-					case TRAP -> boardView[i][j].setIcon(trap);
-					case RIVER -> boardView[i][j].setIcon(river);
-					case DEN -> boardView[i][j].setIcon(den);
-					case GRASS -> boardView[i][j].setIcon(grass);
-				}
-			}
-		}
-		*/
-		
 		//put border highlight on trap buttons
 		LineBorder trapBorder = new LineBorder(Color.DARK_GRAY, 2);
 		boardView[0][2].setBorder(trapBorder);
@@ -170,6 +134,7 @@ public class GamePanel extends JPanel{
 			for(int j = 0; j < GameBoard.COL; j++){
 				Tile temp = boardModel[i][j];
 				if (temp.hasAnimal() && temp.getAnimal().getFaction().equals(player)){
+
 					enableTile(new Position(i,j));
 				}
 				else
@@ -185,7 +150,7 @@ public class GamePanel extends JPanel{
 				if(btnTrigger.equals(boardView[i][j])){
 					pos = new Position(i, j);
 				}
-				else boardView[i][j].setEnabled(false);
+				else disableTile(new Position(i, j));
 			}
 		}
 
@@ -221,28 +186,16 @@ public class GamePanel extends JPanel{
 		if (pos != null){
 			//up
 			Position posUp = new Position(pos.getX()-1, pos.getY());
-			if (Position.isWithinBounds(posUp)){
-				getTileDisplay(posUp).setBorder(UIManager.getBorder("Button.border"));
-				disableTile(posUp);
-			}
+			disableTile(posUp);
 			//down
 			Position posDown = new Position(pos.getX()+1, pos.getY());
-			if(Position.isWithinBounds(posDown)){
-				getTileDisplay(posDown).setBorder(UIManager.getBorder("Button.border"));
-				disableTile(posDown);
-			}
+			disableTile(posDown);
 			//left
 			Position posLeft = new Position(pos.getX(), pos.getY()-1);
-			if (Position.isWithinBounds(posLeft)){
-				getTileDisplay(posLeft).setBorder(UIManager.getBorder("Button.border"));
-				disableTile(posLeft);
-			}
+			disableTile(posLeft);
 			//right
 			Position posRight = new Position(pos.getX(), pos.getY()+1);
-			if (Position.isWithinBounds(posRight)){
-				getTileDisplay(posRight).setBorder(UIManager.getBorder("Button.border"));
-				disableTile(posRight);
-			}
+			disableTile(posRight);
 		}
 	}
 
@@ -256,13 +209,16 @@ public class GamePanel extends JPanel{
 	}
 
 	public void enableTile(Position pos){
-		if (Position.isWithinBounds(pos))
-			boardView[pos.getX()][pos.getY()].setEnabled(true);
+		if (Position.isWithinBounds(pos)){
+			getTileDisplay(pos).setBorder(new LineBorder(Color.GREEN, 4));
+			getTileDisplay(pos).setEnabled(true);
+		}
 	}
 
 	public void disableTile(Position pos){
 		if (Position.isWithinBounds(pos)){
-			boardView[pos.getX()][pos.getY()].setEnabled(false);
+			getTileDisplay(pos).setBorder(UIManager.getBorder("Button.border"));
+			getTileDisplay(pos).setEnabled(false);
 		}
 	}
 

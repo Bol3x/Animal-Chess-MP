@@ -1,5 +1,9 @@
 package src;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import src.Animals.*;
 import src.Enums.*;
 
@@ -17,6 +21,11 @@ public class GameBoard {
      * Col size of playBoard
      */
     public static final int COL = 7;
+
+    /**
+     * filepath for images
+     */
+    private final String IMAGE_PATH = "/view/images/animals/";
 
     private Tile playBoard[][] = new Tile[ROW][COL];
     private PlayerHandler playerHandler;
@@ -72,20 +81,35 @@ public class GameBoard {
      * @param strName - animal name
      * @param postion - initial tile position on board
      */
-    private void initAnimal(Player player, int nRank, AnimalName species, Position position){
+    private void initAnimal(Player player, int nRank, AnimalName species, String imgFilename, Position position){
+        BufferedImage img = null, disabledImg = null;
+        StringBuilder ImgFilepath = new StringBuilder(IMAGE_PATH);
+
+        ImgFilepath.append(imgFilename);
+        System.out.println("Loading " + ImgFilepath + "...");
+
+
+        try{
+            img = ImageIO.read(getClass().getResource(ImgFilepath.toString()+".png"));
+            disabledImg = ImageIO.read(getClass().getResource(ImgFilepath.toString()+"_disabled.png"));
+
+        } catch(IOException e){
+            System.out.println(e);
+        }
+
         switch(nRank){
-            case 1: Mouse mouse = new Mouse(player, searchTile(position));
+            case 1: Mouse mouse = new Mouse(player, img, disabledImg, searchTile(position));
                     searchTile(position).setAnimal(mouse);
                     player.addPieces(mouse);
                     break;
 
-            case 8: Elephant elephant = new Elephant(player, searchTile(position));
+            case 8: Elephant elephant = new Elephant(player, img, disabledImg, searchTile(position));
                     searchTile(position).setAnimal(elephant);
                     player.addPieces(elephant);
                     break;
             
             default:
-                    Animal animal = new Animal(player, nRank, species, searchTile(position));
+                    Animal animal = new Animal(player, nRank, species, img, disabledImg, searchTile(position));
                     searchTile(position).setAnimal(animal);
                     player.addPieces(animal);
         }
@@ -96,14 +120,15 @@ public class GameBoard {
      * @param nPlayer - player to assign animals to
      */
     private void initTopAnimals(Player player){
-        initAnimal(player, 1, AnimalName.Mouse    , new Position(2,0));
-        initAnimal(player, 2, AnimalName.Cat      , new Position(1,5));
-        initAnimal(player, 3, AnimalName.Wolf     , new Position(2,4));
-        initAnimal(player, 4, AnimalName.Dog      , new Position(1,1));
-        initAnimal(player, 5, AnimalName.Leopard  , new Position(2,2));
-        initAnimal(player, 6, AnimalName.Tiger    , new Position(0,6));
-        initAnimal(player, 7, AnimalName.Lion     , new Position(0,0));
-        initAnimal(player, 8, AnimalName.Elephant , new Position(2,6));
+        StringBuilder filename = new StringBuilder(""+player.getColor().toString().toLowerCase()+"_");
+        initAnimal(player, 1, AnimalName.Mouse    , filename.toString()+"mouse"   , new Position(2,0));
+        initAnimal(player, 2, AnimalName.Cat      , filename.toString()+"cat"     , new Position(1,5));
+        initAnimal(player, 3, AnimalName.Wolf     , filename.toString()+"wolf"    , new Position(2,4));
+        initAnimal(player, 4, AnimalName.Dog      , filename.toString()+"dog"     , new Position(1,1));
+        initAnimal(player, 5, AnimalName.Leopard  , filename.toString()+"leopard" , new Position(2,2));
+        initAnimal(player, 6, AnimalName.Tiger    , filename.toString()+"tiger"   , new Position(0,6));
+        initAnimal(player, 7, AnimalName.Lion     , filename.toString()+"lion"    , new Position(0,0));
+        initAnimal(player, 8, AnimalName.Elephant , filename.toString()+"elephant", new Position(2,6));
     }
 
     /**
@@ -111,14 +136,15 @@ public class GameBoard {
      * @param nPlayer - player to assign animals to
      */
     private void initBottomAnimals(Player player){
-        initAnimal(player, 1, AnimalName.Mouse    , new Position(6,6));
-        initAnimal(player, 2, AnimalName.Cat      , new Position(7,1));
-        initAnimal(player, 3, AnimalName.Wolf     , new Position(6,2));
-        initAnimal(player, 4, AnimalName.Dog      , new Position(7,5));
-        initAnimal(player, 5, AnimalName.Leopard  , new Position(6,4));
-        initAnimal(player, 6, AnimalName.Tiger    , new Position(8,0));
-        initAnimal(player, 7, AnimalName.Lion     , new Position(8,6));
-        initAnimal(player, 8, AnimalName.Elephant , new Position(6,0));
+        StringBuilder filename = new StringBuilder(player.getColor().toString().toLowerCase()+"_");
+        initAnimal(player, 1, AnimalName.Mouse    , filename.toString()+"mouse"   , new Position(6,6));
+        initAnimal(player, 2, AnimalName.Cat      , filename.toString()+"cat"     , new Position(7,1));
+        initAnimal(player, 3, AnimalName.Wolf     , filename.toString()+"wolf"    , new Position(6,2));
+        initAnimal(player, 4, AnimalName.Dog      , filename.toString()+"dog"     , new Position(7,5));
+        initAnimal(player, 5, AnimalName.Leopard  , filename.toString()+"leopard" , new Position(6,4));
+        initAnimal(player, 6, AnimalName.Tiger    , filename.toString()+"tiger"   , new Position(8,0));
+        initAnimal(player, 7, AnimalName.Lion     , filename.toString()+"lion"    , new Position(8,6));
+        initAnimal(player, 8, AnimalName.Elephant , filename.toString()+"elephant", new Position(6,0));
     }
 
     /* Getters */
@@ -251,6 +277,9 @@ public class GameBoard {
                 Position newPos = jumpRiver(currAnimal.getTile().getLocation(), nextPos);
                 if (nextPos.equals(newPos))
                     return false;
+                    
+                else if (!currAnimal.capture(searchTile(newPos).getAnimal()))
+                    return false;
             }
 
             if(tempTile.getAnimal() != null && !currAnimal.capture(tempTile.getAnimal()))
@@ -358,5 +387,13 @@ public class GameBoard {
             return true;
         
         return false;
+    }
+
+    /**
+     * resets the game
+     */
+    public void resetBoard(){
+        playerHandler.resetPlayers();
+        initializeBoard();
     }
 }

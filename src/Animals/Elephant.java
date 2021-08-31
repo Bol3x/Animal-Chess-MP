@@ -10,8 +10,8 @@ import src.Enums.AnimalName;
  * Elephant subclass of Animal. Specifies a capture method unique to Elephant objects.
  */
 public class Elephant extends Animal{
-    public Elephant(Player Faction, Tile pos){
-        super(Faction, 8, AnimalName.Elephant, pos);
+    public Elephant(Player Faction, BufferedImage img, BufferedImage disabled_img, Tile pos){
+        super(Faction, 8, AnimalName.Elephant, img, disabled_img, pos);
     }
 
     @Override

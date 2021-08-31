@@ -1,8 +1,6 @@
 package controller;
 
-import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 
 import src.*;
 import view.GamePanel;
@@ -48,7 +46,6 @@ public class BoardListener implements ActionListener{
         //apply model to view
         view.setPlayerLabels(pHandler);
 
-        view.highlightTerrain(modelBoard, pHandler);
         updateBoard();
     }
 
@@ -61,47 +58,66 @@ public class BoardListener implements ActionListener{
         //get current player
         Player currPlayer = pHandler.getPlayers()[nCurrPlayer];
 
-        //if no object is selected, 
+        //if no animal is selected, 
         if(currentSrc == null){
+            //store in currentSrc
             currentSrc = (TileDisplay) e.getSource();
+            //display available moves
             view.displayMove(model, currentSrc);
         }
 
+        //if animal is selected and pressed again, return to pre-select state
         else if (currentSrc.equals(e.getSource())){
+            //remove display for moves
             view.undisplayMove(currentSrc.getPosition());
+            //remove store
             currentSrc = null;
+            //redisplay options
             view.enablePlayerPieces(modelBoard, pHandler.getPlayers()[nCurrPlayer]);
+            view.highlightTerrain(pHandler);
         }
 
         else{
+            //get current position of animal selected
             Position currPos = currentSrc.getPosition();
+            //remove move display
             view.undisplayMove(currPos);
 
+            //get selected move's position
             Position nextPos = ((TileDisplay) e.getSource()).getPosition();
+            //move animal in model
             model.moveAnimal(model.searchTile(currPos).getAnimal(), nextPos);
+            //remove selected animal tile from storage
             currentSrc = null;
 
+            //update board
             updateBoard();
             
+            //check game win conditions
             bGameWin = model.checkWinningMove(currPlayer);
         }
 
+        //if game is won, disable board and display new play again frame
         if(bGameWin){
             view.disableBoard();
-            System.out.println("Player " + currPlayer + " Wins!");
         }
     }
 
     /**
-     * WIP - Updates the view's elements and enables respective player's 
+     * Updates the board, gameStats frame and turn count for next player
      */
     public void updateBoard(){
         nTurns++;
         gameStats.updateStats(pHandler);
         
         nCurrPlayer = (nTurns - 1 + pHandler.getFirstPlayerIdx()) % 2;
-        view.setTurnLabel(pHandler.getPlayers()[nCurrPlayer].getColor().toString());
+
+        Player currPlayer = pHandler.getPlayers()[nCurrPlayer];
+        gameStats.updateTurnDisplay(nTurns, currPlayer.getColor().toString());
+        view.setTurnLabel(currPlayer.getColor().toString());
+
         view.enablePlayerPieces(modelBoard, pHandler.getPlayers()[nCurrPlayer]);
+        view.highlightTerrain(pHandler);
         view.displayTiles(modelBoard);
     }
 }

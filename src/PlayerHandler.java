@@ -28,14 +28,14 @@ public class PlayerHandler {
         ArrayList<Animal> temp = new ArrayList<Animal>();
         
         //create temp pieces
-        temp.add(new Animal(null, 1, AnimalName.Mouse   , null));
-        temp.add(new Animal(null, 2, AnimalName.Cat     , null));
-        temp.add(new Animal(null, 3, AnimalName.Wolf    , null));
-        temp.add(new Animal(null, 4, AnimalName.Dog     , null));
-        temp.add(new Animal(null, 5, AnimalName.Leopard , null));
-        temp.add(new Animal(null, 6, AnimalName.Tiger   , null));
-        temp.add(new Animal(null, 7, AnimalName.Lion    , null));
-        temp.add(new Animal(null, 8, AnimalName.Elephant, null));
+        temp.add(new Animal(null, 1, AnimalName.Mouse   , null, null, null));
+        temp.add(new Animal(null, 2, AnimalName.Cat     , null, null, null));
+        temp.add(new Animal(null, 3, AnimalName.Wolf    , null, null, null));
+        temp.add(new Animal(null, 4, AnimalName.Dog     , null, null, null));
+        temp.add(new Animal(null, 5, AnimalName.Leopard , null, null, null));
+        temp.add(new Animal(null, 6, AnimalName.Tiger   , null, null, null));
+        temp.add(new Animal(null, 7, AnimalName.Lion    , null, null, null));
+        temp.add(new Animal(null, 8, AnimalName.Elephant, null, null, null));
 
         //shuffle pieces
         Collections.shuffle(temp);
@@ -47,18 +47,13 @@ public class PlayerHandler {
             Collections.shuffle(temp);
         }
 
-        System.out.println("Player 1 Chose: " + animalChoices[0].getSpecies() + ": Rank " + animalChoices[0].getRank());
-        System.out.println("Player 2 Chose: " + animalChoices[1].getSpecies() + ": Rank " + animalChoices[1].getRank());
-
         //determine first player turn
         boolean bHigher = animalChoices[0].getRank() >= animalChoices[1].getRank();
         if (bHigher){
-            System.out.println("Player 1 goes first!");
             //return 0th index as first player
             return 0;
         }
         else{ 
-            System.out.println("Player 2 goes first!");
             //return 1st index as first player
             return 1;
         } 
@@ -100,15 +95,35 @@ public class PlayerHandler {
         return players[getSecondPlayerIdx()];
     }
 
+    /**
+     * gets players
+     * @return players array
+     */
     public Player[] getPlayers(){
         return players;
     }
 
+    /**
+     * initializes first player with assigned color
+     * @param color color to assign to first player
+     */
     public void initFirstPlayerColor(AvailableColor color){
         players[getFirstPlayerIdx()] = new Player(color);
     }
 
+    /**
+     * initializes second player with assigned color
+     * @param color color to assign to second player
+     */
     public void initSecondPlayerColor(AvailableColor color){
         players[getSecondPlayerIdx()] = new Player(color);
+    }
+
+    /**
+     * resets players
+     */
+    public void resetPlayers(){
+        getFirstPlayer().resetPlayer();
+        getSecondPlayer().resetPlayer();
     }
 }

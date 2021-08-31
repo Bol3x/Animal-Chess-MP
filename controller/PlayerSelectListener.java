@@ -2,9 +2,9 @@ package controller;
 
 import java.awt.event.*;
 
-import view.PlayerPanel;
 import src.PlayerHandler;
 import src.Animals.Animal;
+import view.menu_panels.PlayerPanel;
 
 public class PlayerSelectListener implements ActionListener{
     private int[] nChoices;

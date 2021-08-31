@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 import src.PlayerHandler;
 import src.Enums.AvailableColor;
-import view.ColorPanel;
+import view.menu_panels.ColorPanel;
 
 public class ColorListener implements ActionListener {
     private ColorPanel view;

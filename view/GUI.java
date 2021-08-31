@@ -1,17 +1,13 @@
 package view;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import view.menu_panels.ColorPanel;
+import view.menu_panels.MainPanel;
+import view.menu_panels.PlayerPanel;
+
 import java.awt.*;
-import java.awt.image.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import src.GameBoard;
-import src.Animals.*;
-import src.Enums.AnimalName;
-
 
 public class GUI extends JFrame{
 
@@ -114,31 +110,6 @@ public class GUI extends JFrame{
         
 	public void showColorPanel(){
 		cardLayout.show(getContentPane(), COLOR_PANEL);
-	}
-
-	private ImageIcon addImageIcon(int w, int h){
-		try{
-			Image img = ImageIO.read(getClass().getResource("images/mouse.jpg"));
-			ImageIcon icon = new ImageIcon(img);
-			ImageIcon scaledImg = new ImageIcon(getScaledImage(icon.getImage(), w, h));
-
-			return scaledImg;
-
-		} catch(IOException e){
-			System.out.println(e);
-		}
-
-		return null;
-	}
-
-	private Image getScaledImage(Image srcImg, int w, int h){
-		BufferedImage scaledImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2 = scaledImg.createGraphics();
-
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g2.drawImage(srcImg, 0, 0, w, h, null);
-		g2.dispose();
-		return scaledImg;
 	}
 }
 

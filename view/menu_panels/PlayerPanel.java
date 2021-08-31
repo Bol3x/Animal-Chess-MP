@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.menu_panels;
 
 import java.awt.event.ActionListener;
+
+import view.GUI;
 
 
 /**

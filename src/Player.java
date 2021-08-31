@@ -106,6 +106,14 @@ public class Player{
         }
     }
 
+    /**
+     * resets player storages for new game
+     */
+    public void resetPlayer(){
+        Pieces = new ArrayList<Animal>();
+        capturedPieces = new ArrayList<Animal>();
+    }
+
     @Override
     public String toString(){
         return this.COLOR.toString();
