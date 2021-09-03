@@ -3,24 +3,23 @@ package controller;
 import java.awt.event.*;
 
 import src.*;
-import view.GamePanel;
-import view.GameStats;
-import view.TileDisplay;
+import view.*;
 
 public class BoardListener implements ActionListener{
 
     private GameBoard model;
     private Tile[][] modelBoard;
     private GamePanel view;
-    private GameStats gameStats;
+    private WinDialog winDialog;
     private PlayerHandler pHandler;
 
+    private Controller pController;
 
     private int nTurns = 0;
     private int nCurrPlayer;
     private boolean bGameWin = false;
 
-    public BoardListener(GamePanel panel, GameBoard gameBoard){
+    public BoardListener(GamePanel panel, GameBoard gameBoard, Controller pCont){
         //set gameboard as model
         model = gameBoard;
 
@@ -36,12 +35,11 @@ public class BoardListener implements ActionListener{
         //set GUI panel of game
         view = panel;
 
+        //store parent controller for winFrame use
+        pController = pCont;
+
         //set ActionListener for board pieces
         view.setBoardListener(this);
-
-        //initialize game stats frame
-        gameStats = new GameStats();
-        gameStats.initPlayerLabels(pHandler);
 
         //apply model to view
         view.setPlayerLabels(pHandler);
@@ -54,7 +52,6 @@ public class BoardListener implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e){
-
         //get current player
         Player currPlayer = pHandler.getPlayers()[nCurrPlayer];
 
@@ -99,7 +96,13 @@ public class BoardListener implements ActionListener{
 
         //if game is won, disable board and display new play again frame
         if(bGameWin){
+            currPlayer.increaseScore();
             view.disableBoard();
+
+            winDialog = new WinDialog();
+            winDialog.setActionListeners(pController);
+            winDialog.setWinner(currPlayer.getColor());
+            winDialog.setScores(pHandler);
         }
     }
 
@@ -108,16 +111,26 @@ public class BoardListener implements ActionListener{
      */
     public void updateBoard(){
         nTurns++;
-        gameStats.updateStats(pHandler);
         
         nCurrPlayer = (nTurns - 1 + pHandler.getFirstPlayerIdx()) % 2;
 
         Player currPlayer = pHandler.getPlayers()[nCurrPlayer];
-        gameStats.updateTurnDisplay(nTurns, currPlayer.getColor().toString());
-        view.setTurnLabel(currPlayer.getColor().toString());
+        view.setTurnLabel(nTurns, currPlayer.getColor().toString());
 
         view.enablePlayerPieces(modelBoard, pHandler.getPlayers()[nCurrPlayer]);
         view.highlightTerrain(pHandler);
         view.displayTiles(modelBoard);
+    }
+
+    public void disposeWinFrame(){
+        winDialog.dispose();
+    }
+
+    public void resetGame(){
+        winDialog.dispose();
+        model.resetBoard();
+        bGameWin = false;
+        nTurns = 0;
+        updateBoard();
     }
 }

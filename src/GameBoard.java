@@ -86,8 +86,6 @@ public class GameBoard {
         StringBuilder ImgFilepath = new StringBuilder(IMAGE_PATH);
 
         ImgFilepath.append(imgFilename);
-        System.out.println("Loading " + ImgFilepath + "...");
-
 
         try{
             img = ImageIO.read(getClass().getResource(ImgFilepath.toString()+".png"));
@@ -265,7 +263,7 @@ public class GameBoard {
      * @return true if position is valid, false if not
      */
     public boolean isValidPosition(Animal currAnimal, Position nextPos){
-        //if pos is within bounds
+        //if pos is within bounds,check for conditions that make move false
         if (Position.isWithinBounds(nextPos) ){
             Tile tempTile = searchTile(nextPos);
             //if animal is not a mouse/jumper and pos is a river tile
@@ -273,16 +271,21 @@ public class GameBoard {
             && tempTile.isRiver())
                 return false;
             
+            //if animal can jump and next tile is a river
             if (currAnimal.canJump() && tempTile.isRiver()){
+                //check across river with newpos
                 Position newPos = jumpRiver(currAnimal.getTile().getLocation(), nextPos);
+                //if newpos == nextpos (jump can't occur), return false
                 if (nextPos.equals(newPos))
                     return false;
-                    
+                
+                //if jump succeeded but animal on other tile cannot be captured, return false
                 else if (!currAnimal.capture(searchTile(newPos).getAnimal()))
                     return false;
             }
 
-            if(tempTile.getAnimal() != null && !currAnimal.capture(tempTile.getAnimal()))
+            //if next tile can be claimed by currAnimal
+            if(!currAnimal.capture(tempTile.getAnimal()))
                 return false;
 
             //if pos is a den tile and animal is from same faction
@@ -291,8 +294,10 @@ public class GameBoard {
                 if (tempDen.getColor().equals(currAnimal.getFaction().getColor()) )
                     return false;
             }
+            //if all checks are passed, return true
             return true;
         }
+        //if nextPos is not within bounds, return false
         return false;
     }
 
@@ -350,6 +355,7 @@ public class GameBoard {
     }
 
     /**
+     * UNUSED IN GAME
      * checks traps if there is an opponent animal close to a den.
      * @return Tile of animal that triggered check
      * */
@@ -393,7 +399,16 @@ public class GameBoard {
      * resets the game
      */
     public void resetBoard(){
+        //clear all tiles of animals
+        for(int i = 0; i < GameBoard.ROW; i++)
+            for(int j = 0; j < GameBoard.COL; j++)
+                searchTile(new Position(i,j)).setAnimal(null);
+        
+        //reset players
         playerHandler.resetPlayers();
-        initializeBoard();
+
+        //initialize animals
+        initTopAnimals(playerHandler.getSecondPlayer());
+        initBottomAnimals(playerHandler.getFirstPlayer());
     }
 }

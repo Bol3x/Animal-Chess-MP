@@ -17,6 +17,7 @@ public class Player{
     private ArrayList<Animal> Pieces = new ArrayList<Animal>();
     private ArrayList<Animal> capturedPieces = new ArrayList<Animal>();
     private final AvailableColor COLOR;
+    private int SCORE;
     
     /* Constructor */
     /**
@@ -25,6 +26,7 @@ public class Player{
      */
     public Player(AvailableColor color){
         this.COLOR = color;
+        SCORE = 0;
     }
 
     /* Getters */
@@ -52,6 +54,14 @@ public class Player{
         return capturedPieces;
     }
 
+    /**
+     * Gets score of player
+     * @return score value
+     */
+    public int getScore(){
+        return SCORE;
+    }
+
     /* Setters */
     /**
      * Adds pieces belonging to player.
@@ -75,6 +85,13 @@ public class Player{
      */
     public void removePiece(Animal animal){
         Pieces.remove(animal);
+    }
+
+    /**
+     * increases score by 1
+     */
+    public void increaseScore(){
+        SCORE++;
     }
 
     /* Methods */

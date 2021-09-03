@@ -1,4 +1,4 @@
-package view;
+package view.debug;
 
 import javax.swing.*;
 
@@ -6,7 +6,7 @@ import src.PlayerHandler;
 
 import java.awt.*;
 
-public class GameStats extends JFrame{
+public class GameStats extends JDialog{
     private JPanel player1Panel;
     private JLabel player1;
     private JPanel player1Animals;
@@ -20,7 +20,7 @@ public class GameStats extends JFrame{
     private JLabel lblTurn;
 
     public GameStats(){
-        super("Stats");
+        super();
         this.setSize(450, 250);
         this.setLayout(new GridBagLayout());
 
@@ -69,10 +69,11 @@ public class GameStats extends JFrame{
 
         this.add(lblTurn, gbc);
 
-        this.setVisible(true);
         this.setAlwaysOnTop(true);
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.setVisible(true);
     }
 
     public void initPlayerLabels(PlayerHandler pHandler){

@@ -16,6 +16,7 @@ public class GUI extends JFrame{
 	public static final String GAME_PANEL = "GamePanel";
 	public static final String EXIT_FRAME = "EXIT";
     public static final String COLOR_PANEL = "ColorPanel";
+    public static final String RESET_GAME = "ResetGame";
 
 	private CardLayout cardLayout;
 
@@ -50,6 +51,7 @@ public class GUI extends JFrame{
 
 		//settings
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
 	}
@@ -96,20 +98,49 @@ public class GUI extends JFrame{
     return colorPanel;
     }
 
+	/**
+	 * displays the menu panel on the GUI frame
+	 */
 	public void showMenuPanel(){
 		cardLayout.show(getContentPane(), MENU_PANEL);
 	}
 
+	/**
+	 * displays the player panel on the GUI frame
+	 */
 	public void showPlayerSelectPanel(){
 		cardLayout.show(getContentPane(), PLAYER_SELECT_PANEL);
 	}
 
+	/**
+	 * displays the game panel on the GUI frame
+	 */
 	public void showGamePanel(){
 		cardLayout.show(getContentPane(), GAME_PANEL);
 	}
-        
+    
+	/**
+	 * displays the color panel on the GUI frame
+	 */
 	public void showColorPanel(){
 		cardLayout.show(getContentPane(), COLOR_PANEL);
+	}
+
+	/**
+	 * resets all panels when player returns to menu.
+	 */
+	public void resetPanels(){
+		//cards in cardLayout
+		mainPanel = new MainPanel();
+		playerPanel = new PlayerPanel();
+		colorPanel = new ColorPanel();
+		gamePanel = new GamePanel();
+
+		//add to frame
+		this.add(mainPanel, MENU_PANEL);
+		this.add(playerPanel, PLAYER_SELECT_PANEL);
+		this.add(colorPanel, COLOR_PANEL);
+		this.add(gamePanel, GAME_PANEL);
 	}
 }
 

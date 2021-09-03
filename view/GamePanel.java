@@ -19,8 +19,6 @@ public class GamePanel extends JPanel{
 	private JLabel lblTopPlayer;
 	private JLabel lblBotPlayer;
 
-	private GameStats gameInfoFrame;
-
 	private TileDisplay[][] boardView = new TileDisplay[GameBoard.ROW][GameBoard.COL];
 
     public GamePanel(){
@@ -199,8 +197,8 @@ public class GamePanel extends JPanel{
 		}
 	}
 
-	public void setTurnLabel(String playerColor){
-		lblTurn.setText("Player " + playerColor + "'s turn");
+	public void setTurnLabel(int nTurn, String playerColor){
+		lblTurn.setText("Turn " + nTurn + ": Player " + playerColor + "'s turn");
 	}
 
 	public void setPlayerLabels(PlayerHandler pHandler){
@@ -233,10 +231,6 @@ public class GamePanel extends JPanel{
 			return boardView[pos.getX()][pos.getY()];
 		
 		return null;
-	}
-
-	public GameStats getGameStats(){
-		return gameInfoFrame;
 	}
 
 	public void setBoardListener(ActionListener listener){
