@@ -1,6 +1,8 @@
 /**
- * Main source code for the game.
+ * Source code for Animal Chess.
  * <p>
- * This package stores all the functionality of the game objects and mechanics.
+ * Created by: 
+ * Jan Carlo Roleda
+ * Shane Owen Uy
  */
 package src;
