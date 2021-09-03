@@ -6,6 +6,9 @@ import src.PlayerHandler;
 import src.Animals.Animal;
 import view.menu_panels.PlayerPanel;
 
+/**
+ * Actionlistener for the Player Panel and initializing <code>PlayerHandler</code>.
+ */
 public class PlayerSelectListener implements ActionListener{
     private int[] nChoices;
     private int nCurrent;

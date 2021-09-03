@@ -131,6 +131,10 @@ public class Player{
         capturedPieces = new ArrayList<Animal>();
     }
 
+    /**
+     * gets the color of the player as a string
+     * @return color of player as string
+     */
     @Override
     public String toString(){
         return this.COLOR.toString();

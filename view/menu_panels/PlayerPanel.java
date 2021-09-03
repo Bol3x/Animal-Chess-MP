@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.menu_panels;
 
 import java.awt.event.ActionListener;
@@ -11,8 +6,10 @@ import view.GUI;
 
 
 /**
- *
- * @author Desktop PC
+ * Player initializing panel.
+ * <p>
+ * Displays the 8 choices of the player to select,
+ * determining which of the 2 players gets to go first.
  */
 public class PlayerPanel extends javax.swing.JPanel {
 

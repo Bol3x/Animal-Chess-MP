@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.menu_panels;
 
 import javax.swing.*;
@@ -11,9 +6,12 @@ import view.GUI;
 
 import java.awt.*;
 import java.awt.event.*;
+
 /**
- *
- * @author Desktop PC
+ * Color select panel.
+ * <p>
+ * Displays options for the first player determined from <code>PlayerPanel</code>
+ * to select their desired color.
  */
 public class ColorPanel extends JPanel {
 

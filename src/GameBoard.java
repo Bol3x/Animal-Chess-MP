@@ -10,7 +10,7 @@ import src.Enums.*;
 /**
  * Stores the main game board composed of <code>Tile</code> objects and controls movement of pieces within the board.
  * <p>
- * Handles initialization of gameplay features; Player initialization, animal move controls, and win conditions.
+ * Handles initialization of gameplay features; Board initialization, animal movement, and win conditions.
  */
 public class GameBoard {
     /**

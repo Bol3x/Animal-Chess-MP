@@ -1,8 +1,7 @@
 /**
- * Driver code to run the program.
+ * Controller package of program.
  * <p>
- * Program is run through command line, and inputs are done from there as well.
- * GUI implementation is yet to be developed for this project.
- * @version 1.0
+ * Following the MVC architecture, this package's classes
+ * divide the control of each feature by their respective JPanels.
  */
 package controller;

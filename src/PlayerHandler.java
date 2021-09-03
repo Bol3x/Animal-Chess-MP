@@ -5,6 +5,9 @@ import java.util.*;
 import src.Animals.*;
 import src.Enums.*;
 
+/**
+ * handles the player initialization and player order.
+ */
 public class PlayerHandler {
 
     private Player[] players = new Player[2];

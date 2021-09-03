@@ -1,4 +1,4 @@
-package view.debug;
+package view.DebugTool;
 
 import javax.swing.*;
 

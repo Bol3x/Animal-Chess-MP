@@ -5,6 +5,12 @@ import java.awt.event.*;
 import src.*;
 import view.*;
 
+/**
+ * ActionListener for GameBoard and GamePanel.
+ * <p>
+ * Acts as the auxillary controller for all game mechanics
+ * between the model and view.
+ */
 public class BoardListener implements ActionListener{
 
     private GameBoard model;

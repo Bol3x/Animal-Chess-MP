@@ -6,6 +6,10 @@ import src.*;
 
 import view.GUI;
 
+/**
+ * main controller connecting all listeners to their 
+ * respective GUI panels, following the MVC architecture.
+ */
 public class Controller implements ActionListener{
     private GUI view;
     private GameBoard model;

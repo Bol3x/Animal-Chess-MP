@@ -6,6 +6,11 @@ import src.PlayerHandler;
 import src.Enums.AvailableColor;
 import view.menu_panels.ColorPanel;
 
+/**
+ * ActionListener for player initialization and the ColorPanel.
+ * <p>
+ * allows selection of colors to initialize players with.
+ */
 public class ColorListener implements ActionListener {
     private ColorPanel view;
     private PlayerHandler pHandler;
@@ -21,11 +26,6 @@ public class ColorListener implements ActionListener {
     
     public void actionPerformed(ActionEvent e){
         int nChoice = Integer.parseInt(e.getActionCommand());
-        /*disable individual button
-        JButton btn = (JButton)e.getSource();
-
-        btn.setEnabled(false);
-        */
         
         switch(nChoice) 
         {

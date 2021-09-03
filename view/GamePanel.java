@@ -12,7 +12,11 @@ import java.io.IOException;
 import src.*;
 import src.Animals.Animal;
 
-
+/**
+ * Main game GUI panel.
+ * <p>
+ * Displays all GameBoard elements on this panel, as well as game states and turn counts
+ */
 public class GamePanel extends JPanel{
 
 	private JLabel lblTurn;
@@ -25,6 +29,9 @@ public class GamePanel extends JPanel{
 		initPanel();
     }
 
+	/**
+	 * initializes the gamePanel 
+	 */
 	private void initPanel(){
 		//gamePanel init
 		setLayout(new BorderLayout());
@@ -33,6 +40,7 @@ public class GamePanel extends JPanel{
 		JPanel topPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		lblTurn = new JLabel("Player x's Turn");
+		lblTurn.setFont(lblTurn.getFont().deriveFont(15f));
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		topPanel.add(lblTurn, gbc);
@@ -40,20 +48,20 @@ public class GamePanel extends JPanel{
 		lblTopPlayer = new JLabel("Team Y");
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.insets.top = 30;
+		gbc.insets.top = 20;
 		topPanel.add(lblTopPlayer, gbc);
 		this.add(topPanel, BorderLayout.NORTH);
 
 		//main game board
 		GridLayout grid = new GridLayout(GameBoard.ROW, GameBoard.COL);
 
-		ImageIcon img = addImageIcon(588, 722, "RealBoard.jpg");
+		ImageIcon img = addImageIcon(588, 730, "RealBoard.jpg");
 
 		JPanel centerPanel = new JPanel(grid){
 			@Override
 			public void paintComponent(Graphics g){
 				super.paintComponent(g);
-					g.drawImage(img.getImage(), 3, 0, null);
+					g.drawImage(img.getImage(), 4, 1, null);
 			}
 		};
 
@@ -77,6 +85,22 @@ public class GamePanel extends JPanel{
 		this.add(botPanel, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * gets the TileDisplay button on specified location (if valid)
+	 * @param pos position of button to get
+	 * @return TileDisplay button reference, null if invalid position
+	 */
+	public TileDisplay getTileDisplay(Position pos){
+		if (Position.isWithinBounds(pos))
+			return boardView[pos.getX()][pos.getY()];
+		
+		return null;
+	}
+
+	/**
+	 * displays all tiles with animals
+	 * @param boardModel board to check animals from
+	 */
 	public void displayTiles(Tile[][] boardModel){
 		for(int i = 0; i < GameBoard.ROW; i++)
 			for(int j = 0; j < GameBoard.COL; j++)
@@ -89,13 +113,25 @@ public class GamePanel extends JPanel{
 	}
 
 	/**
-	 * placeholder for animal images - uses letters instead for now
+	 * sets icon for animal on tile passed
+	 * @param animal animal to get image from
+	 * @param tile tile to set image to
 	 */
 	public void displayAnimal(Animal animal, TileDisplay tile){
 		tile.setIcon(new ImageIcon(animal.getImage()) );
 		tile.setDisabledIcon(new ImageIcon(animal.getDisabledImage()) );
 	}
 
+	public void setBoardListener(ActionListener listener){
+		for(int i = 0; i < GameBoard.ROW; i++)
+			for(int j = 0; j < GameBoard.COL; j++)
+				boardView[i][j].addActionListener(listener);
+	}
+
+	/**
+	 * highlights button border of all terrain tiles
+	 * @param pHandler player handler for color of den tiles
+	 */
 	public void highlightTerrain(PlayerHandler pHandler){
 
 		//put border highlight on trap buttons
@@ -127,10 +163,16 @@ public class GamePanel extends JPanel{
 		boardView[8][3].setBorder(lowerDenBorder);
 	}
 
+	/**
+	 * enables animal tiles available to move for the turn
+	 * @param boardModel model of gameboard to look for animals
+	 * @param player current player about to select a move
+	 */
 	public void enablePlayerPieces(Tile[][] boardModel, Player player){
 		for(int i = 0; i < GameBoard.ROW; i++){
 			for(int j = 0; j < GameBoard.COL; j++){
 				Tile temp = boardModel[i][j];
+				//if animal exists and animal is of same faction as player
 				if (temp.hasAnimal() && temp.getAnimal().getFaction().equals(player)){
 
 					enableTile(new Position(i,j));
@@ -141,16 +183,19 @@ public class GamePanel extends JPanel{
 		}
 	}
 
-	public void displayMove(GameBoard model, JButton btnTrigger){
-		Position pos = null;
-		for(int i = 0; i < GameBoard.ROW; i++){
-			for(int j = 0; j < GameBoard.COL; j++){
-				if(btnTrigger.equals(boardView[i][j])){
-					pos = new Position(i, j);
-				}
-				else disableTile(new Position(i, j));
-			}
-		}
+	/**
+	 * displays available moves for a selected animal
+	 * @param model gameboard reference
+	 * @param btnTrigger animal selected
+	 */
+	public void displayMove(GameBoard model, TileDisplay btnTrigger){
+		Position pos = btnTrigger.getPosition();
+
+		for(int i = 0; i < GameBoard.ROW; i++)
+			for(int j = 0; j < GameBoard.COL; j++)
+				disableTile(new Position(i, j));
+
+		enableTile(pos);
 
 		if (pos != null){
 			//up
@@ -180,6 +225,12 @@ public class GamePanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * undisplay possible moves of selected animal,
+	 * used when player selects the animal itself 
+	 * to cancel their select.
+	 * @param pos position of animal selected
+	 */
 	public void undisplayMove(Position pos){
 		if (pos != null){
 			//up
@@ -197,15 +248,28 @@ public class GamePanel extends JPanel{
 		}
 	}
 
+	/**
+	 * sets the current turn and player to move
+	 * @param nTurn number of turns passed
+	 * @param playerColor color of current player to move
+	 */
 	public void setTurnLabel(int nTurn, String playerColor){
 		lblTurn.setText("Turn " + nTurn + ": Player " + playerColor + "'s turn");
 	}
 
+	/**
+	 * sets the player labels surrounding the game board
+	 * @param pHandler player handler to get first and second player's colors
+	 */
 	public void setPlayerLabels(PlayerHandler pHandler){
 		lblTopPlayer.setText("Team " + pHandler.getSecondPlayer());
 		lblBotPlayer.setText("Team " +  pHandler.getFirstPlayer());
 	}
 
+	/**
+	 * enables tile on specified position (if valid)
+	 * @param pos position of tile to enable
+	 */
 	public void enableTile(Position pos){
 		if (Position.isWithinBounds(pos)){
 			getTileDisplay(pos).setBorder(new LineBorder(Color.GREEN, 4));
@@ -213,6 +277,10 @@ public class GamePanel extends JPanel{
 		}
 	}
 
+	/**
+	 * disables tile on specified position (if valid)
+	 * @param pos position of tile to disable
+	 */
 	public void disableTile(Position pos){
 		if (Position.isWithinBounds(pos)){
 			getTileDisplay(pos).setBorder(UIManager.getBorder("Button.border"));
@@ -220,25 +288,31 @@ public class GamePanel extends JPanel{
 		}
 	}
 
+	/**
+	 * disables the entire board
+	 * used when the game is over
+	 */
 	public void disableBoard(){
 		for(int i = 0; i < GameBoard.ROW; i++)
 			for(int j = 0; j < GameBoard.COL; j++)
 				disableTile(new Position(i,j));
 	}
 
-	public TileDisplay getTileDisplay(Position pos){
-		if (Position.isWithinBounds(pos))
-			return boardView[pos.getX()][pos.getY()];
-		
-		return null;
-	}
+	/* 
+		Source of sample code for image scaling:
+		Oracle (n.d.). How to Use Icons. Retrieved from
+		https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
+	*/
 
-	public void setBoardListener(ActionListener listener){
-		for(int i = 0; i < GameBoard.ROW; i++)
-			for(int j = 0; j < GameBoard.COL; j++)
-				boardView[i][j].addActionListener(listener);
-	}
-
+	/**
+	 * creates an ImageIcon object with specified width and height
+	 * @param w width of image
+	 * @param h height of image
+	 * @param filename filename of image to add
+	 * @return ImageIcon object of imported image, null if image is not found.
+	 * 
+	 * @author Oracle
+	 */
 	private ImageIcon addImageIcon(int w, int h, String filename){
 		try{
 			Image img = ImageIO.read(getClass().getResource("/view/images/"+filename));
@@ -253,6 +327,15 @@ public class GamePanel extends JPanel{
 		return null;
 	}
 
+	/**
+	 * Scales the image to specified dimensions
+	 * @param srcImg image to scale
+	 * @param w width of output image
+	 * @param h height of output image
+	 * @return scaled image of passed dimensions.
+	 * 
+	 * @author Oracle
+	 */
 	private Image getScaledImage(Image srcImg, int w, int h){
 		BufferedImage scaledImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = scaledImg.createGraphics();

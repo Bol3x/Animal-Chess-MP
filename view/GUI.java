@@ -9,6 +9,13 @@ import view.menu_panels.PlayerPanel;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Main GUI class of program.
+ * <p>
+ * Connects all Panels through a CardLayout to switch between panels.
+ * <p>
+ * Also hosts all possible button ActionCommands for traversal through the GUI.
+ */
 public class GUI extends JFrame{
 
 	public static final String MENU_PANEL = "MenuPanel";
