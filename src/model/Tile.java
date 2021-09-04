@@ -105,18 +105,7 @@ public class Tile{
         //else
         return false;
     }
-
-    /**
-     * checks if tile is one of the 2 dens.
-     * @return boolean value
-     */
-    public boolean isDen(){
-        if(this.TERRAIN == Terrain.DEN)
-            return true;
-        //else
-        return false;
-    }
-
+    
     @Override
     public boolean equals(Object obj){
         if (obj == null) return false;

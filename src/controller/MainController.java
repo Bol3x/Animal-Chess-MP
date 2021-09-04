@@ -9,15 +9,14 @@ import src.view.GUI;
  * main controller connecting all listeners to their 
  * respective GUI panels, following the MVC architecture.
  */
-public class Controller implements ActionListener{
+public class MainController implements ActionListener{
     private GUI view;
-    private GameBoard model;
     private PlayerHandler pHandler;
     private PlayerSelectListener startListener;
     private ColorListener colorListener;
     private BoardListener boardListener;
 
-    public Controller(){
+    public MainController(){
         view = new GUI();
         view.setActionListener(this);
     }
@@ -39,8 +38,8 @@ public class Controller implements ActionListener{
                     view.showColorPanel();
             break;
 
-            case GUI.GAME_PANEL : model = new GameBoard(pHandler);
-                    boardListener = new BoardListener(view.getGamePanel(), model, this);
+            case GUI.GAME_PANEL :
+                    boardListener = new BoardListener(view.getGamePanel(), pHandler, this);
                     view.showGamePanel();
             break;
 

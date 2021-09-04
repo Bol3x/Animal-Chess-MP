@@ -17,7 +17,7 @@ public class Player{
     private ArrayList<Animal> Pieces = new ArrayList<Animal>();
     private ArrayList<Animal> capturedPieces = new ArrayList<Animal>();
     private final AvailableColor COLOR;
-    private int SCORE;
+    private int nScore;
     
     /* Constructor */
     /**
@@ -26,7 +26,7 @@ public class Player{
      */
     public Player(AvailableColor color){
         this.COLOR = color;
-        SCORE = 0;
+        nScore = 0;
     }
 
     /* Getters */
@@ -59,7 +59,7 @@ public class Player{
      * @return score value
      */
     public int getScore(){
-        return SCORE;
+        return nScore;
     }
 
     /* Setters */
@@ -91,7 +91,7 @@ public class Player{
      * increases score by 1
      */
     public void increaseScore(){
-        SCORE++;
+        nScore++;
     }
 
     /* Methods */

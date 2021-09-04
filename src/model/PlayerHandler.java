@@ -12,14 +12,14 @@ public class PlayerHandler {
 
     private Player[] players = new Player[2];
     private Animal[] animalChoices = new Animal[2];
-    private final int nFirstPlayer;
+    private final int FIRST_PLAYER;
 
 
     /**
      * constructor for PlayerHandler, initializes first player immediately.
      */
     public PlayerHandler(int[] nChoices){
-        nFirstPlayer = initFirstPlayer(nChoices);
+        FIRST_PLAYER = initFirstPlayer(nChoices);
     }
 
     /**
@@ -62,6 +62,23 @@ public class PlayerHandler {
         } 
     }
 
+    /**
+     * initializes first player with assigned color
+     * @param color color to assign to first player
+     */
+    public void initFirstPlayerColor(AvailableColor color){
+        players[getFirstPlayerIdx()] = new Player(color);
+    }
+
+    /**
+     * initializes second player with assigned color
+     * @param color color to assign to second player
+     */
+    public void initSecondPlayerColor(AvailableColor color){
+        players[getSecondPlayerIdx()] = new Player(color);
+    }
+
+
     public Animal[] getAnimalChoices(){
         return animalChoices;
     }
@@ -71,7 +88,7 @@ public class PlayerHandler {
      * @return 1 or 0, based on result of <code>initPlayerColors()</code>
      */
     public int getFirstPlayerIdx(){
-        return nFirstPlayer;
+        return FIRST_PLAYER;
     }
 
     /**
@@ -79,7 +96,7 @@ public class PlayerHandler {
      * @return 1 or 0, based on result of <code>initPlayerColors()</code>
      */
     public int getSecondPlayerIdx(){
-        return nFirstPlayer == 1 ? 0 : 1;
+        return FIRST_PLAYER == 1 ? 0 : 1;
     }
     
     /**
@@ -104,22 +121,6 @@ public class PlayerHandler {
      */
     public Player[] getPlayers(){
         return players;
-    }
-
-    /**
-     * initializes first player with assigned color
-     * @param color color to assign to first player
-     */
-    public void initFirstPlayerColor(AvailableColor color){
-        players[getFirstPlayerIdx()] = new Player(color);
-    }
-
-    /**
-     * initializes second player with assigned color
-     * @param color color to assign to second player
-     */
-    public void initSecondPlayerColor(AvailableColor color){
-        players[getSecondPlayerIdx()] = new Player(color);
     }
 
     /**

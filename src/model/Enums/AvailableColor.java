@@ -30,14 +30,5 @@ public enum AvailableColor{
     public Color getVisibleColor(){
         return VISIBLE_COLOR;
     }
-
-    /**
-     * Gets an enum by its order of declaration in the class
-     * @param i - number of Color's ordinal
-     * @return color enum
-     */
-    public static AvailableColor getColor(int i){
-        return colors[i];
-    }
 }
     

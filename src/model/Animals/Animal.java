@@ -105,7 +105,7 @@ public class Animal implements Comparable<Animal> {
      * @return boolean value
      */
     public boolean isHigherOrEqualRank(Animal opponentAnimal){
-        return (this.RANK >= opponentAnimal.RANK);
+        return (this.compareTo(opponentAnimal) >= 0);
     }
 
     /**

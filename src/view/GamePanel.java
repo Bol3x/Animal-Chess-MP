@@ -315,7 +315,7 @@ public class GamePanel extends JPanel{
 	 */
 	private ImageIcon addImageIcon(int w, int h, String filename){
 		try{
-			Image img = ImageIO.read(getClass().getResource("/view/images/"+filename));
+			Image img = ImageIO.read(getClass().getResource("/src/view/images/"+filename));
 			ImageIcon icon = new ImageIcon(img);
 			ImageIcon scaledImg = new ImageIcon(getScaledImage(icon.getImage(), w, h));
 

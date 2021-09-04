@@ -26,28 +26,28 @@ public class GameBoard {
     /**
      * filepath for images
      */
-    private final String IMAGE_PATH = "/view/images/animals/";
+    private final String IMAGE_PATH = "/src/view/images/animals/";
 
     private Tile playBoard[][] = new Tile[ROW][COL];
-    private PlayerHandler playerHandler;
+    private final PlayerHandler PLAYER_HANDLER;
 
     /* Constructor */
     /**
      * Constructs a playBoard and initializes players and animals to designated locations.
      */
     public GameBoard(PlayerHandler pHandler){
-        playerHandler = pHandler;
+        PLAYER_HANDLER = pHandler;
         initializeBoard();
     }
 
     /**
-     * creates all tiles and pieces onto the board, 
+     * creates all tiles and pieces onto the board,
      * and provides pieces' ownership to a respective player.
      */
     public void initializeBoard(){
         //set dens
-        playBoard[0][3] = new DenTile(new Position(0,3) , playerHandler.getSecondPlayer().getColor());
-        playBoard[8][3] = new DenTile(new Position(8,3) , playerHandler.getFirstPlayer().getColor());
+        playBoard[0][3] = new DenTile(new Position(0,3) , PLAYER_HANDLER.getSecondPlayer().getColor());
+        playBoard[8][3] = new DenTile(new Position(8,3) , PLAYER_HANDLER.getFirstPlayer().getColor());
 
         //set traps
         playBoard[0][2] = new Tile(new Position(0,2) , Terrain.TRAP);
@@ -70,8 +70,8 @@ public class GameBoard {
         }
 
         //initialize animals
-        initTopAnimals(playerHandler.getSecondPlayer());
-        initBottomAnimals(playerHandler.getFirstPlayer());
+        initTopAnimals(PLAYER_HANDLER.getSecondPlayer());
+        initBottomAnimals(PLAYER_HANDLER.getFirstPlayer());
     }
 
 
@@ -155,28 +155,12 @@ public class GameBoard {
         return playBoard;
     }
 
-    /** 
-     * Gets upper den tile.
-     * @return upper Den tile
-     */
-    public DenTile getUpperDen(){
-        return (DenTile) playBoard[0][3];
-    }
-
-    /**
-     * Gets lower den tile.
-     * @return lower Den tile
-     */
-    public DenTile getLowerDen(){
-        return (DenTile) playBoard[8][3];
-    }
-
     /**
      * Gets the player handler.
      * @return player handler reference
      */
     public PlayerHandler getPlayerHandler(){
-        return playerHandler;
+        return PLAYER_HANDLER;
     }
 
     /* Methods */
@@ -356,40 +340,12 @@ public class GameBoard {
     }
 
     /**
-     * UNUSED IN GAME
-     * checks traps if there is an opponent animal close to a den.
-     * @return Tile of animal that triggered check
-     * */
-    public Tile checkTrap(){
-        //traps near upper Den
-        for(int i = 0; i <= 1; i++){
-            for(int j = 2; j <= 4; j++){
-                if(playBoard[i][j].hasAnimal()
-                && playBoard[i][j].getAnimal().getFaction().getColor() != getUpperDen().getColor())
-                    return playBoard[i][j];
-            }
-        }
-
-        //traps near lower Den
-        for(int i = 7; i <= 8; i++){
-            for(int j = 2; j <= 4; j++){
-                if(playBoard[i][j].hasAnimal()
-                && playBoard[i][j].getAnimal().getFaction().getColor() != getLowerDen().getColor())
-                    return playBoard[i][j];
-            }
-        }
-
-        //no opponent animals close to den
-        return null;
-    }
-
-    /**
      * Checks for winning moves/conditions.
      * @param nPlayer - Player to check for available pieces.
      */
     public boolean checkWinningMove(Player player){
-        if(getUpperDen().hasAnimal()    //upper den has animal
-        || getLowerDen().hasAnimal()    //lower den has animal
+        if(playBoard[0][3].hasAnimal()    //upper den has animal
+        || playBoard[8][3].hasAnimal()    //lower den has animal
         || player.getPieces().isEmpty() ) //player is out of pieces
             return true;
         
@@ -406,10 +362,10 @@ public class GameBoard {
                 searchTile(new Position(i,j)).setAnimal(null);
         
         //reset players
-        playerHandler.resetPlayers();
+        PLAYER_HANDLER.resetPlayers();
 
         //initialize animals
-        initTopAnimals(playerHandler.getSecondPlayer());
-        initBottomAnimals(playerHandler.getFirstPlayer());
+        initTopAnimals(PLAYER_HANDLER.getSecondPlayer());
+        initBottomAnimals(PLAYER_HANDLER.getFirstPlayer());
     }
 }

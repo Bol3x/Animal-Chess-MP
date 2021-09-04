@@ -1,9 +1,9 @@
 package src;
 
-import src.controller.Controller;
+import src.controller.MainController;
 
 public class Driver {
     public static void main(String[] args){
-        new Controller();
+        new MainController();
     }
 }

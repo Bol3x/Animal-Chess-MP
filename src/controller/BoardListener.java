@@ -16,21 +16,21 @@ public class BoardListener implements ActionListener{
     private GameBoard model;
     private Tile[][] modelBoard;
     private GamePanel view;
-    private WinDialog winDialog;
     private PlayerHandler pHandler;
+    private WinDialog winDialog;
 
-    private Controller pController;
+    private MainController pController;
 
     private int nTurns = 0;
     private int nCurrPlayer;
     private boolean bGameWin = false;
 
-    public BoardListener(GamePanel panel, GameBoard gameBoard, Controller pCont){
-        //set gameboard as model
-        model = gameBoard;
+    public BoardListener(GamePanel panel, PlayerHandler playerHandler, MainController pCont){
+        //get PlayerHandler reference
+        pHandler = playerHandler;
 
-        //get player handler from model for simpler player access
-        pHandler = model.getPlayerHandler();
+        //initialize new gameboard
+        model = new GameBoard(pHandler);
 
         //set initial current player index to obtain from pHandler
         nCurrPlayer = nTurns - 1 + pHandler.getFirstPlayerIdx();
@@ -54,7 +54,7 @@ public class BoardListener implements ActionListener{
     }
 
     //if button is selected
-    TileDisplay currentSrc = null;
+    private TileDisplay currentSrc = null;
     
     @Override
     public void actionPerformed(ActionEvent e){
@@ -97,7 +97,7 @@ public class BoardListener implements ActionListener{
             updateBoard();
             
             //check game win conditions
-            bGameWin = model.checkWinningMove(currPlayer);
+            bGameWin = model.checkWinningMove(pHandler.getPlayers()[nCurrPlayer]);
         }
 
         //if game is won, disable board and display new play again frame

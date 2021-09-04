@@ -10,15 +10,14 @@ import src.view.menu_panels.PlayerPanel;
  * Actionlistener for the Player Panel and initializing <code>PlayerHandler</code>.
  */
 public class PlayerSelectListener implements ActionListener{
-    private int[] nChoices;
+    private int[] nChoices = new int[2];
     private int nCurrent;
     private PlayerPanel view;
     private PlayerHandler pHandler;
     
-    public PlayerSelectListener(PlayerPanel menuPanel){
-        nChoices = new int[2];
+    public PlayerSelectListener(PlayerPanel playerPanel){
         nCurrent = 0;
-        view = menuPanel;
+        view = playerPanel;
         view.setLabel2Visibility(false);
         view.setLabel3Visibility(false);
         view.setChoiceButtonListener(this);

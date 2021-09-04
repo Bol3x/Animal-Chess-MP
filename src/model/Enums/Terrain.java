@@ -5,7 +5,7 @@ package src.model.Enums;
  */
 public enum Terrain{
     DEN,
+    GRASS,
     TRAP, 
-    RIVER,
-    GRASS;
+    RIVER;
 }
