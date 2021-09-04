@@ -17,12 +17,30 @@ import java.awt.event.*;
  * Also hosts all possible button ActionCommands for traversal through the GUI.
  */
 public class GUI extends JFrame{
-
+	
+	/**
+	 * Menu panel command
+	 */
 	public static final String MENU_PANEL = "MenuPanel";
+	/**
+	 * Player select panel command
+	 */
 	public static final String PLAYER_SELECT_PANEL = "PlayerSelectPanel";
+	/**
+	 * Gameplay panel command
+	 */
 	public static final String GAME_PANEL = "GamePanel";
-	public static final String EXIT_FRAME = "EXIT";
+	/**
+	 * Color select panel command
+	 */
     public static final String COLOR_PANEL = "ColorPanel";
+	/**
+	 * Exit command
+	 */
+	public static final String EXIT_FRAME = "EXIT";
+	/**
+	 * Reset game command
+	 */
     public static final String RESET_GAME = "ResetGame";
 
 	private CardLayout cardLayout;
@@ -32,6 +50,11 @@ public class GUI extends JFrame{
 	private GamePanel gamePanel;
     private ColorPanel colorPanel;
 
+	/**
+	 * GUI constructor.
+	 * <p>
+	 * Constructs all the panels and overall layout of the GUI program.
+	 */
 	public GUI(){
 		super("Animal Chess");
 		
@@ -65,7 +88,7 @@ public class GUI extends JFrame{
 
 	/**
 	 * sets action listeners for the menu buttons and other select buttons
-	 * @param listener
+	 * @param listener ActionListener of GUI frame
 	 */
 	public void setActionListener(ActionListener listener){
 		mainPanel.setActionListener(listener);

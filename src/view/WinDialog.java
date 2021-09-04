@@ -21,6 +21,9 @@ public class WinDialog extends JDialog{
     JButton playAgainBtn;
     JButton exitBtn;
 
+    /**
+     * Dialog box constructor for the win display
+     */
     public WinDialog(){
         super();
         setSize(400, 200);
@@ -73,15 +76,27 @@ public class WinDialog extends JDialog{
         this.setVisible(true);
     }
 
+    /**
+     * set action listener for play again and exit buttons
+     * @param listener ActionListener of buttons
+     */
     public void setActionListeners(ActionListener listener){
         playAgainBtn.addActionListener(listener);
         exitBtn.addActionListener(listener);
     }
 
+    /**
+     * Sets the winner of the current game
+     * @param color color of player that won
+     */
     public void setWinner(AvailableColor color){
         lblWinner.setText("Player " + color + " Won!");
     }
 
+    /**
+     * sets current game score of both players
+     * @param pHandler PlayerHandler reference to obtain score of players from
+     */
     public void setScores(PlayerHandler pHandler){
         Player firstPlayer = pHandler.getFirstPlayer();
         Player secondPlayer = pHandler.getSecondPlayer();

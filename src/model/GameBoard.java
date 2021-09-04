@@ -34,6 +34,7 @@ public class GameBoard {
     /* Constructor */
     /**
      * Constructs a playBoard and initializes players and animals to designated locations.
+     * @param pHandler player handler to assign objects to
      */
     public GameBoard(PlayerHandler pHandler){
         PLAYER_HANDLER = pHandler;
@@ -244,7 +245,7 @@ public class GameBoard {
     /**
      * Checks if pos is valid tile for currAnimal to move to.
      * @param currAnimal - current animal to check
-     * @param pos - next position to check for validity
+     * @param nextPos - next position to check for validity
      * @return true if position is valid, false if not
      */
     public boolean isValidPosition(Animal currAnimal, Position nextPos){
@@ -341,7 +342,8 @@ public class GameBoard {
 
     /**
      * Checks for winning moves/conditions.
-     * @param nPlayer - Player to check for available pieces.
+     * @param player - Player to check for available pieces.
+     * @return true if conditions are met, false if not
      */
     public boolean checkWinningMove(Player player){
         if(playBoard[0][3].hasAnimal()    //upper den has animal

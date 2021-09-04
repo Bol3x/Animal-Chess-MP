@@ -26,7 +26,9 @@ public class Animal implements Comparable<Animal> {
      * Constructor for Animal object
      * @param Faction - player it belongs to
      * @param Rank - rank of animal
-     * @param strSpecies - name of animal
+     * @param species - name of animal
+     * @param img - image of animal
+     * @param disabledImage - disabled image of animal
      * @param pos - initial tile
      */
     public Animal(Player Faction, int Rank, AnimalName species, BufferedImage img, BufferedImage disabledImage, Tile pos){
@@ -75,6 +77,7 @@ public class Animal implements Comparable<Animal> {
 
     /**
      * Gets image of animal
+     * @return animal image
      */
     public BufferedImage getImage(){
         return IMG;
@@ -82,6 +85,7 @@ public class Animal implements Comparable<Animal> {
 
     /**
      * Gets disabled image of animal (when tile is disabled)
+     * @return disabled animal image
      */
     public BufferedImage getDisabledImage(){
         return DISABLED_IMG;
