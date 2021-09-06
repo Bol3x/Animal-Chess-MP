@@ -1,4 +1,7 @@
-driver
 src
-src.Animals
-src.Enums
+src.controller
+src.model
+src.model.Animals
+src.model.Enums
+src.view
+src.view.menu_panels
