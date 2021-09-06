@@ -34,7 +34,7 @@ public class MainPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/view/images/mion.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/view/images/logo.jpg")));
 
         jButton1.setText("Start Game");
 
